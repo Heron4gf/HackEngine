@@ -3,6 +3,8 @@ package it.unicam.ids2026.hackhub;
 import it.unicam.ids2026.hackhub.data.Intervallo;
 import it.unicam.ids2026.hackhub.data.Sottomissione;
 import it.unicam.ids2026.hackhub.data.StatoHackathon;
+import it.unicam.ids2026.hackhub.managers.HackathonManager;
+import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import lombok.Getter;
 

@@ -1,6 +1,8 @@
 package it.unicam.ids2026.hackhub;
 
 import it.unicam.ids2026.hackhub.data.DatiHackathon;
+import it.unicam.ids2026.hackhub.managers.HackathonManager;
+import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 
 import java.util.Collection;
@@ -8,6 +10,9 @@ import java.util.Collection;
 public class HackHub {
 
     private static HackHub instance;
+
+    private final HackathonManager hackathonManager = new HackathonManager();
+    private final MentorManager mentorManager = new MentorManager();
 
     private HackHub() {
         // using Singleton
@@ -19,7 +24,7 @@ public class HackHub {
     }
 
     public Collection<Mentore> getMentoriDisponibili() {
-        return null;
+        return mentorManager.getMentoriDisponibili();
     }
 
     public Hackathon getHackathon(int id) {
@@ -27,7 +32,8 @@ public class HackHub {
     }
 
     public void aggiungiMentori(Hackathon hackathon, Collection<Mentore> mentori) {
-
+        mentori.stream()
+                .forEach(hackathon::aggiungiMentore);
     }
 
     public Hackathon creaHackathon(DatiHackathon datiHackathon) {
