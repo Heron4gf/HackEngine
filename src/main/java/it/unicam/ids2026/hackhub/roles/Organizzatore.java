@@ -1,4 +1,9 @@
 package it.unicam.ids2026.hackhub.roles;
 
-public class Organizzatore {
+import java.util.UUID;
+
+public class Organizzatore extends MembroStaff {
+    public Organizzatore(String nome, String cognome, UUID id) {
+        super(nome, cognome, id);
+    }
 }
