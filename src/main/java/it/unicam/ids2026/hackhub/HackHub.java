@@ -6,6 +6,7 @@ import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class HackHub {
 
@@ -27,8 +28,8 @@ public class HackHub {
         return mentorManager.getMentoriDisponibili();
     }
 
-    public Hackathon getHackathon(int id) {
-        return null;
+    public Hackathon getHackathon(UUID id) {
+        return hackathonManager.getHackathon(id);
     }
 
     public void aggiungiMentori(Hackathon hackathon, Collection<Mentore> mentori) {
@@ -36,8 +37,8 @@ public class HackHub {
                 .forEach(hackathon::aggiungiMentore);
     }
 
-    public Hackathon creaHackathon(DatiHackathon datiHackathon) {
-        return null;
+    public Hackathon creaHackathon(DatiHackathon datiHackathon) throws Exception {
+        return hackathonManager.creaHackathon(datiHackathon);
     }
 
 }
