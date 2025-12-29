@@ -4,12 +4,12 @@ import it.unicam.ids2026.hackhub.Hackathon;
 import it.unicam.ids2026.hackhub.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 public class HackathonManager {
 
-    private List<Hackathon> hackathons;
+    private Collection<Hackathon> hackathons;
 
     public Hackathon getHackathon(UUID id) {
         return hackathons.stream().filter(h -> h.getId().equals(id)).findFirst().orElse(null);
@@ -26,7 +26,9 @@ public class HackathonManager {
         return newHackathon;
     }
 
-    public void aggiungiMentori(Hackathon h, List<Mentore> mentori) {
-
+    public void aggiungiMentori(Hackathon h, Collection<Mentore> mentori) {
+        for (Mentore m: mentori) {
+            h.aggiungiMentore(m);
+        }
     }
 }
