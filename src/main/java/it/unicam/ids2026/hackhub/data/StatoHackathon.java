@@ -8,6 +8,7 @@ public enum StatoHackathon {
     ISCRIZIONE("Fase d'iscrzione"),
     IN_CORSO("Fase di svolgimento"),
     IN_VALUTAZIONE("Fase di valutazione"),
-    CONCLUSO("Concluso"),
+    CONCLUSO("Concluso");
+
     private final String state;
 }
