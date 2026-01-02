@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE) // using Singleton
@@ -21,10 +22,10 @@ public class HackHub {
     private static final HackHub instance = new HackHub();
 
     private final HackathonManager hackathonManager = new HackathonManager();
-    private final MentorManager mentorManager = new MentorManager();
+    private final MentorManager mentorManager = new MentorManager(List.of() /*mock list as placeholder*/);
 
-    public Collection<Mentore> getMentoriDisponibili() {
-        return mentorManager.getMentoriDisponibili();
+    public Collection<Mentore> getMentoriDisponibili(Hackathon hackathon) {
+        return mentorManager.getMentoriDisponibili(hackathon);
     }
 
     public Hackathon getHackathon(UUID id) {
@@ -32,8 +33,7 @@ public class HackHub {
     }
 
     public void aggiungiMentori(Hackathon hackathon, Collection<Mentore> mentori) {
-        mentori.stream()
-                .forEach(hackathon::aggiungiMentore);
+        hackathonManager.aggiungiMentori(hackathon, mentori);
     }
 
     public Hackathon creaHackathon(Organizzatore organizzatore, DatiHackathon datiHackathon, Giudice giudice, Intervallo periodoIscrizioni, Intervallo durataHackathon) throws Exception {
