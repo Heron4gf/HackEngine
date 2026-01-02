@@ -1,22 +1,18 @@
 package it.unicam.ids2026.hackhub.data;
 
-import java.util.Date;
+import lombok.NonNull;
 
-public class Intervallo {
-    private Date dataInizio;
-    private Date dataFine;
+import java.time.LocalDate;
 
-    public boolean dataCompresa(Date data) {
-        if (data == null || dataInizio == null || dataFine == null) {
-            return false;
+public record Intervallo(@NonNull LocalDate dataInizio, @NonNull LocalDate dataFine) {
+
+    public Intervallo {
+        if (dataFine.isBefore(dataInizio)) {
+            throw new IllegalArgumentException("La data di fine precede quella di inizio");
         }
-        return !data.before(dataInizio) && !data.after(dataFine);
     }
 
-    public boolean isValidInterval() {
-        if (dataInizio == null || dataFine == null) {
-            return false;
-        }
-        return !dataFine.before(dataInizio);
+    public boolean contiene(LocalDate data) {
+        return data != null && !data.isBefore(dataInizio) && !data.isAfter(dataFine);
     }
 }
