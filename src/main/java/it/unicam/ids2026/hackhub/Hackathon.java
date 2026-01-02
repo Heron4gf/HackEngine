@@ -25,6 +25,7 @@ public class Hackathon {
     private final DatiHackathon datiHackathon;
 
     @NonNull
+    @Getter // NON PRESENTE NEL DIAGRAMMA DI FLUSSO
     private final Collection<Mentore> mentori;
 
     @NonNull
