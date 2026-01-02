@@ -5,7 +5,7 @@ import it.unicam.ids2026.hackhub.roles.Mentore;
 
 import java.util.Collection;
 
-public interface userInterface {
+public interface UserInterface {
     Collection<Mentore> richiestaMentoriDisponibili();
 
     //Review return type
