@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MentorManager {
     private Collection<Mentore> listaMentori;
 
-    @
+
     public Collection<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
         return listaMentori.stream().filter(m -> !h.getMentori().contains(m)).collect(Collectors.toList());
     }
