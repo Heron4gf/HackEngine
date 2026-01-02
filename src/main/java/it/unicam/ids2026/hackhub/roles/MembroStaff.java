@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public abstract class MembroStaff {
+public abstract class MembroStaff implements Utente{
 
     private String nome;
     private String cognome;
