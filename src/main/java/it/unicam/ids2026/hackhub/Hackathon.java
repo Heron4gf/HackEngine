@@ -22,6 +22,7 @@ public class Hackathon {
     private final Organizzatore organizzatore;
 
     @NonNull
+    @Getter // NON PRESENTE NEL DIAGRAMMA DI FLUSSO
     private final DatiHackathon datiHackathon;
 
     @NonNull

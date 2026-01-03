@@ -6,14 +6,16 @@ import it.unicam.ids2026.hackhub.data.Intervallo;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 public class HackathonManager {
 
-    private Collection<Hackathon> hackathons;
+    private final Collection<Hackathon> hackathons;
 
     public Hackathon getHackathon(UUID id) {
         return hackathons.stream().filter(h -> h.getId().equals(id)).findFirst().orElse(null);
