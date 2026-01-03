@@ -1,16 +1,20 @@
 package it.unicam.ids2026.hackhub;
 
 import it.unicam.ids2026.hackhub.data.DatiHackathon;
+import it.unicam.ids2026.hackhub.data.Intervallo;
+import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
+import it.unicam.ids2026.hackhub.roles.Organizzatore;
 
 import java.util.Collection;
 
 public interface UserInterface {
-    Collection<Mentore> richiestaMentoriDisponibili();
+    Collection<Mentore> richiestaMentoriDisponibili(Hackathon hackathon);
 
     //Review return type
-    Hackathon createHackathon(DatiHackathon datiHackathon);
+    Hackathon createHackathon(Organizzatore organizzatore, DatiHackathon datiHackathon, Giudice giudice,
+                              Intervallo periodoIscrizioni, Intervallo durataHackathon) throws Exception;
 
     //Review return type
-    Collection<Mentore> selezionaMentori(Collection<Mentore> mentori);
+    Collection<Mentore> selezionaMentori(Hackathon h, Collection<Mentore> mentori);
 }
