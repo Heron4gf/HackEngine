@@ -1,5 +1,6 @@
 package it.unicam.ids2026.hackhub.roles.team;
 import it.unicam.ids2026.hackhub.HackHub;
+import it.unicam.ids2026.hackhub.roles.User;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +12,7 @@ public class Team {
     private int maxMembri;
     private String nome;
     private int numeroMembri = 0;
-    private Set<Utente> membri;
+    private Set<User> membri;
 
     public Team(@NotNull String nome, int maxMembri) {
         this.nome = nome;
@@ -19,7 +20,7 @@ public class Team {
     }
 
 
-    void aggiungiUtenti(@NotNull Utente utente) {
+    public void aggiungiUtenti(@NotNull User utente) {
         if (numeroMembri <= maxMembri) {
             membri.add(utente);
             numeroMembri++;
@@ -29,7 +30,7 @@ public class Team {
         }
     }
 
-    void esciDalTeam(Utente utente) {
+    public void esciDalTeam(User utente) {
         membri.remove(utente);
         numeroMembri--;
         if (numeroMembri == 0) {

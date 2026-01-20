@@ -21,7 +21,7 @@ public class TeamManager {
             }
         }
         return toReturn;
-    };
+    }
 
     public Team getTeam(Utente user) {
         Team toReturn = null;
