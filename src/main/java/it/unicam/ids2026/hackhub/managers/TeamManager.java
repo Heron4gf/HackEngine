@@ -2,14 +2,16 @@ package it.unicam.ids2026.hackhub.managers;
 
 import it.unicam.ids2026.hackhub.roles.Team;
 import it.unicam.ids2026.hackhub.roles.Utente;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
 @RequiredArgsConstructor
 public class TeamManager {
-    private final Set<Team> teams;
 
+    @Getter
+    private final Set<Team> teams;
 
     public Team getTeam(String teamName) {
         Team toReturn = null;

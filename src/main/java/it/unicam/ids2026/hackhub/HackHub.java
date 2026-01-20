@@ -73,4 +73,8 @@ public class HackHub {
     public void iscriviHackathonTeam(@NonNull Hackathon hackathon, @NonNull Team team) {
         hackathonManager.iscrizioneHackathon(hackathon, team);
     }
+
+    public Set<Team> getAllTeams() {
+        return teamManager.getTeams();
+    }
 }
