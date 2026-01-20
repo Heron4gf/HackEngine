@@ -8,11 +8,7 @@
 ---
 
 ## HackHub
-**HackHub** è una piattaforma progettata per la gestione centralizzata degli hackathon.  
-Offre strumenti dedicati a:
-- Organizzazione degli eventi
-- Monitoraggio delle attività
-- Coordinamento dei partecipanti
+**HackHub** è una piattaforma progettata per la gestione centralizzata degli hackathon.
 
 ---
 
