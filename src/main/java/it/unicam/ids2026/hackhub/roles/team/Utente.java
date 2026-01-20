@@ -1,7 +1,5 @@
 package it.unicam.ids2026.hackhub.roles.team;
 
-import it.unicam.ids2026.hackhub.roles.invito.Invito;
-
 import java.util.Collection;
 import java.util.UUID;
 
@@ -22,6 +20,10 @@ public class Utente extends AbstractUser {
     public void riceviInvito(Invito invito) {
         if (!haTeam()) casella_inviti.add(invito);
         throw new IllegalArgumentException("l'utente "+this.getNome()+" ha già un team");
+    }
+
+    public void rifiutaInvito(Invito invito) {
+        casella_inviti.remove(invito);
     }
 
     public void setTeam(Team team) {
