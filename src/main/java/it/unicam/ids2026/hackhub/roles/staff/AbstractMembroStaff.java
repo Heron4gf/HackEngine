@@ -1,8 +1,10 @@
 package it.unicam.ids2026.hackhub.roles.staff;
 
+import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -16,4 +18,7 @@ public abstract class AbstractMembroStaff implements MembroStaff {
 
     private final String nome;
     private final String cognome;
+
+    @Setter
+    private Hackathon associatedHackathon;
 }
