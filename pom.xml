@@ -28,6 +28,12 @@
             <version>5.11.0</version> <!-- Controlla l'ultima versione stabile su Maven Central -->
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
