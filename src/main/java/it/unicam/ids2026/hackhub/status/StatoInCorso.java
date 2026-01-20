@@ -17,7 +17,7 @@ public class StatoInCorso implements StatoHackathon {
 
     @Override
     public void aggiungiMentore(Hackathon hackathon, Mentore mentore) {
-        throw new IllegalStateException("Hackathon in corso: impossibile aggiungere mentori");
+        hackathon.doAggiungiMentore(mentore);
     }
 
     @Override
