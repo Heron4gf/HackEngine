@@ -1,5 +1,7 @@
 package it.unicam.ids2026.hackhub.roles.team;
 
+import it.unicam.ids2026.hackhub.HackHub;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ public class Utente extends AbstractUser {
     public Team creaTeam(String nome, int maxMembri) {
         Team team = new Team(nome, maxMembri);
         team.aggiungiUtenti(this);
+        HackHub.getInstance().addTeam(team);
         return team;
     }
 
