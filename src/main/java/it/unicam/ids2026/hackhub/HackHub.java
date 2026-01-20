@@ -1,7 +1,8 @@
 package it.unicam.ids2026.hackhub;
 
-import it.unicam.ids2026.hackhub.data.DatiHackathon;
-import it.unicam.ids2026.hackhub.data.Intervallo;
+import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
+import it.unicam.ids2026.hackhub.hackathon.Hackathon;
+import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
 import it.unicam.ids2026.hackhub.managers.HackathonManager;
 import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.managers.TeamManager;

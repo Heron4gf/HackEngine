@@ -1,6 +1,6 @@
 package it.unicam.ids2026.hackhub.managers;
 
-import it.unicam.ids2026.hackhub.Hackathon;
+import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

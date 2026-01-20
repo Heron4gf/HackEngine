@@ -1,25 +1,25 @@
-package it.unicam.ids2026.hackhub.status;
+package it.unicam.ids2026.hackhub.hackathon;
 
-import it.unicam.ids2026.hackhub.HackHub;
-import it.unicam.ids2026.hackhub.Hackathon;
-import it.unicam.ids2026.hackhub.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Team;
 
-public class StatoIscrizione implements StatoHackathon {
+public class StatoInValutazione implements StatoHackathon {
     @Override
     public void next(Hackathon hackathon) {
-        hackathon.setState(new StatoInCorso());
+
+            hackathon.setState(new StatoConcluso());
+
     }
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        HackHub.getInstance().iscriviHackathonTeam(hackathon, team);
+        throw new RuntimeException("L'Hackathon è in valutazione, impossibile iscriversi");
     }
 
     @Override
     public void aggiungiMentore(Hackathon hackathon, Mentore mentore) {
-        hackathon.doAggiungiMentore(mentore);
+        throw new IllegalStateException("Impossibile aggiungere membri durante la fase di valutazione");
     }
 
     @Override

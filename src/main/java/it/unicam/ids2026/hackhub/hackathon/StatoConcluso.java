@@ -1,7 +1,6 @@
-package it.unicam.ids2026.hackhub.status;
+package it.unicam.ids2026.hackhub.hackathon;
 
-import it.unicam.ids2026.hackhub.Hackathon;
-import it.unicam.ids2026.hackhub.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Team;
 

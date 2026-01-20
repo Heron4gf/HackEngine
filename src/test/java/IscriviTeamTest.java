@@ -1,11 +1,11 @@
 import it.unicam.ids2026.hackhub.HackHub;
-import it.unicam.ids2026.hackhub.Hackathon;
-import it.unicam.ids2026.hackhub.data.DatiHackathon;
-import it.unicam.ids2026.hackhub.data.Intervallo;
-import it.unicam.ids2026.hackhub.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.Hackathon;
+import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
+import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
+import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.*;
-import it.unicam.ids2026.hackhub.status.StatoInCorso;
-import it.unicam.ids2026.hackhub.status.StatoIscrizione;
+import it.unicam.ids2026.hackhub.hackathon.StatoInCorso;
+import it.unicam.ids2026.hackhub.hackathon.StatoIscrizione;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

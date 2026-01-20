@@ -1,19 +1,13 @@
-package it.unicam.ids2026.hackhub;
+package it.unicam.ids2026.hackhub.hackathon;
 
-import it.unicam.ids2026.hackhub.data.DatiHackathon;
-import it.unicam.ids2026.hackhub.data.Intervallo;
-import it.unicam.ids2026.hackhub.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
+import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
+import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
 import it.unicam.ids2026.hackhub.roles.Team;
-import it.unicam.ids2026.hackhub.status.StatoHackathon;
-import it.unicam.ids2026.hackhub.status.StatoIscrizione;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -49,7 +43,7 @@ public class Hackathon {
 
     private final Set<Team> iscritti;
 
-    @Setter
+    @Setter(AccessLevel.PACKAGE)
     private StatoHackathon state = new StatoIscrizione();
 
     public void aggiungiMentore(Mentore mentore) {
