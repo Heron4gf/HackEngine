@@ -7,11 +7,11 @@ import it.unicam.ids2026.hackhub.managers.HackathonManager;
 import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.managers.TeamManager;
 import it.unicam.ids2026.hackhub.managers.UserManager;
-import it.unicam.ids2026.hackhub.roles.Giudice;
-import it.unicam.ids2026.hackhub.roles.Mentore;
-import it.unicam.ids2026.hackhub.roles.Organizzatore;
-import it.unicam.ids2026.hackhub.roles.Team;
-import it.unicam.ids2026.hackhub.roles.Utente;
+import it.unicam.ids2026.hackhub.roles.staff.Giudice;
+import it.unicam.ids2026.hackhub.roles.staff.Mentore;
+import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.team.Team;
+import it.unicam.ids2026.hackhub.roles.team.Utente;
 import lombok.NonNull;
 
 import java.util.*;

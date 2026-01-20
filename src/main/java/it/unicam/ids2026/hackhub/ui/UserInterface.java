@@ -3,9 +3,9 @@ package it.unicam.ids2026.hackhub.ui;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
-import it.unicam.ids2026.hackhub.roles.Giudice;
-import it.unicam.ids2026.hackhub.roles.Mentore;
-import it.unicam.ids2026.hackhub.roles.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.staff.Giudice;
+import it.unicam.ids2026.hackhub.roles.staff.Mentore;
+import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 
 import java.util.Collection;
 import java.util.List;

@@ -3,9 +3,11 @@ import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
-import it.unicam.ids2026.hackhub.roles.*;
 import it.unicam.ids2026.hackhub.hackathon.StatoInCorso;
 import it.unicam.ids2026.hackhub.hackathon.StatoIscrizione;
+import it.unicam.ids2026.hackhub.roles.staff.Giudice;
+import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.team.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +47,7 @@ class IscriviTeamTest {
         assertNotNull(hackathon);
         assertTrue(hackathon.getState() instanceof StatoIscrizione, "Lo stato iniziale deve essere ISCRIZIONE");
 
-        Team teamAlpha = new Team(4, "TeamAlpha");
+        Team teamAlpha = new Team("TeamAlpha", 4);
 
         // 3. Iscrizione del Team (Stato: ISCRIZIONE -> Permesso)
         assertDoesNotThrow(() -> hackathon.getState().iscriviTeam(hackathon, teamAlpha));
@@ -62,7 +64,7 @@ class IscriviTeamTest {
         assertTrue(hackathon.getState() instanceof StatoInCorso, "Lo stato deve essere passato a IN_CORSO");
 
         // 6. Tentativo di Iscrizione Tardiva (Stato: IN_CORSO -> Vietato)
-        Team teamLate = new Team(4, "TeamLate");
+        Team teamLate = new Team("TeamLate", 4);
         assertThrows(RuntimeException.class,
                 () -> hackathon.getState().iscriviTeam(hackathon, teamLate),
                 "Non deve essere possibile iscriversi ad hackathon iniziati");

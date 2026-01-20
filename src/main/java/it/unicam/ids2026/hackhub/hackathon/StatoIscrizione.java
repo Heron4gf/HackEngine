@@ -2,8 +2,8 @@ package it.unicam.ids2026.hackhub.hackathon;
 
 import it.unicam.ids2026.hackhub.HackHub;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
-import it.unicam.ids2026.hackhub.roles.Mentore;
-import it.unicam.ids2026.hackhub.roles.Team;
+import it.unicam.ids2026.hackhub.roles.staff.Mentore;
+import it.unicam.ids2026.hackhub.roles.team.Team;
 
 public class StatoIscrizione implements StatoHackathon {
     @Override

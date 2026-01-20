@@ -1,9 +1,8 @@
-package it.unicam.ids2026.hackhub.roles;
+package it.unicam.ids2026.hackhub.roles.team;
 import it.unicam.ids2026.hackhub.HackHub;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
 import java.util.Set;
 
 

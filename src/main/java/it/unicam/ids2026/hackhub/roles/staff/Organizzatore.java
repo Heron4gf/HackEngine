@@ -1,9 +1,9 @@
-package it.unicam.ids2026.hackhub.roles;
+package it.unicam.ids2026.hackhub.roles.staff;
 
 import java.util.UUID;
 
 public class Organizzatore extends AbstractMembroStaff {
     public Organizzatore(String nome, String cognome, UUID id) {
-        super(nome, cognome, id);
+        super(id, nome, cognome);
     }
 }
