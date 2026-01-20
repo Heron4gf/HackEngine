@@ -1,14 +1,13 @@
-package it.unicam.ids2026.hackhub.roles.invito;
+package it.unicam.ids2026.hackhub.roles.team;
 
 
-import it.unicam.ids2026.hackhub.roles.team.Team;
 import it.unicam.ids2026.hackhub.roles.User;
 
 public class Invito {
     private final Team mittente;
-    private final User destinatario;
+    private final Utente destinatario;
 
-    public Invito(Team mittente, User destinatario) {
+    public Invito(Team mittente, Utente destinatario) {
         this.mittente = mittente;
         this.destinatario = destinatario;
     }
@@ -18,5 +17,6 @@ public class Invito {
     }
 
     public void rifiuta() {
+        destinatario.rifiutaInvito(this);
     }
 }
