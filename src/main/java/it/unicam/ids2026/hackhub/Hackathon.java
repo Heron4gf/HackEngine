@@ -6,6 +6,7 @@ import it.unicam.ids2026.hackhub.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.Team;
 import it.unicam.ids2026.hackhub.status.StatoHackathon;
 import it.unicam.ids2026.hackhub.status.StatoIscrizione;
 import lombok.EqualsAndHashCode;
@@ -46,19 +47,21 @@ public class Hackathon {
 
     private final Set<Sottomissione> sottomissioni = new LinkedHashSet<>();
 
+    private final Set<Team> iscritti;
+
     @Setter
-    private StatoHackathon currentState = new StatoIscrizione();
+    private StatoHackathon state = new StatoIscrizione();
 
     public void aggiungiMentore(Mentore mentore) {
-        currentState.aggiungiMentore(this, mentore);
+        state.aggiungiMentore(this, mentore);
     }
 
     public void aggiungiSottomissione(Sottomissione sottomissione) {
-        currentState.aggiungiSottomissione(this, sottomissione);
+        state.aggiungiSottomissione(this, sottomissione);
     }
 
     public void nextState() {
-        currentState.next(this);
+        state.next(this);
     }
 
     public void doAggiungiMentore(Mentore mentore) {

@@ -15,7 +15,7 @@ public class StatoInValutazione implements StatoHackathon {
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-
+        throw new RuntimeException("L'Hackathon è in valutazione, impossibile iscriversi");
     }
 
     @Override

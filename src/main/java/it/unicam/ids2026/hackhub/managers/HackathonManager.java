@@ -6,12 +6,10 @@ import it.unicam.ids2026.hackhub.data.Intervallo;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.Team;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class HackathonManager {
@@ -26,7 +24,7 @@ public class HackathonManager {
     }
 
     public Hackathon creaHackathon(Organizzatore organizzatore, DatiHackathon dati, Giudice giudice, Intervallo iscrizioni, Intervallo durata) {
-        Hackathon newHackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
+        Hackathon newHackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata, new HashSet<>());
         hackathons.add(newHackathon);
         return newHackathon;
     }
@@ -35,5 +33,9 @@ public class HackathonManager {
         for (Mentore m : mentori) {
             h.aggiungiMentore(m);
         }
+    }
+
+    public void iscrizioneHackathon(Hackathon hackathon, Team team) {
+        hackathon.getIscritti().add(team);
     }
 }
