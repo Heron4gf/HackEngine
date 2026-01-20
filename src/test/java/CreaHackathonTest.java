@@ -19,10 +19,7 @@ class CreaHackathonTest {
 
     @BeforeAll
     static void setup() {
-        new HackHub.Builder()
-                .withHackathonManager(new HackathonManager(new ArrayList()))
-                .withMentorManager(new MentorManager(new ArrayList<>()))
-                .build();
+
     }
 
     @Test

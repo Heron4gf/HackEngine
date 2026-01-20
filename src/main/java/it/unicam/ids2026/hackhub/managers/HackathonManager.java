@@ -8,32 +8,31 @@ import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 public class HackathonManager {
 
-    private final Collection<Hackathon> hackathons;
+    private final List<Hackathon> hackathons;
 
     public Hackathon getHackathon(UUID id) {
-        return hackathons.stream().filter(h -> h.getId().equals(id)).findFirst().orElse(null);
+        return hackathons.stream()
+                .filter(h -> h.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public Hackathon creaHackathon(Organizzatore organizzatore, DatiHackathon datiHackathon, Giudice giudice, Intervallo periodoIscrizioni, Intervallo durataHackathon) throws Exception {
-        Hackathon newHackathon = new Hackathon(organizzatore, datiHackathon, new LinkedList<>(), giudice, periodoIscrizioni, durataHackathon);
-        for (Hackathon h: hackathons) {
-            if (newHackathon.equals(h)) {
-                throw new Exception("Hackathon already exists");
-            }
-        }
+    public Hackathon creaHackathon(Organizzatore organizzatore, DatiHackathon dati, Giudice giudice, Intervallo iscrizioni, Intervallo durata) {
+        Hackathon newHackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
         hackathons.add(newHackathon);
         return newHackathon;
     }
 
     public void aggiungiMentori(Hackathon h, Collection<Mentore> mentori) {
-        for (Mentore m: mentori) {
+        for (Mentore m : mentori) {
             h.aggiungiMentore(m);
         }
     }

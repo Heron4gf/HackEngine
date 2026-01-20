@@ -4,54 +4,41 @@ import it.unicam.ids2026.hackhub.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.data.Intervallo;
 import it.unicam.ids2026.hackhub.managers.HackathonManager;
 import it.unicam.ids2026.hackhub.managers.MentorManager;
+import it.unicam.ids2026.hackhub.managers.TeamManager;
+import it.unicam.ids2026.hackhub.managers.UserManager;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
+import it.unicam.ids2026.hackhub.roles.Team;
+import it.unicam.ids2026.hackhub.roles.Utente;
 import lombok.NonNull;
 
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 public class HackHub {
 
     private static HackHub instance;
+
     private final HackathonManager hackathonManager;
     private final MentorManager mentorManager;
+    private final TeamManager teamManager;
+    private final UserManager userManager;
 
-    private HackHub(HackathonManager hackathonManager, MentorManager mentorManager) {
-        this.hackathonManager = hackathonManager;
-        this.mentorManager = mentorManager;
+    private HackHub() {
+        this.hackathonManager = new HackathonManager(new LinkedList<>());
+        this.mentorManager = new MentorManager(new HashSet<>());
+        this.teamManager = new TeamManager(new HashSet<>());
+        this.userManager = new UserManager(new HashSet<>());
     }
 
     public static synchronized HackHub getInstance() {
         if (instance == null) {
-            throw new IllegalStateException();
+            instance = new HackHub();
         }
         return instance;
     }
 
-    public static class Builder {
-        private HackathonManager hackathonManager;
-        private MentorManager mentorManager;
-
-        public Builder withHackathonManager(@NonNull HackathonManager hackathonManager) {
-            this.hackathonManager = hackathonManager;
-            return this;
-        }
-
-        public Builder withMentorManager(@NonNull MentorManager mentorManager) {
-            this.mentorManager = mentorManager;
-            return this;
-        }
-
-        public void build() {
-            if (HackHub.instance == null) {
-                HackHub.instance = new HackHub(this.hackathonManager, this.mentorManager);
-            }
-        }
-    }
-
-    public Collection<Mentore> getMentoriDisponibili(@NonNull Hackathon hackathon) {
+    public Collection<Mentore> getMentoriDisponibili(Hackathon hackathon) {
         return mentorManager.getMentoriDisponibili(hackathon);
     }
 
@@ -59,11 +46,27 @@ public class HackHub {
         return hackathonManager.getHackathon(id);
     }
 
-    public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Collection<Mentore> mentori) {
+    public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull List<Mentore> mentori) {
         hackathonManager.aggiungiMentori(hackathon, mentori);
     }
 
-    public Hackathon creaHackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice, @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) throws Exception {
+    public Hackathon creaHackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice, @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) {
         return hackathonManager.creaHackathon(organizzatore, datiHackathon, giudice, periodoIscrizioni, durataHackathon);
+    }
+
+    public Team getTeam(@NonNull String nome) {
+        return teamManager.getTeam(nome);
+    }
+
+    public Team getTeam(@NonNull Utente utente) {
+        return teamManager.getTeam(utente);
+    }
+
+    public void addTeam(@NonNull Team team) {
+        teamManager.addTeam(team);
+    }
+
+    public void removeTeam(@NonNull Team team) {
+        teamManager.removeTeam(team);
     }
 }

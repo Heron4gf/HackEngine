@@ -7,6 +7,7 @@ import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserInterface {
     Collection<Mentore> richiestaMentoriDisponibili(Hackathon hackathon);
@@ -16,5 +17,5 @@ public interface UserInterface {
                               Intervallo periodoIscrizioni, Intervallo durataHackathon) throws Exception;
 
     //Review return type
-    Collection<Mentore> selezionaMentori(Hackathon h, Collection<Mentore> mentori);
+    Collection<Mentore> selezionaMentori(Hackathon h, List<Mentore> mentori);
 }

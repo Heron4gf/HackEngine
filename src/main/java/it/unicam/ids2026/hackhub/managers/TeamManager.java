@@ -2,20 +2,19 @@ package it.unicam.ids2026.hackhub.managers;
 
 import it.unicam.ids2026.hackhub.roles.Team;
 import it.unicam.ids2026.hackhub.roles.Utente;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
+@RequiredArgsConstructor
 public class TeamManager {
-    private Set<Team> teams;
-
-    public TeamManager() {
-    }
+    private final Set<Team> teams;
 
 
     public Team getTeam(String teamName) {
         Team toReturn = null;
         for (Team team : teams) {
-            if (team.getName().equals(teamName)) {
+            if (team.getNome().equals(teamName)) {
                 toReturn = team;
             }
         }
@@ -25,7 +24,7 @@ public class TeamManager {
     public Team getTeam(Utente user) {
         Team toReturn = null;
         for (Team team : teams) {
-            if (team.getUsers().contains(user)) {
+            if (team.getMembri().contains(user)) {
                 toReturn = team;
             }
         }
@@ -38,7 +37,6 @@ public class TeamManager {
 
     public void removeTeam(Team team) {
         teams.remove(team);
-
     }
 
 }

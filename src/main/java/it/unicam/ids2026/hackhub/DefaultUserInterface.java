@@ -7,6 +7,8 @@ import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
 
 import java.util.Collection;
+import java.util.List;
+
 public class DefaultUserInterface implements UserInterface {
     private HackHub hackHub;
     public DefaultUserInterface(HackHub hackHub) {
@@ -25,7 +27,7 @@ public class DefaultUserInterface implements UserInterface {
     }
 
     @Override
-    public Collection<Mentore> selezionaMentori(Hackathon h, Collection<Mentore> mentori) {
+    public Collection<Mentore> selezionaMentori(Hackathon h, List<Mentore> mentori) {
         hackHub.aggiungiMentori(h, mentori);
         return mentori;
     }

@@ -4,26 +4,17 @@ import it.unicam.ids2026.hackhub.HackHub;
 import it.unicam.ids2026.hackhub.Hackathon;
 import it.unicam.ids2026.hackhub.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.data.Intervallo;
-import it.unicam.ids2026.hackhub.managers.HackathonManager;
-import it.unicam.ids2026.hackhub.managers.MentorManager;
 import it.unicam.ids2026.hackhub.roles.Giudice;
 import it.unicam.ids2026.hackhub.roles.Mentore;
 import it.unicam.ids2026.hackhub.roles.Organizzatore;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-
-        // Singleton + Builder means Single instance + SRP
-        new HackHub.Builder()
-                .withHackathonManager(new HackathonManager(new LinkedList<>()))
-                .withMentorManager(new MentorManager(new LinkedList<>()))
-                .build();
 
         Scanner scanner = new Scanner(System.in);
         HackHub hackHub = HackHub.getInstance();
