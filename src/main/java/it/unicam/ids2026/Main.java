@@ -53,7 +53,7 @@ public class Main {
 
             hackHub.aggiungiMentori(hackathon, List.of(mentore));
 
-            System.out.println("Mentore aggiunto con successo all'hackathon " + hackathon.getDatiHackathon().getNome());
+            System.out.println("Mentore aggiunto con successo all'hackathon " + hackathon.getDatiHackathon().nome());
 
         } catch (Exception e) {
             System.err.println("Errore: " + e.getMessage());
