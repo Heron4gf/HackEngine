@@ -7,7 +7,9 @@ import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +27,7 @@ class CreaHackathonTest {
 
         Organizzatore organizzatore = new Organizzatore("Mario", "Rossi", UUID.randomUUID());
         Giudice giudice = new Giudice("Luigi", "Verdi", UUID.randomUUID());
-        DatiHackathon dati = new DatiHackathon("HackTest", "Online", 4, "Regolamento");
+        DatiHackathon dati = new DatiHackathon("HackTest", "Online", BigDecimal.TEN, Currency.getInstance("EUR"), 3, "Regolamento");
 
         Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
         Intervallo durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));

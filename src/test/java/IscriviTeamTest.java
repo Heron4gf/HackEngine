@@ -11,7 +11,9 @@ import it.unicam.ids2026.hackhub.roles.team.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +35,7 @@ class IscriviTeamTest {
         // Dati comuni per i test
         organizzatore = new Organizzatore("Mario", "Rossi", UUID.randomUUID());
         giudice = new Giudice("Luigi", "Verdi", UUID.randomUUID());
-        dati = new DatiHackathon("HackTest Flow", "Online", 4, "regole finte");
+        dati = new DatiHackathon("HackTest Flow", "Online", BigDecimal.TWO, Currency.getInstance("EUR"), 3, "regole finte");
         iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
         durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));
     }
