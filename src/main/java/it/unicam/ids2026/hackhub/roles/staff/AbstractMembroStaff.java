@@ -1,24 +1,22 @@
 package it.unicam.ids2026.hackhub.roles.staff;
 
 import it.unicam.ids2026.hackhub.hackathon.Hackathon;
-import lombok.EqualsAndHashCode;
+import it.unicam.ids2026.hackhub.roles.team.AbstractUser;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class AbstractMembroStaff implements MembroStaff {
+public abstract class AbstractMembroStaff extends AbstractUser implements MembroStaff {
 
-    @EqualsAndHashCode.Include
-    private final UUID id;
-
-    private final String nome;
     private final String cognome;
 
     @Setter
     private Hackathon associatedHackathon;
+
+    public AbstractMembroStaff(UUID id, String nome, String cognome) {
+        super(id, nome);
+        this.cognome = cognome;
+    }
 }
