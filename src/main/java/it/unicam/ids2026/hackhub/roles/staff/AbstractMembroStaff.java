@@ -5,6 +5,7 @@ import it.unicam.ids2026.hackhub.roles.team.AbstractUser;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -13,7 +14,7 @@ public abstract class AbstractMembroStaff extends AbstractUser implements Membro
     private final String cognome;
 
     @Setter
-    private Hackathon associatedHackathon;
+    private Set<Hackathon> associatedHackathons;
 
     public AbstractMembroStaff(UUID id, String nome, String cognome) {
         super(id, nome);
