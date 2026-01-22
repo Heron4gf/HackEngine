@@ -12,11 +12,4 @@ public class Invito {
         this.destinatario = destinatario;
     }
 
-    public void accetta() {
-        mittente.aggiungiUtenti(destinatario);
-    }
-
-    public void rifiuta() {
-        destinatario.rifiutaInvito(this);
-    }
 }

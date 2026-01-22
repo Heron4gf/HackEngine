@@ -3,31 +3,27 @@ package it.unicam.ids2026.hackhub.roles.team;
 import it.unicam.ids2026.hackhub.HackHub;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class Utente extends AbstractUser {
     private Team teamCorrente;
     private Collection<Invito> casella_inviti;
 
+    public Utente(String nome) {
+        this(UUID.randomUUID(), nome);
+    }
+
     public Utente(UUID id, String nome) {
+        this(id, nome, null, new LinkedList<>());
+    }
+
+    public Utente(UUID id, String nome, Team teamCorrente, Collection<Invito> casella_inviti) {
         super(id, nome);
+        this.teamCorrente = teamCorrente;
+        this.casella_inviti = casella_inviti;
     }
 
-    public Team creaTeam(String nome, int maxMembri) {
-        Team team = new Team(nome, maxMembri);
-        team.aggiungiUtenti(this);
-        HackHub.getInstance().addTeam(team);
-        return team;
-    }
-
-    public void riceviInvito(Invito invito) {
-        if (!haTeam()) casella_inviti.add(invito);
-        throw new IllegalArgumentException("l'utente "+this.getNome()+" ha già un team");
-    }
-
-    public void rifiutaInvito(Invito invito) {
-        casella_inviti.remove(invito);
-    }
 
     public void setTeam(Team team) {
         this.teamCorrente = team;

@@ -1,12 +1,14 @@
 package it.unicam.ids2026.hackhub.roles.team;
 import it.unicam.ids2026.hackhub.HackHub;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 
-@Getter
+@Getter @Setter @AllArgsConstructor
 public class Team {
     private int maxMembri;
     private String nome;
@@ -19,23 +21,7 @@ public class Team {
     }
 
 
-    public void aggiungiUtenti(@NotNull Utente utente) {
-        if (numeroMembri <= maxMembri) {
-            membri.add(utente);
-            numeroMembri++;
-        }
-        else {
-            throw new IllegalArgumentException("Numero massimo superato");
-        }
-    }
 
-    public void esciDalTeam(Utente utente) {
-        membri.remove(utente);
-        numeroMembri--;
-        if (numeroMembri == 0) {
-            HackHub.getInstance().getAllTeams().remove(this);
-        }
-    }
 
 
 
