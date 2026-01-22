@@ -23,6 +23,7 @@ public abstract class AbstractMembroStaff extends AbstractUser implements Membro
         this(id, nome, cognome, new HashSet<>());
     }
 
+    //Costruttore che fornisce un implementazione di default del set senza richiedere injection
     public AbstractMembroStaff(UUID id, String nome, String cognome, Set<Hackathon> associatedHackathons) {
         super(id, nome);
         this.cognome = cognome;
