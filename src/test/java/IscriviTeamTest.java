@@ -60,10 +60,11 @@ class IscriviTeamTest {
 
         // 4. Tentativo di Sottomissione (Stato: ISCRIZIONE -> Vietato)
         Sottomissione sottomissione = new Sottomissione();
-        assertThrows(IllegalStateException.class, () -> hackathon.aggiungiSottomissione(sottomissione));
+        assertThrows(IllegalStateException.class, () -> hackHub.getHackathonManager().aggiungiSottomissione(hackathon,
+                sottomissione));
 
         // 5. Cambio di Stato (ISCRIZIONE -> IN_CORSO)
-        hackathon.nextState();
+        hackHub.getHackathonManager().avanzaStato(hackathon);
         assertTrue(hackathon.getState() instanceof StatoInCorso, "Lo stato deve essere passato a IN_CORSO");
 
         // 6. Tentativo di Iscrizione Tardiva (Stato: IN_CORSO -> Vietato)
@@ -73,7 +74,8 @@ class IscriviTeamTest {
                 "Non deve essere possibile iscriversi ad hackathon iniziati");
 
         // 7. Tentativo di Sottomissione (Stato: IN_CORSO -> Permesso)
-        assertDoesNotThrow(() -> hackathon.aggiungiSottomissione(sottomissione));
+        assertDoesNotThrow(() -> hackHub.getHackathonManager().aggiungiSottomissione(hackathon,
+                sottomissione));
         assertTrue(hackathon.getSottomissioni().contains(sottomissione), "La sottomissione dovrebbe essere registrata");
     }
 }
