@@ -1,8 +1,8 @@
 package it.unicam.ids2026.hackhub.roles.team;
 
+import lombok.Data;
 
-import it.unicam.ids2026.hackhub.roles.User;
-
+@Data
 public class Invito {
     private final Team mittente;
     private final Utente destinatario;

@@ -1,14 +1,19 @@
 package it.unicam.ids2026.hackhub.roles.team;
 
-import it.unicam.ids2026.hackhub.HackHub;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.UUID;
 
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
 public class Utente extends AbstractUser {
-    private Team teamCorrente;
-    private Collection<Invito> casella_inviti;
+    private Team team;
+    private final Collection<Invito> casellaInviti;
 
     public Utente(String nome) {
         this(UUID.randomUUID(), nome);
@@ -18,18 +23,13 @@ public class Utente extends AbstractUser {
         this(id, nome, null, new LinkedList<>());
     }
 
-    public Utente(UUID id, String nome, Team teamCorrente, Collection<Invito> casella_inviti) {
+    public Utente(UUID id, String nome, Team team, Collection<Invito> casellaInviti) {
         super(id, nome);
-        this.teamCorrente = teamCorrente;
-        this.casella_inviti = casella_inviti;
-    }
-
-
-    public void setTeam(Team team) {
-        this.teamCorrente = team;
+        this.team = team;
+        this.casellaInviti = casellaInviti;
     }
 
     public boolean haTeam() {
-        return this.teamCorrente != null;
+        return this.team != null;
     }
 }

@@ -1,5 +1,4 @@
 package it.unicam.ids2026.hackhub.roles.team;
-import it.unicam.ids2026.hackhub.HackHub;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 
-@Getter @Setter @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class Team {
     private int maxMembri;
     private String nome;
@@ -19,10 +20,5 @@ public class Team {
         this.nome = nome;
         this.maxMembri = maxMembri;
     }
-
-
-
-
-
 
 }
