@@ -33,8 +33,8 @@ class IscriviTeamTest {
         hackHub = HackHub.getInstance();
 
         // Dati comuni per i test
-        organizzatore = new Organizzatore(UUID.randomUUID(), "Mario", "Rossi");
-        giudice = new Giudice(UUID.randomUUID(), "Luigi", "Verdi");
+        organizzatore = new Organizzatore( "Mario", "Rossi");
+        giudice = new Giudice("Luigi", "Verdi");
         dati = new DatiHackathon("HackTest Flow", "Online", BigDecimal.TWO, Currency.getInstance("EUR"), 3, "regole finte");
         iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
         durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));
@@ -43,7 +43,8 @@ class IscriviTeamTest {
     @Test
     void testFlussoIscrizioneEStati() throws Exception {
         // 1. Creazione Hackathon tramite HackHub
-        Hackathon hackathon = hackHub.creaHackathon(organizzatore, dati, giudice, iscrizioni, durata);
+        Hackathon hackathon = hackHub.getHackathonManager().creaHackathon(organizzatore, dati, giudice, iscrizioni,
+                durata);
 
         // Verifica stato iniziale
         assertNotNull(hackathon);

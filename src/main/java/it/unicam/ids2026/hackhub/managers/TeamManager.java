@@ -53,7 +53,7 @@ public class TeamManager {
         Team team = utente.getTeam();
         utente.setTeam(null);
         team.getMembri().remove(utente);
-        if(team.getMembri().size() == 0) {
+        if(team.getMembri().isEmpty()) {
             removeTeam(team);
         }
     }
