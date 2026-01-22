@@ -3,8 +3,8 @@ import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
-import it.unicam.ids2026.hackhub.hackathon.StatoInCorso;
-import it.unicam.ids2026.hackhub.hackathon.StatoIscrizione;
+import it.unicam.ids2026.hackhub.hackathon.status.StatoInCorso;
+import it.unicam.ids2026.hackhub.hackathon.status.StatoIscrizione;
 import it.unicam.ids2026.hackhub.roles.staff.Giudice;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 import it.unicam.ids2026.hackhub.roles.team.Team;
@@ -12,9 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,8 +35,8 @@ class IscriviTeamTest {
         organizzatore = new Organizzatore( "Mario", "Rossi");
         giudice = new Giudice("Luigi", "Verdi");
         dati = new DatiHackathon("HackTest Flow", "Online", BigDecimal.TWO, Currency.getInstance("EUR"), 3, "regole finte");
-        iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
-        durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));
+        iscrizioni = new Intervallo(LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+        durata = new Intervallo(LocalDateTime.now().plusDays(6), LocalDateTime.now().plusDays(8));
     }
 
     @Test

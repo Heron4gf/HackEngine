@@ -9,11 +9,10 @@ import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -40,8 +39,8 @@ public class Main {
                     regolamento);
             Organizzatore org = new Organizzatore( "Admin", "User");
             Giudice giudice = new Giudice("Giudice", "Uno");
-            Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(10));
-            Intervallo durata = new Intervallo(LocalDate.now().plusDays(11), LocalDate.now().plusDays(13));
+            Intervallo iscrizioni = new Intervallo(LocalDateTime.now(), LocalDateTime.now().plusDays(10));
+            Intervallo durata = new Intervallo(LocalDateTime.now().plusDays(11), LocalDateTime.now().plusDays(13));
 
             Hackathon hackathon = hackHub.getHackathonManager().creaHackathon(org, dati, giudice, iscrizioni, durata);
             System.out.println("Hackathon creato con ID: " + hackathon.getId());
