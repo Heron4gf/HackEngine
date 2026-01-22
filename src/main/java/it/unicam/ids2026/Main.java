@@ -40,7 +40,7 @@ public class Main {
             Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(10));
             Intervallo durata = new Intervallo(LocalDate.now().plusDays(11), LocalDate.now().plusDays(13));
 
-            Hackathon hackathon = hackHub.creaHackathon(org, dati, giudice, iscrizioni, durata);
+            Hackathon hackathon = hackHub.getHackathonManager().creaHackathon(org, dati, giudice, iscrizioni, durata);
             System.out.println("Hackathon creato con ID: " + hackathon.getId());
 
             System.out.println("\n--- Aggiunta Mentore ---");
@@ -51,7 +51,7 @@ public class Main {
 
             Mentore mentore = new Mentore(UUID.randomUUID(), nomeMentore, cognomeMentore);
 
-            hackHub.aggiungiMentori(hackathon, List.of(mentore));
+            hackHub.getHackathonManager().aggiungiMentori(hackathon, List.of(mentore));
 
             System.out.println("Mentore aggiunto con successo all'hackathon " + hackathon.getDatiHackathon().nome());
 
