@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -11,14 +12,12 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 public class Team {
-    private int maxMembri;
     private String nome;
-    private int numeroMembri = 0;
-    private Set<Utente> membri;
+    private int maxMembri;
+    private final Set<Utente> membri;
 
     public Team(@NotNull String nome, int maxMembri) {
-        this.nome = nome;
-        this.maxMembri = maxMembri;
+        this(nome, maxMembri, new HashSet<>());
     }
 
 }
