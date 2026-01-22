@@ -3,8 +3,8 @@ package it.unicam.ids2026.hackhub.roles.staff;
 import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.roles.team.AbstractUser;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,11 +13,24 @@ public abstract class AbstractMembroStaff extends AbstractUser implements Membro
 
     private final String cognome;
 
-    @Setter
-    private Set<Hackathon> associatedHackathons;
+    private final Set<Hackathon> associatedHackathons;
+
+    public AbstractMembroStaff(String nome, String cognome) {
+        this(UUID.randomUUID(), nome, cognome);
+    }
 
     public AbstractMembroStaff(UUID id, String nome, String cognome) {
+        this(id, nome, cognome, new HashSet<>());
+    }
+
+    public AbstractMembroStaff(UUID id, String nome, String cognome, Set<Hackathon> associatedHackathons) {
         super(id, nome);
         this.cognome = cognome;
+        this.associatedHackathons = associatedHackathons;
+    }
+
+    @Override
+    public void addAssociatedHackathon(Hackathon hackathon) {
+        this.associatedHackathons.add(hackathon);
     }
 }

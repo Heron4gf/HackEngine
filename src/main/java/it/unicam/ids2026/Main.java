@@ -35,8 +35,8 @@ public class Main {
             String regolamento = scanner.nextLine();
 
             DatiHackathon dati = new DatiHackathon(nome, luogo, maxTeam, regolamento);
-            Organizzatore org = new Organizzatore("Admin", "User", UUID.randomUUID());
-            Giudice giudice = new Giudice("Giudice", "Uno", UUID.randomUUID());
+            Organizzatore org = new Organizzatore(UUID.randomUUID(), "Admin", "User");
+            Giudice giudice = new Giudice("Giudice", "Uno");
             Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(10));
             Intervallo durata = new Intervallo(LocalDate.now().plusDays(11), LocalDate.now().plusDays(13));
 
@@ -49,7 +49,7 @@ public class Main {
             System.out.print("Cognome Mentore: ");
             String cognomeMentore = scanner.nextLine();
 
-            Mentore mentore = new Mentore(nomeMentore, cognomeMentore, UUID.randomUUID());
+            Mentore mentore = new Mentore(UUID.randomUUID(), nomeMentore, cognomeMentore);
 
             hackHub.aggiungiMentori(hackathon, List.of(mentore));
 

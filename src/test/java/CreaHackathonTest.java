@@ -25,8 +25,8 @@ class CreaHackathonTest {
     void testCreaHackathonSuccesso() throws Exception {
         HackHub hackHub = HackHub.getInstance();
 
-        Organizzatore organizzatore = new Organizzatore("Mario", "Rossi", UUID.randomUUID());
-        Giudice giudice = new Giudice("Luigi", "Verdi", UUID.randomUUID());
+        Organizzatore organizzatore = new Organizzatore(UUID.randomUUID(), "Mario", "Rossi");
+        Giudice giudice = new Giudice(UUID.randomUUID(), "Luigi", "Verdi");
         DatiHackathon dati = new DatiHackathon("HackTest", "Online", BigDecimal.TEN, Currency.getInstance("EUR"), 3, "Regolamento");
 
         Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
@@ -36,7 +36,7 @@ class CreaHackathonTest {
 
         assertNotNull(hackathon);
         assertNotNull(hackathon.getId());
-        assertEquals("HackTest", hackathon.getDatiHackathon().getNome());
+        assertEquals("HackTest", hackathon.getDatiHackathon().nome());
         assertEquals(iscrizioni, hackathon.getPeriodoIscrizioni());
     }
 

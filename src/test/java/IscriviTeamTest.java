@@ -33,8 +33,8 @@ class IscriviTeamTest {
         hackHub = HackHub.getInstance();
 
         // Dati comuni per i test
-        organizzatore = new Organizzatore("Mario", "Rossi", UUID.randomUUID());
-        giudice = new Giudice("Luigi", "Verdi", UUID.randomUUID());
+        organizzatore = new Organizzatore(UUID.randomUUID(), "Mario", "Rossi");
+        giudice = new Giudice(UUID.randomUUID(), "Luigi", "Verdi");
         dati = new DatiHackathon("HackTest Flow", "Online", BigDecimal.TWO, Currency.getInstance("EUR"), 3, "regole finte");
         iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
         durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));
