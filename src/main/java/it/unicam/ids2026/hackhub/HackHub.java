@@ -149,4 +149,20 @@ public class HackHub {
     public Set<Team> getAllTeams() {
         return teamManager.getTeams();
     }
+
+    public HackathonManager getHackathonManager() {
+        return hackathonManager;
+    }
+
+    public MentorManager getMentorManager() {
+        return mentorManager;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
 }
