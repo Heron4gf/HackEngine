@@ -15,54 +15,39 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hackathon {
 
     @EqualsAndHashCode.Include
-    private final UUID id = UUID.randomUUID();
+    private final UUID id;
 
-    @NonNull
     private final Organizzatore organizzatore;
-
-    @NonNull
     private final DatiHackathon datiHackathon;
-
-    @NonNull
     private final Giudice giudice;
-
-    @NonNull
     private final Intervallo periodoIscrizioni;
-
-    @NonNull
     private final Intervallo durataHackathon;
 
-    private final Set<Mentore> mentori = new HashSet<>();
-
-    private final Set<Sottomissione> sottomissioni = new LinkedHashSet<>();
-
+    private final Set<Mentore> mentori;
+    private final Set<Sottomissione> sottomissioni;
     private final Set<Team> iscritti;
 
-    @Setter(AccessLevel.PACKAGE)
-    private StatoHackathon state = new StatoIscrizione();
+    public StatoHackathon state;
 
-    public void aggiungiMentore(Mentore mentore) {
-        state.aggiungiMentore(this, mentore);
-    }
-
-    public void aggiungiSottomissione(Sottomissione sottomissione) {
-        state.aggiungiSottomissione(this, sottomissione);
-    }
-
-    public void nextState() {
-        state.next(this);
-    }
-
-    public void doAggiungiMentore(Mentore mentore) {
-        this.mentori.add(mentore);
-    }
-
-    public void doAggiungiSottomissione(Sottomissione sottomissione) {
-        this.sottomissioni.add(sottomissione);
+    public Hackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice,
+                     @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) {
+        this(
+                UUID.randomUUID(),
+                organizzatore,
+                datiHackathon,
+                giudice,
+                periodoIscrizioni,
+                durataHackathon,
+                new HashSet<>(),
+                new LinkedHashSet<>(),
+                new HashSet<>(),
+                new StatoIscrizione()
+        );
     }
 }
