@@ -28,7 +28,7 @@ public class HackHub {
     private final UserManager userManager;
 
     private HackHub() {
-        this.hackathonManager = new HackathonManager(new LinkedList<>());
+        this.hackathonManager = new HackathonManager(new HashSet<>());
         this.mentorManager = new MentorManager(new HashSet<>());
         this.inviteManager = new InviteManager();
         this.teamManager = new TeamManager(new HashSet<>());

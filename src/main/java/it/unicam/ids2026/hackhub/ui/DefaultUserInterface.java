@@ -19,18 +19,18 @@ public class DefaultUserInterface implements UserInterface {
 
     @Override
     public Collection<Mentore> richiestaMentoriDisponibili(Hackathon hackathon) {
-        return hackHub.getMentoriDisponibili(hackathon);
+        return hackHub.getMentorManager().getMentoriDisponibili(hackathon);
     }
 
     @Override
     public Hackathon createHackathon(Organizzatore organizzatore, DatiHackathon datiHackathon, Giudice giudice,
                                      Intervallo periodoIscrizioni, Intervallo durataHackathon) throws Exception {
-        return hackHub.creaHackathon(organizzatore, datiHackathon, giudice, periodoIscrizioni, durataHackathon);
+        return hackHub.getHackathonManager().creaHackathon(organizzatore, datiHackathon, giudice, periodoIscrizioni, durataHackathon);
     }
 
     @Override
     public Collection<Mentore> selezionaMentori(Hackathon h, List<Mentore> mentori) {
-        hackHub.aggiungiMentori(h, mentori);
+        hackHub.getHackathonManager().aggiungiMentori(h, mentori);
         return mentori;
     }
 

@@ -1,27 +1,29 @@
-package it.unicam.ids2026.hackhub.hackathon;
+package it.unicam.ids2026.hackhub.hackathon.status;
 
+import it.unicam.ids2026.hackhub.HackHub;
+import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
 import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.team.Team;
 
-public class StatoInCorso implements StatoHackathon {
+public class StatoIscrizione implements StatoHackathon {
     @Override
     public void next(Hackathon hackathon) {
-        hackathon.setState(new StatoInValutazione());
+        hackathon.setState(new StatoInCorso());
     }
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        throw new RuntimeException("L'Hackathon è in corso, impossibile iscriversi");
+        HackHub.getInstance().getHackathonManager().iscriviTeam(hackathon, team);
     }
 
     @Override
     public void aggiungiMentore(Hackathon hackathon, Mentore mentore) {
-        hackathon.doAggiungiMentore(mentore);
+        hackathon.getMentori().add(mentore);
     }
 
     @Override
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        hackathon.doAggiungiSottomissione(sottomissione);
+        throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di iscrizione");
     }
 }

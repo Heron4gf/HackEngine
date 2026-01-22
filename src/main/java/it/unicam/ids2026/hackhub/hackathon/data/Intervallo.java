@@ -2,9 +2,9 @@ package it.unicam.ids2026.hackhub.hackathon.data;
 
 import lombok.NonNull;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public record Intervallo(@NonNull LocalDate dataInizio, @NonNull LocalDate dataFine) {
+public record Intervallo(@NonNull LocalDateTime dataInizio, @NonNull LocalDateTime dataFine) {
 
     public Intervallo {
         if (dataFine.isBefore(dataInizio)) {
@@ -12,7 +12,7 @@ public record Intervallo(@NonNull LocalDate dataInizio, @NonNull LocalDate dataF
         }
     }
 
-    public boolean contiene(LocalDate data) {
+    public boolean contiene(LocalDateTime data) {
         return data != null && !data.isBefore(dataInizio) && !data.isAfter(dataFine);
     }
 }

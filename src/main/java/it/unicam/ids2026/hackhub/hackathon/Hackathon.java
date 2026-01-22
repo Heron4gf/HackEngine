@@ -3,6 +3,8 @@ package it.unicam.ids2026.hackhub.hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.status.StatoHackathon;
+import it.unicam.ids2026.hackhub.hackathon.status.StatoIscrizione;
 import it.unicam.ids2026.hackhub.roles.staff.Giudice;
 import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
