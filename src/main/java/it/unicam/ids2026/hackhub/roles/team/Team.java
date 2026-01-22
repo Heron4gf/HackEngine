@@ -1,5 +1,6 @@
 package it.unicam.ids2026.hackhub.roles.team;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import java.util.Set;
 public class Team {
     private String nome;
     private int maxMembri;
+    @EqualsAndHashCode.Exclude
     private final Set<Utente> membri;
 
     public Team(@NotNull String nome, int maxMembri) {

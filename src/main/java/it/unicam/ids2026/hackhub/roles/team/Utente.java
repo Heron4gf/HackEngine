@@ -10,9 +10,11 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class Utente extends AbstractUser {
+    @EqualsAndHashCode.Exclude
     private Team team;
+    @EqualsAndHashCode.Exclude
     private final Collection<Invito> casellaInviti;
 
     public Utente(String nome) {

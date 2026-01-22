@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -42,7 +43,8 @@ public class TeamManager {
         if(maxMembri < 0 || maxMembri > 20) {
             throw new IllegalArgumentException("Non puoi creare un team con più di 20 o meno di zero membri");
         }
-        Team team = new Team(nome, maxMembri, Set.of(utente));
+        Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
+        utente.setTeam(team);
         addTeam(team);
     }
 
