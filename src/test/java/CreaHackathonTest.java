@@ -25,14 +25,15 @@ class CreaHackathonTest {
     void testCreaHackathonSuccesso() throws Exception {
         HackHub hackHub = HackHub.getInstance();
 
-        Organizzatore organizzatore = new Organizzatore(UUID.randomUUID(), "Mario", "Rossi");
-        Giudice giudice = new Giudice(UUID.randomUUID(), "Luigi", "Verdi");
+        Organizzatore organizzatore = new Organizzatore("Mario", "Rossi");
+        Giudice giudice = new Giudice("Luigi", "Verdi");
         DatiHackathon dati = new DatiHackathon("HackTest", "Online", BigDecimal.TEN, Currency.getInstance("EUR"), 3, "Regolamento");
 
         Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(5));
         Intervallo durata = new Intervallo(LocalDate.now().plusDays(6), LocalDate.now().plusDays(8));
 
-        Hackathon hackathon = hackHub.creaHackathon(organizzatore, dati, giudice, iscrizioni, durata);
+        Hackathon hackathon = hackHub.getHackathonManager().creaHackathon(organizzatore, dati, giudice, iscrizioni,
+                durata);
 
         assertNotNull(hackathon);
         assertNotNull(hackathon.getId());

@@ -8,7 +8,9 @@ import it.unicam.ids2026.hackhub.roles.staff.Giudice;
 import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
@@ -34,8 +36,9 @@ public class Main {
             System.out.print("Regolamento: ");
             String regolamento = scanner.nextLine();
 
-            DatiHackathon dati = new DatiHackathon(nome, luogo, maxTeam, regolamento);
-            Organizzatore org = new Organizzatore(UUID.randomUUID(), "Admin", "User");
+            DatiHackathon dati = new DatiHackathon(nome, luogo, BigDecimal.TEN, Currency.getInstance("EUR"),maxTeam,
+                    regolamento);
+            Organizzatore org = new Organizzatore( "Admin", "User");
             Giudice giudice = new Giudice("Giudice", "Uno");
             Intervallo iscrizioni = new Intervallo(LocalDate.now(), LocalDate.now().plusDays(10));
             Intervallo durata = new Intervallo(LocalDate.now().plusDays(11), LocalDate.now().plusDays(13));
@@ -49,7 +52,7 @@ public class Main {
             System.out.print("Cognome Mentore: ");
             String cognomeMentore = scanner.nextLine();
 
-            Mentore mentore = new Mentore(UUID.randomUUID(), nomeMentore, cognomeMentore);
+            Mentore mentore = new Mentore(nomeMentore, cognomeMentore);
 
             hackHub.getHackathonManager().aggiungiMentori(hackathon, List.of(mentore));
 
