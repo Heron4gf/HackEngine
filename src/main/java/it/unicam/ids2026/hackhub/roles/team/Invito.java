@@ -1,7 +1,6 @@
 package it.unicam.ids2026.hackhub.roles.team;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 public class Invito {

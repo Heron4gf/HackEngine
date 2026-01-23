@@ -7,12 +7,25 @@ import lombok.NonNull;
 
 public class InviteManager {
 
+    /**
+     * Invia una richiesta di partecipazione da un team a un utente specifico.
+     * L'invito viene aggiunto alla casella degli inviti del destinatario.
+     *
+     * @param mittente     Il team che invia la richiesta.
+     * @param destinatario L'utente che riceve l'invito.
+     */
     public void invitaUtente(@NonNull Team mittente, @NonNull Utente destinatario) {
         verifyTeamAndUtente(mittente, destinatario);
         destinatario.getCasellaInviti()
                 .add(new Invito(mittente, destinatario));
     }
 
+    /**
+     * Finalizza l'accettazione di un invito, aggiungendo l'utente ai membri del team.
+     * Aggiorna il riferimento del team nell'oggetto utente e rimuove l'invito pendente.
+     *
+     * @param invito L'invito da processare e accettare.
+     */
     public void accettaInvito(@NonNull Invito invito) {
         Team mittente = invito.getMittente();
         Utente destinatario = invito.getDestinatario();
@@ -23,9 +36,16 @@ public class InviteManager {
         removeInvito(invito);
     }
 
+    /**
+     * Declina un invito esistente rimuovendolo dalla lista degli inviti dell'utente.
+     * Nessuna modifica viene apportata alla composizione del team.
+     *
+     * @param invito L'invito da rifiutare ed eliminare.
+     */
     public void rifiutaInvito(@NonNull Invito invito) {
         removeInvito(invito);
     }
+
 
     private void removeInvito(Invito invito) {
         invito.getDestinatario().getCasellaInviti().remove(invito);

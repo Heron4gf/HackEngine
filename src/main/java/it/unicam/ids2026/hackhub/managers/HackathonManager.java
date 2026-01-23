@@ -22,6 +22,12 @@ public class HackathonManager {
     @Getter
     private final Set<Hackathon> hackathons;
 
+    /**
+     * Recupera un hackathon esistente tramite il suo identificativo univoco.
+     *
+     * @param id L'UUID dell'hackathon da cercare.
+     * @return L'oggetto Hackathon se trovato, altrimenti null.
+     */
     public Hackathon getHackathon(@NonNull UUID id) {
         return hackathons.stream()
                 .filter(h -> h.getId().equals(id))
@@ -29,6 +35,16 @@ public class HackathonManager {
                 .orElse(null);
     }
 
+    /**
+     * Factory method che crea un nuovo hackathon e lo registra nel sistema.
+     *
+     * @param organizzatore L'organizzatore responsabile dell'evento.
+     * @param dati          I metadati descrittivi dell'hackathon.
+     * @param giudice       Il giudice principale assegnato.
+     * @param iscrizioni    L'intervallo temporale per le iscrizioni.
+     * @param durata        L'intervallo temporale di svolgimento dell'evento.
+     * @return L'istanza del nuovo Hackathon creato.
+     */
     public Hackathon creaHackathon(@NonNull Organizzatore organizzatore,
                                    @NonNull DatiHackathon dati,
                                    @NonNull Giudice giudice,
@@ -39,10 +55,25 @@ public class HackathonManager {
         return newHackathon;
     }
 
+    /**
+     * Esegue la transizione di stato dell'hackathon alla fase successiva.
+     * La logica specifica è delegata allo stato corrente dell'hackathon (State Pattern).
+     *
+     * @param hackathon L'hackathon da far avanzare.
+     */
     public void avanzaStato(@NonNull Hackathon hackathon) {
         hackathon.getState().next(hackathon);
     }
 
+    /**
+     * Aggiunge un singolo mentore all'hackathon.
+     * Verifica che il mentore non sia già presente e delega allo stato corrente
+     * la validazione dell'operazione.
+     *
+     * @param hackathon L'hackathon di destinazione.
+     * @param mentore   Il mentore da aggiungere.
+     * @throws IllegalArgumentException Se il mentore è già assegnato all'hackathon.
+     */
     public void aggiungiMentore(@NonNull Hackathon hackathon, @NonNull Mentore mentore) {
         if (hackathon.getMentori().contains(mentore)) {
             throw new IllegalArgumentException("Mentore già presente");
@@ -51,10 +82,23 @@ public class HackathonManager {
         hackathon.getMentori().add(mentore);
     }
 
+    /**
+     * Aggiunge una collezione di mentori all'hackathon invocando l'aggiunta singola per ognuno.
+     *
+     * @param hackathon L'hackathon di destinazione.
+     * @param mentori   La collezione di mentori da aggiungere.
+     */
     public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Collection<Mentore> mentori) {
         mentori.forEach(m -> this.aggiungiMentore(hackathon, m));
     }
 
+    /**
+     * Iscrive un team all'hackathon, verificando che non sia già presente.
+     *
+     * @param hackathon L'hackathon a cui iscriversi.
+     * @param team      Il team da iscrivere.
+     * @throws IllegalArgumentException Se il team è già iscritto.
+     */
     public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Team team) {
         if (hackathon.getIscritti().contains(team)) {
             throw new IllegalArgumentException("Team già iscritto");
@@ -62,6 +106,13 @@ public class HackathonManager {
         hackathon.getIscritti().add(team);
     }
 
+    /**
+     * Registra una nuova sottomissione di progetto per l'hackathon.
+     * La validità dell'invio (es. tempistiche) è controllata dallo stato corrente dell'hackathon.
+     *
+     * @param hackathon     L'hackathon di riferimento.
+     * @param sottomissione L'oggetto sottomissione da registrare.
+     */
     public void aggiungiSottomissione(@NonNull Hackathon hackathon, @NonNull Sottomissione sottomissione) {
         hackathon.getState().aggiungiSottomissione(hackathon, sottomissione);
         hackathon.getSottomissioni().add(sottomissione);

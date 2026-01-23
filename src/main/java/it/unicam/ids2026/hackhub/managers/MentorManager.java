@@ -14,10 +14,22 @@ import java.util.stream.Collectors;
 public class MentorManager {
     private Collection<Mentore> listaMentori;
 
+    /**
+     * Registra un nuovo mentore nel sistema aggiungendolo alla lista gestita.
+     *
+     * @param mentore Il mentore da registrare.
+     */
     public void registraMentore(@NonNull Mentore mentore) {
         this.listaMentori.add(mentore);
     }
 
+    /**
+     * Restituisce una collezione di mentori che non sono ancora associati allo specifico Hackathon.
+     * Utile per individuare i mentori liberi per l'assegnazione.
+     *
+     * @param h L'Hackathon di riferimento per verificare la disponibilità.
+     * @return Una collezione di mentori non presenti nell'Hackathon specificato.
+     */
     public Collection<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
         return listaMentori.stream()
                 .filter(m -> !h.getMentori().contains(m))
