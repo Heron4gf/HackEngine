@@ -103,6 +103,9 @@ public class HackathonManager {
         if (hackathon.getIscritti().contains(team)) {
             throw new IllegalArgumentException("Team già iscritto");
         }
+        if (hackathon.getDatiHackathon().dimensioneMaxTeam() < team.getMembri().size()) {
+            throw new IllegalArgumentException("Team troppo grande");
+        }
         hackathon.getIscritti().add(team);
     }
 
