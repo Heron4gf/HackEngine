@@ -21,6 +21,10 @@ public class StaffManager {
         return userManager.getUsersByRole(Giudice.class);
     }
 
+    public Set<Mentore> getMentori() {
+        return userManager.getUsersByRole(Mentore.class);
+    }
+
     /**
      * Restituisce una collezione di mentori che non sono ancora associati allo specifico Hackathon.
      * Utile per individuare i mentori liberi per l'assegnazione.
@@ -29,7 +33,7 @@ public class StaffManager {
      * @return Una collezione di mentori non presenti nell'Hackathon specificato.
      */
     public Collection<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
-        return userManager.getUsersByRole(Mentore.class).stream()
+        return getMentori().stream()
                 .filter(m -> !h.getMentori().contains(m))
                 .collect(Collectors.toList());
     }
