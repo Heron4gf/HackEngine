@@ -15,7 +15,7 @@ public class StatoInValutazione implements StatoHackathon {
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        throw new RuntimeException("L'Hackathon è in valutazione, impossibile iscriversi");
+        throw new IllegalStateException("L'Hackathon è in valutazione, impossibile iscriversi");
     }
 
     @Override
@@ -25,6 +25,6 @@ public class StatoInValutazione implements StatoHackathon {
 
     @Override
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di iscrizione");
+        throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di valutazione");
     }
 }

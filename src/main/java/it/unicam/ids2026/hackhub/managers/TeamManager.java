@@ -63,8 +63,8 @@ public class TeamManager {
         if(getTeam(nome) != null) {
             throw new IllegalArgumentException("Esiste già un team con lo stesso nome");
         }
-        if(maxMembri < 0 || maxMembri > 20) {
-            throw new IllegalArgumentException("Non puoi creare un team con più di 20 o meno di zero membri");
+        if(maxMembri <= 0 || maxMembri > 20) {
+            throw new IllegalArgumentException("Non puoi creare un team con più di 20 o nessun membro");
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
         utente.setTeam(team);

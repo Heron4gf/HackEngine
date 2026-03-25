@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Team {
     private String nome;
     private int maxMembri;

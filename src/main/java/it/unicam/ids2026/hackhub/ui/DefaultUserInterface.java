@@ -4,6 +4,7 @@ import it.unicam.ids2026.hackhub.HackHub;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.Hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
+import it.unicam.ids2026.hackhub.managers.StaffManager;
 import it.unicam.ids2026.hackhub.roles.staff.Giudice;
 import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
@@ -23,11 +24,11 @@ public class DefaultUserInterface implements UserInterface {
 
     /**
      * {@inheritDoc}
-     * Delega la richiesta al {@link it.unicam.ids2026.hackhub.managers.MentorManager}.
+     * Delega la richiesta al {@link StaffManager}.
      */
     @Override
     public Collection<Mentore> richiestaMentoriDisponibili(@NonNull Hackathon hackathon) {
-        return hackHub.getMentorManager().getMentoriDisponibili(hackathon);
+        return hackHub.getStaffManager().getMentoriDisponibili(hackathon);
     }
 
     /**

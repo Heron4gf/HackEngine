@@ -13,7 +13,7 @@ public class StatoConcluso implements StatoHackathon {
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        throw new RuntimeException("L'Hackathon è concluso, impossibile iscriversi");
+        throw new IllegalStateException("L'Hackathon è concluso, impossibile iscriversi");
     }
 
     @Override

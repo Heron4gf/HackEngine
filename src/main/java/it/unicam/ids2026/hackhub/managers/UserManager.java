@@ -17,7 +17,7 @@ public class UserManager {
      * Restituisce un set vuoto se il nome passato è null.
      *
      * @param nome Il nome da cercare tra gli utenti.
-     * @return Un set contenente gli utenti trovati o un set vuoto.
+     * @return Un set contenente gli utenti trovati, se il nome è nullo lancia NullPointerException
      */
     public Set<User> getUsers(@NonNull String nome) {
         return users.stream()
@@ -29,7 +29,7 @@ public class UserManager {
      * Cerca un utente specifico tramite il suo identificativo univoco (UUID).
      *
      * @param id L'UUID dell'utente da recuperare.
-     * @return L'oggetto User corrispondente, oppure null se non trovato o se l'ID è null.
+     * @return L'oggetto User corrispondente, oppure null se non trovato, se l'id è nullo lancia NullPointerException
      */
     public User getUserById(@NonNull UUID id) {
         return users.stream()
@@ -37,4 +37,12 @@ public class UserManager {
                 .findFirst()
                 .orElse(null);
     }
+
+    public <T extends User> Set<T> getUsersByRole(Class<T> roleClass) {
+        return users.stream()
+                .filter(roleClass::isInstance)
+                .map(roleClass::cast)
+                .collect(Collectors.toSet());
+    }
+
 }

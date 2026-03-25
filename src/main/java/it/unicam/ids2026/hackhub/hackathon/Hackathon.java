@@ -35,7 +35,7 @@ public class Hackathon {
     private final Set<Sottomissione> sottomissioni;
     private final Set<Team> iscritti;
 
-    public StatoHackathon state;
+    private StatoHackathon state;
 
     public Hackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice,
                      @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) {

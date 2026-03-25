@@ -12,17 +12,17 @@ public class HackHub {
     private static HackHub instance;
 
     private final HackathonManager hackathonManager;
-    private final MentorManager mentorManager;
+    private final StaffManager staffManager;
     private final InviteManager inviteManager;
     private final TeamManager teamManager;
     private final UserManager userManager;
 
     private HackHub() {
         this.hackathonManager = new HackathonManager(new HashSet<>());
-        this.mentorManager = new MentorManager(new HashSet<>());
+        this.userManager = new UserManager(new HashSet<>());
+        this.staffManager = new StaffManager(this.userManager);
         this.inviteManager = new InviteManager();
         this.teamManager = new TeamManager(new HashSet<>());
-        this.userManager = new UserManager(new HashSet<>());
     }
 
     /**
@@ -51,10 +51,10 @@ public class HackHub {
     /**
      * Restituisce il gestore responsabile della registrazione e assegnazione dei mentori.
      *
-     * @return L'istanza di MentorManager.
+     * @return L'istanza di StaffManager.
      */
-    public MentorManager getMentorManager() {
-        return mentorManager;
+    public StaffManager getStaffManager() {
+        return staffManager;
     }
 
     /**
