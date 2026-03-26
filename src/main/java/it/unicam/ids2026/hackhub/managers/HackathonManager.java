@@ -50,7 +50,23 @@ public class HackathonManager {
                                    @NonNull Giudice giudice,
                                    @NonNull Intervallo iscrizioni,
                                    @NonNull Intervallo durata) {
+
+        // logica validazione date
+        if(
+                iscrizioni.dataFine().isAfter(durata.dataInizio())
+                || iscrizioni.dataInizio().isAfter(durata.dataInizio())
+                || iscrizioni.dataFine().isBefore(iscrizioni.dataInizio())
+                || durata.dataFine().isBefore(durata.dataInizio())
+        ) {
+            throw new IllegalArgumentException("Range date inizio o durata invalide");
+        }
+
         Hackathon newHackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
+
+        // controllo duplicazione
+        if(hackathons.contains(newHackathon)) {
+            throw new IllegalArgumentException("Hackathon già presente nel sistema");
+        }
         hackathons.add(newHackathon);
         return newHackathon;
     }
