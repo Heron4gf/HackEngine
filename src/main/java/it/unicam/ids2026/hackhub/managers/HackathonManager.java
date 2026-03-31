@@ -8,6 +8,7 @@ import it.unicam.ids2026.hackhub.roles.staff.Giudice;
 import it.unicam.ids2026.hackhub.roles.staff.Mentore;
 import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
 import it.unicam.ids2026.hackhub.roles.team.Team;
+import it.unicam.ids2026.hackhub.roles.team.Utente;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -106,6 +107,15 @@ public class HackathonManager {
      */
     public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Collection<Mentore> mentori) {
         mentori.forEach(m -> this.aggiungiMentore(hackathon, m));
+    }
+
+    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Utente utente) {
+        if(!utente.haTeam()) {
+            throw new IllegalArgumentException("Per iscriversi ad un Hackathon l'Utente deve avere un team");
+        }
+        //hackathon.getState().iscriviTeam(hackathon, utente.getTeam());
+        // TODO: capire quale dei due metodi ha più senso qua
+        iscriviTeam(hackathon, utente.getTeam());
     }
 
     /**

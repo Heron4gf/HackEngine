@@ -14,21 +14,18 @@ import java.util.UUID;
 public class Utente extends AbstractUser {
     @EqualsAndHashCode.Exclude
     private Team team;
-    @EqualsAndHashCode.Exclude
-    private final Collection<Invito> casellaInviti;
 
     public Utente(String nome) {
         this(UUID.randomUUID(), nome);
     }
 
     public Utente(UUID id, String nome) {
-        this(id, nome, null, new LinkedList<>());
+        this(id, nome, null);
     }
 
-    public Utente(UUID id, String nome, Team team, Collection<Invito> casellaInviti) {
+    public Utente(UUID id, String nome, Team team) {
         super(id, nome);
         this.team = team;
-        this.casellaInviti = casellaInviti;
     }
 
     public boolean haTeam() {

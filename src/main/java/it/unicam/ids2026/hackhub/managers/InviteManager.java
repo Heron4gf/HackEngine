@@ -5,7 +5,13 @@ import it.unicam.ids2026.hackhub.roles.team.Team;
 import it.unicam.ids2026.hackhub.roles.team.Utente;
 import lombok.NonNull;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
 public class InviteManager {
+
+    private Collection<Invito> inviti = new HashSet<>();
 
     /**
      * Invia una richiesta di partecipazione da un team a un utente specifico.
@@ -18,6 +24,12 @@ public class InviteManager {
         verifyTeamAndUtente(mittente, destinatario);
         destinatario.getCasellaInviti()
                 .add(new Invito(mittente, destinatario));
+    }
+
+    public Collection<Invito> getCasellaInviti(@NonNull Utente utente) {
+        return inviti.stream()
+                .filter(invito -> invito.getDestinatario().equals(utente))
+                .collect(Collectors.toSet());
     }
 
     /**
