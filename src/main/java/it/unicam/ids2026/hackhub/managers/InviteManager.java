@@ -17,13 +17,12 @@ public class InviteManager {
      * Invia una richiesta di partecipazione da un team a un utente specifico.
      * L'invito viene aggiunto alla casella degli inviti del destinatario.
      *
-     * @param mittente     Il team che invia la richiesta.
+     * @param mittente    Il team che invia la richiesta.
      * @param destinatario L'utente che riceve l'invito.
      */
     public void invitaUtente(@NonNull Team mittente, @NonNull Utente destinatario) {
         verifyTeamAndUtente(mittente, destinatario);
-        destinatario.getCasellaInviti()
-                .add(new Invito(mittente, destinatario));
+        inviti.add(new Invito(mittente, destinatario));
     }
 
     public Collection<Invito> getCasellaInviti(@NonNull Utente utente) {
@@ -60,7 +59,7 @@ public class InviteManager {
 
 
     private void removeInvito(Invito invito) {
-        invito.getDestinatario().getCasellaInviti().remove(invito);
+        inviti.remove(invito);
     }
 
     private void verifyTeamAndUtente(Team team, Utente utente) {

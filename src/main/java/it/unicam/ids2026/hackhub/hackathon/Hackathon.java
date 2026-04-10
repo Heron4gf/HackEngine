@@ -3,6 +3,7 @@ package it.unicam.ids2026.hackhub.hackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
 import it.unicam.ids2026.hackhub.hackathon.data.Sottomissione;
+import it.unicam.ids2026.hackhub.hackathon.status.RappresentazioneStato;
 import it.unicam.ids2026.hackhub.hackathon.status.StatoHackathon;
 import it.unicam.ids2026.hackhub.hackathon.status.StatoIscrizione;
 import it.unicam.ids2026.hackhub.roles.staff.Giudice;
@@ -51,5 +52,25 @@ public class Hackathon {
                 new HashSet<>(),
                 new StatoIscrizione()
         );
+    }
+
+    public void next() {
+        this.state.next(this);
+    }
+
+    public void iscriviTeam(Team team) {
+        this.state.iscriviTeam(this, team);
+    }
+
+    public void aggiungiMentore(Mentore mentore) {
+        this.state.aggiungiMentore(this, mentore);
+    }
+
+    public void aggiungiSottomissione(Sottomissione sottomissione) {
+        this.state.aggiungiSottomissione(this, sottomissione);
+    }
+
+    public RappresentazioneStato getRappresentazioneStato() {
+        return this.state.getRappresentazioneStato();
     }
 }

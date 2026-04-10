@@ -10,4 +10,5 @@ public interface StatoHackathon {
     void iscriviTeam(Hackathon hackathon, Team team);
     void aggiungiMentore(Hackathon hackathon, Mentore mentore);
     void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione);
+    RappresentazioneStato getRappresentazioneStato();
 }

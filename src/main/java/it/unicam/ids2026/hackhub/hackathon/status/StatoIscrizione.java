@@ -26,4 +26,9 @@ public class StatoIscrizione implements StatoHackathon {
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di iscrizione");
     }
+
+    @Override
+    public RappresentazioneStato getRappresentazioneStato() {
+        return RappresentazioneStato.ISCRIZIONE;
+    }
 }

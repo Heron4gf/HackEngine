@@ -25,4 +25,9 @@ public class StatoInCorso implements StatoHackathon {
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         hackathon.getSottomissioni().add(sottomissione);
     }
+
+    @Override
+    public RappresentazioneStato getRappresentazioneStato() {
+        return RappresentazioneStato.IN_CORSO;
+    }
 }

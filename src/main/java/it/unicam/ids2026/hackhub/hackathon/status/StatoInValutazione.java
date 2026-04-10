@@ -27,4 +27,9 @@ public class StatoInValutazione implements StatoHackathon {
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di valutazione");
     }
+
+    @Override
+    public RappresentazioneStato getRappresentazioneStato() {
+        return RappresentazioneStato.VALUTAZIONE;
+    }
 }

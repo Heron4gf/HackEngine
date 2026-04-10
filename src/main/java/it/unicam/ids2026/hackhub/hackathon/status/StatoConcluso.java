@@ -25,4 +25,9 @@ public class StatoConcluso implements StatoHackathon {
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         throw new IllegalStateException("Impossibile sottomettere progetti l'Hackathon è concluso");
     }
+
+    @Override
+    public RappresentazioneStato getRappresentazioneStato() {
+        return RappresentazioneStato.CONCLUSO;
+    }
 }
