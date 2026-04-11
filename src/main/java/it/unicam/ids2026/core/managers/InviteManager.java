@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.api.events.DeletionListener;
 import it.unicam.ids2026.core.roles.team.Invito;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-public class InviteManager {
+public class InviteManager implements DeletionListener {
 
     private Collection<Invito> inviti = new HashSet<>();
 
@@ -58,6 +59,7 @@ public class InviteManager {
     }
 
 
+
     private void removeInvito(Invito invito) {
         inviti.remove(invito);
     }
@@ -80,4 +82,13 @@ public class InviteManager {
         }
     }
 
+    /*
+    FIXME: Stabilire se Invite Manager deve essere il listener o se delegare l'event handling
+        ad una classe apposita.
+     */
+    @Override
+    public void notifyDeletion(Team team) {
+        inviti.stream().filter(i -> i.getMittente().equals(team))
+                .forEach(this::removeInvito);
+    }
 }
