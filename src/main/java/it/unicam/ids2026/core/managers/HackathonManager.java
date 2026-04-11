@@ -79,7 +79,7 @@ public class HackathonManager {
      * @param hackathon L'hackathon da far avanzare.
      */
     public void avanzaStato(@NonNull Hackathon hackathon) {
-        hackathon.getState().next(hackathon);
+        hackathon.nextState();
     }
 
     /**
@@ -95,8 +95,7 @@ public class HackathonManager {
         if (hackathon.getMentori().contains(mentore)) {
             throw new IllegalArgumentException("Mentore già presente");
         }
-        hackathon.getState().aggiungiMentore(hackathon, mentore);
-        hackathon.getMentori().add(mentore);
+        hackathon.aggiungiMentore(mentore);
     }
 
     /**
