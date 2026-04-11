@@ -1,15 +1,16 @@
 package it.unicam.ids2026.core.roles.team;
-
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class Invito {
-    private final Team mittente;
-    private final Utente destinatario;
 
-    public Invito(Team mittente, Utente destinatario) {
-        this.mittente = mittente;
-        this.destinatario = destinatario;
-    }
+    @NonNull
+    private final Team mittente;
+
+    @NonNull
+    private final Utente destinatario;
 
 }
