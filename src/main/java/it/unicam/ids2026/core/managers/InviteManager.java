@@ -68,9 +68,10 @@ public class InviteManager {
     }
 
     private void verifyTeamSize(Team team) {
-        if(team.getMembri().size() >= team.getMaxMembri()) {
+        // TODO: usare Jakarta validator
+        /*if(team.getMembri().size() >= team.getMaxMembri()) {
             throw new IllegalArgumentException("Team al completo");
-        }
+        }*/
     }
 
     private void verifyUserTeam(Utente utente) {
