@@ -36,6 +36,7 @@ public class Hackathon {
     private final Set<Sottomissione> sottomissioni;
     private final Set<Team> iscritti;
 
+    @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state;
 
     public Hackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice,
@@ -54,7 +55,7 @@ public class Hackathon {
         );
     }
 
-    public void next() {
+    public void nextState() {
         this.state.next(this);
     }
 

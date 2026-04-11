@@ -3,7 +3,6 @@ package it.unicam.ids2026.core.managers;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
-import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
@@ -79,7 +78,7 @@ public class HackathonManager {
      * @param hackathon L'hackathon da far avanzare.
      */
     public void avanzaStato(@NonNull Hackathon hackathon) {
-        hackathon.getState().next(hackathon);
+        hackathon.nextState();
     }
 
     /**
@@ -95,7 +94,7 @@ public class HackathonManager {
         if (hackathon.getMentori().contains(mentore)) {
             throw new IllegalArgumentException("Mentore già presente");
         }
-        hackathon.getState().aggiungiMentore(hackathon, mentore);
+        hackathon.aggiungiMentore(mentore);
         hackathon.getMentori().add(mentore);
     }
 
@@ -133,17 +132,5 @@ public class HackathonManager {
             throw new IllegalArgumentException("Team troppo grande");
         }
         hackathon.getIscritti().add(team);
-    }
-
-    /**
-     * Registra una nuova sottomissione di progetto per l'hackathon.
-     * La validità dell'invio (es. tempistiche) è controllata dallo stato corrente dell'hackathon.
-     *
-     * @param hackathon     L'hackathon di riferimento.
-     * @param sottomissione L'oggetto sottomissione da registrare.
-     */
-    public void aggiungiSottomissione(@NonNull Hackathon hackathon, @NonNull Sottomissione sottomissione) {
-        hackathon.getState().aggiungiSottomissione(hackathon, sottomissione);
-        hackathon.getSottomissioni().add(sottomissione);
     }
 }
