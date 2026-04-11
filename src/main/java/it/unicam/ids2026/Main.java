@@ -1,12 +1,12 @@
 package it.unicam.ids2026;
 
-import it.unicam.ids2026.hackhub.HackHub;
-import it.unicam.ids2026.hackhub.hackathon.Hackathon;
-import it.unicam.ids2026.hackhub.hackathon.data.DatiHackathon;
-import it.unicam.ids2026.hackhub.hackathon.data.Intervallo;
-import it.unicam.ids2026.hackhub.roles.staff.Giudice;
-import it.unicam.ids2026.hackhub.roles.staff.Mentore;
-import it.unicam.ids2026.hackhub.roles.staff.Organizzatore;
+import it.unicam.ids2026.core.HackHub;
+import it.unicam.ids2026.core.hackathon.Hackathon;
+import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
+import it.unicam.ids2026.core.hackathon.data.Intervallo;
+import it.unicam.ids2026.core.roles.staff.Giudice;
+import it.unicam.ids2026.core.roles.staff.Mentore;
+import it.unicam.ids2026.core.roles.staff.Organizzatore;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,6 +1,5 @@
-import it.unicam.ids2026.hackhub.managers.TeamManager;
-import it.unicam.ids2026.hackhub.roles.team.Team;
-import it.unicam.ids2026.hackhub.roles.team.Utente;
+import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.roles.team.Utente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

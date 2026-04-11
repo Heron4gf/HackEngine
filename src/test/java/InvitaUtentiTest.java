@@ -1,7 +1,7 @@
-import it.unicam.ids2026.hackhub.managers.InviteManager;
-import it.unicam.ids2026.hackhub.roles.team.Invito;
-import it.unicam.ids2026.hackhub.roles.team.Team;
-import it.unicam.ids2026.hackhub.roles.team.Utente;
+import it.unicam.ids2026.core.managers.InviteManager;
+import it.unicam.ids2026.core.roles.team.Invito;
+import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.roles.team.Utente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
