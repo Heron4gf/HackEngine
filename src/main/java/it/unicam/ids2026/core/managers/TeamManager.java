@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.Getter;
@@ -86,6 +87,9 @@ public class TeamManager {
         utente.setTeam(null);
         team.getMembri().remove(utente);
         if(team.getMembri().isEmpty()) {
+            // TODO: Inviduare l'information expert dell'Event Publisher
+            EventPublisher eventPublisher;
+            eventPublisher.publishDeletion(team);
             removeTeam(team);
         }
     }
