@@ -14,7 +14,7 @@ public class StatoIscrizione implements StatoHackathon {
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        HackHub.getInstance().getHackathonManager().iscriviTeam(hackathon, team);
+        hackathon.getIscritti().add(team);
     }
 
     @Override

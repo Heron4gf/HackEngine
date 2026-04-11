@@ -1,10 +1,16 @@
 package it.unicam.ids2026.core.hackathon.data;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;
 
-public record Intervallo(@NonNull LocalDateTime dataInizio, @NonNull LocalDateTime dataFine) {
+public record Intervallo(
+        @NonNull @FutureOrPresent(message = "La data di inizio deve essere futura") LocalDateTime dataInizio,
+        @NonNull @Future(message = "La data di fine dev'essere futura") LocalDateTime dataFine
+) {
 
     public Intervallo {
         if (dataFine.isBefore(dataInizio)) {

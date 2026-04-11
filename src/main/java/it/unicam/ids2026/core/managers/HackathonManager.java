@@ -79,7 +79,7 @@ public class HackathonManager {
      * @param hackathon L'hackathon da far avanzare.
      */
     public void avanzaStato(@NonNull Hackathon hackathon) {
-        hackathon.getState().next(hackathon);
+        hackathon.nextState();
     }
 
     /**
@@ -95,8 +95,7 @@ public class HackathonManager {
         if (hackathon.getMentori().contains(mentore)) {
             throw new IllegalArgumentException("Mentore già presente");
         }
-        hackathon.getState().aggiungiMentore(hackathon, mentore);
-        hackathon.getMentori().add(mentore);
+        hackathon.aggiungiMentore(mentore);
     }
 
     /**
@@ -113,37 +112,13 @@ public class HackathonManager {
         if(!utente.haTeam()) {
             throw new IllegalArgumentException("Per iscriversi ad un Hackathon l'Utente deve avere un team");
         }
-        //hackathon.getState().iscriviTeam(hackathon, utente.getTeam());
-        // TODO: capire quale dei due metodi ha più senso qua
-        iscriviTeam(hackathon, utente.getTeam());
-    }
-
-    /**
-     * Iscrive un team all'hackathon, verificando che non sia già presente.
-     *
-     * @param hackathon L'hackathon a cui iscriversi.
-     * @param team      Il team da iscrivere.
-     * @throws IllegalArgumentException Se il team è già iscritto.
-     */
-    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Team team) {
+        Team team = utente.getTeam();
         if (hackathon.getIscritti().contains(team)) {
             throw new IllegalArgumentException("Team già iscritto");
         }
         if (hackathon.getDatiHackathon().dimensioneMaxTeam() < team.getMembri().size()) {
             throw new IllegalArgumentException("Team troppo grande");
         }
-        hackathon.getIscritti().add(team);
-    }
-
-    /**
-     * Registra una nuova sottomissione di progetto per l'hackathon.
-     * La validità dell'invio (es. tempistiche) è controllata dallo stato corrente dell'hackathon.
-     *
-     * @param hackathon     L'hackathon di riferimento.
-     * @param sottomissione L'oggetto sottomissione da registrare.
-     */
-    public void aggiungiSottomissione(@NonNull Hackathon hackathon, @NonNull Sottomissione sottomissione) {
-        hackathon.getState().aggiungiSottomissione(hackathon, sottomissione);
-        hackathon.getSottomissioni().add(sottomissione);
+        hackathon.iscriviTeam(team);
     }
 }
