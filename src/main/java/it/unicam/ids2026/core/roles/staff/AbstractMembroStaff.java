@@ -2,6 +2,8 @@ package it.unicam.ids2026.core.roles.staff;
 
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.team.AbstractUser;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -10,7 +12,8 @@ import java.util.UUID;
 
 @Getter
 public abstract class AbstractMembroStaff extends AbstractUser implements MembroStaff {
-
+    @NotBlank
+    @Size(min = 3, max = 30, message = "Il cognome deve avere tra 3 e 30 caratteri")
     private final String cognome;
 
     private final Set<Hackathon> associatedHackathons;
