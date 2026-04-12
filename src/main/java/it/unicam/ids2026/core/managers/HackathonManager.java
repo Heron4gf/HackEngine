@@ -4,6 +4,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
+import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
@@ -14,8 +15,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class HackathonManager {
@@ -58,6 +62,7 @@ public class HackathonManager {
                 || iscrizioni.dataInizio().isAfter(durata.dataInizio())
                 || iscrizioni.dataFine().isBefore(iscrizioni.dataInizio())
                 || durata.dataFine().isBefore(durata.dataInizio())
+                || !validaDati(dati)
         ) {
             throw new IllegalArgumentException("Range date inizio o durata invalide");
         }
@@ -71,6 +76,11 @@ public class HackathonManager {
         hackathons.add(newHackathon);
         return newHackathon;
     }
+    
+    private boolean validaDati(DatiHackathon datiHackathon) {
+        // TODO: usare Jakarta Validator
+        return true;
+    }
 
     /**
      * Esegue la transizione di stato dell'hackathon alla fase successiva.
@@ -82,6 +92,31 @@ public class HackathonManager {
         hackathon.nextState();
     }
 
+    public Set<Hackathon> getJoinableHackathons() {
+        return getFilteredHackathons(
+                h -> h.getRappresentazioneStato() == RappresentazioneStato.ISCRIZIONE
+        );
+    }
+
+    public Set<Hackathon> getHackathonCreati(Organizzatore organizzatore) {
+        return getFilteredHackathons(
+                h -> h.getOrganizzatore().equals(organizzatore)
+        );
+    }
+
+    private Set<Hackathon> getFilteredHackathons(Predicate<Hackathon> predicate) {
+        return hackathons.stream()
+                .filter(predicate)
+                .collect(Collectors.toSet());
+    }
+
+    public void chiudiSottomissioni(UUID id) {
+        Hackathon hackathon = getHackathon(id);
+        if(hackathon.getRappresentazioneStato() == RappresentazioneStato.IN_CORSO) {
+            avanzaStato(hackathon);
+        }
+    }
+
     /**
      * Aggiunge un singolo mentore all'hackathon.
      * Verifica che il mentore non sia già presente e delega allo stato corrente
@@ -91,7 +126,7 @@ public class HackathonManager {
      * @param mentore   Il mentore da aggiungere.
      * @throws IllegalArgumentException Se il mentore è già assegnato all'hackathon.
      */
-    public void aggiungiMentore(@NonNull Hackathon hackathon, @NonNull Mentore mentore) {
+    private void aggiungiMentore(@NonNull Hackathon hackathon, @NonNull Mentore mentore) {
         if (hackathon.getMentori().contains(mentore)) {
             throw new IllegalArgumentException("Mentore già presente");
         }
