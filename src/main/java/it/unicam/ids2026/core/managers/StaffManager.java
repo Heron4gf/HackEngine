@@ -4,15 +4,12 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@Getter
 public class StaffManager {
 
     private UserManager userManager;
@@ -32,9 +29,9 @@ public class StaffManager {
      * @param h L'Hackathon di riferimento per verificare la disponibilità.
      * @return Una collezione di mentori non presenti nell'Hackathon specificato.
      */
-    public Collection<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
+    public Set<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
         return getMentori().stream()
                 .filter(m -> !h.getMentori().contains(m))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }
