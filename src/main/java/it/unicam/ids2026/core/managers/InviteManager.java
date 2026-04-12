@@ -6,13 +6,11 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.NonNull;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class InviteManager implements DeletionListener {
 
-    private Collection<Invito> inviti = new HashSet<>();
+    private Map<Utente, Set<Invito>> inviti = new HashMap<>();
 
     /**
      * Invia una richiesta di partecipazione da un team a un utente specifico.
@@ -23,13 +21,12 @@ public class InviteManager implements DeletionListener {
      */
     public void invitaUtente(@NonNull Team mittente, @NonNull Utente destinatario) {
         verifyTeamAndUtente(mittente, destinatario);
-        inviti.add(new Invito(mittente, destinatario));
+        inviti.computeIfAbsent(destinatario, k -> new HashSet<>());
+        inviti.get(destinatario).add(new Invito(mittente, destinatario));
     }
 
-    public Collection<Invito> getCasellaInviti(@NonNull Utente utente) {
-        return inviti.stream()
-                .filter(invito -> invito.getDestinatario().equals(utente))
-                .collect(Collectors.toSet());
+    public Set<Invito> getCasellaInviti(@NonNull Utente utente) {
+       return inviti.get(utente);
     }
 
     /**
@@ -45,7 +42,7 @@ public class InviteManager implements DeletionListener {
 
         mittente.getMembri().add(destinatario);
         destinatario.setTeam(mittente);
-        removeInvito(invito);
+        removeInvito(destinatario, invito);
     }
 
     /**
@@ -55,13 +52,15 @@ public class InviteManager implements DeletionListener {
      * @param invito L'invito da rifiutare ed eliminare.
      */
     public void rifiutaInvito(@NonNull Invito invito) {
-        removeInvito(invito);
+        removeInvito(invito.getDestinatario(), invito);
     }
 
 
 
-    private void removeInvito(Invito invito) {
-        inviti.remove(invito);
+    private void removeInvito(Utente destinatario, Invito invito) {
+        if (inviti.containsKey(destinatario)) {
+            inviti.get(destinatario).remove(invito);
+        }
     }
 
     private void verifyTeamAndUtente(Team team, Utente utente) {
