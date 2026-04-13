@@ -87,7 +87,9 @@ public class InviteManager implements DeletionListener {
      */
     @Override
     public void notifyDeletion(Team team) {
-        inviti.stream().filter(i -> i.getMittente().equals(team))
-                .forEach(this::removeInvito);
+        inviti.values().stream()
+                .flatMap(Collection::stream)
+                .filter(invito -> invito.getMittente().equals(team))
+                .forEach(invito -> removeInvito(invito.getDestinatario(), invito));
     }
 }
