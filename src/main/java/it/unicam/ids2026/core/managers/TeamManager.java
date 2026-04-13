@@ -15,6 +15,7 @@ public class TeamManager {
 
     @Getter
     private final Set<Team> teams;
+    private final EventPublisher eventPublisher;
 
     /**
      * Recupera un team esistente tramite il suo nome univoco.
@@ -89,8 +90,6 @@ public class TeamManager {
         utente.setTeam(null);
         team.getMembri().remove(utente);
         if(team.getMembri().isEmpty()) {
-            // TODO: Inviduare l'information expert dell'Event Publisher
-            EventPublisher eventPublisher;
             eventPublisher.publishDeletion(team);
             removeTeam(team);
         }

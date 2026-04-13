@@ -81,10 +81,6 @@ public class InviteManager implements DeletionListener {
         }
     }
 
-    /*
-    FIXME: Stabilire se Invite Manager deve essere il listener o se delegare l'event handling
-        ad una classe apposita.
-     */
     @Override
     public void notifyDeletion(Team team) {
         inviti.values().stream()

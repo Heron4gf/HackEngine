@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.managers.*;
 import lombok.Getter;
 
@@ -23,7 +24,7 @@ public class HackHub {
         this.userManager = new UserManager(new HashSet<>());
         this.staffManager = new StaffManager(this.userManager);
         this.inviteManager = new InviteManager();
-        this.teamManager = new TeamManager(new HashSet<>());
+        this.teamManager = new TeamManager(new HashSet<>(), new EventPublisher());
     }
 
     /**
