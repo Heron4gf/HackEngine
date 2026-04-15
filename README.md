@@ -20,5 +20,5 @@
 - **Iterazione 2**  
   [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione2) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione2/VisualParadigm/progetto_ids_2025_2026_iterazione2.vpp)
 
-- **Iterazione 3**  
-  Work in progress
+- **Iterazione 3**
+- [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione3) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione3/VisualParadigm/progetto_ids_2025_2026_iterazione3.vpp)
