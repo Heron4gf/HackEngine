@@ -6,10 +6,12 @@ import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Service
 @RequiredArgsConstructor
 public class TeamManager {
 

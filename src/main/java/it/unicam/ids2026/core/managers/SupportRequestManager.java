@@ -14,11 +14,13 @@ import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Service
 @AllArgsConstructor
 public class SupportRequestManager {
 

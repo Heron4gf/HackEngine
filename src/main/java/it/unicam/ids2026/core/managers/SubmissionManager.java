@@ -6,10 +6,12 @@ import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.roles.team.Team;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.NoSuchElementException;
 
+@Service
 @RequiredArgsConstructor
 public class SubmissionManager {
 

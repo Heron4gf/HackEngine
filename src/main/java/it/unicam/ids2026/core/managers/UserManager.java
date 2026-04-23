@@ -3,11 +3,13 @@ package it.unicam.ids2026.core.managers;
 import it.unicam.ids2026.core.roles.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
 public class UserManager {
     private final Set<User> users;

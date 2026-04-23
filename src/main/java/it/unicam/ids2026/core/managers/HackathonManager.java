@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Set;
@@ -19,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
 public class HackathonManager {
 

@@ -5,9 +5,11 @@ import it.unicam.ids2026.core.roles.team.Invito;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class InviteManager implements DeletionListener {
 
     private Map<Utente, Set<Invito>> inviti = new HashMap<>();

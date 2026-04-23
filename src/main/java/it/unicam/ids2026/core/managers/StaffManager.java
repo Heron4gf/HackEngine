@@ -5,10 +5,12 @@ import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 @AllArgsConstructor
 public class StaffManager {
 
