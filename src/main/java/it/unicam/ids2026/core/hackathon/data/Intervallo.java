@@ -2,7 +2,6 @@ package it.unicam.ids2026.core.hackathon.data;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;

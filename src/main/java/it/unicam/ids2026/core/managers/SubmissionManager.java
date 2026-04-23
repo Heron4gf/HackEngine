@@ -7,14 +7,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 public class SubmissionManager {
-    @NonNull
-    private final Map<Team, Sottomissione> submissionsMap;
-
 
     /**
      * Metodo che crea una nuova sottomissione e la regsitra nel sistema
@@ -30,8 +25,7 @@ public class SubmissionManager {
             throw new Exception();
         }
         Sottomissione newSubmission = new Sottomissione(nome, descrizione, allegato);
-        submissionsMap.put(team, newSubmission);
-        hackathon.aggiungiSottomissione(newSubmission);
+        hackathon.aggiungiSottomissione(team, newSubmission);
         return newSubmission;
     }
 
@@ -40,13 +34,8 @@ public class SubmissionManager {
      * @param team  il team
      * @return  la sottmissione trovata per quel team
      */
-    public Sottomissione ottieniSottomissione(Team team) {
-        Sottomissione toReturn = submissionsMap.get(team);
-        // Se il team non ha caricato la sottomissione, non esiste alcuna entry per quel team nella map
-        if (toReturn == null) {
-            throw new NoSuchElementException();
-        }
-        return toReturn;
+    public Sottomissione ottieniSottomissione(Hackathon hackathon, Team team) {
+        return hackathon.getIscritti().get(team).getSottomissione();
     }
 
     /**
