@@ -10,6 +10,7 @@ import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import lombok.*;
 
 import java.util.HashSet;
@@ -35,6 +36,7 @@ public class Hackathon {
     private final Set<Mentore> mentori;
     private final Set<Sottomissione> sottomissioni;
     private final Set<Team> iscritti;
+    private final Set<RichiestaSupporto> richiesteSupporto;
 
     @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state;
@@ -50,6 +52,7 @@ public class Hackathon {
                 durataHackathon,
                 new HashSet<>(),
                 new LinkedHashSet<>(),
+                new HashSet<>(),
                 new HashSet<>(),
                 new StatoIscrizione()
         );
