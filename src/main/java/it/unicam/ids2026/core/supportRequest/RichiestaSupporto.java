@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor()
+@RequiredArgsConstructor
 
 public class RichiestaSupporto {
     @NonNull
