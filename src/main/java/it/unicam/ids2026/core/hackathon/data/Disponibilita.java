@@ -13,10 +13,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Disponibilita {
 
-    @NonNull
+    @NonNull // gli Intervalli sono quelli in cui siamo liberi
     private Set<Intervallo> disponibilita;
 
-    // valutare l'utilità di questo
     public Disponibilita(Intervallo[] intervalli) {
         this(new LinkedHashSet<>(Arrays.asList(intervalli))); // mantiene l'ordine di inserimento
     }

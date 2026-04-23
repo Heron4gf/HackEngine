@@ -1,4 +1,4 @@
-package it.unicam.ids2026.core.ui;
+package it.unicam.ids2026.core.endpoints;
 
 import it.unicam.ids2026.core.HackHub;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;

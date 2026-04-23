@@ -5,50 +5,72 @@ import it.unicam.ids2026.api.external.ICalendar;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Disponibilita;
 import it.unicam.ids2026.core.roles.User;
+import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
+import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.supportRequest.response.RispostaCall;
+import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
-@NoArgsConstructor
 public class SupportRequestManager {
 
-    private ICalendar calendarService = new DefaultCalendarWrapper();
+    private ICalendar calendarService;
 
-    public void creaRichiestaSupporto(Hackathon hackathon, Team team, String titolo, String descrizione) {
-
+    public void creaRichiestaSupporto(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull String titolo, @NonNull String descrizione) {
+        if(validaDati(hackathon, team, titolo, descrizione)) {
+            RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
+            hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
+        } else throw new IllegalArgumentException("Dati invalidi");
     }
 
-    public void registraDisponibilita(Utente utente, Disponibilita disponibilita) {
-
+    public void registraDisponibilita(@NonNull Hackathon hackathon, @NonNull Utente utente, @NonNull Disponibilita disponibilita) {
+        if(validaDisponibilita(hackathon, utente, disponibilita)) {
+            hackathon.getIscritti().get(utente.getTeam()).setDisponibilita(disponibilita);
+        } else throw new IllegalArgumentException("Disponibilità invalida");
     }
 
-    /*public Set<RichiestaSuporto> visualizzaRichieste(Hackathon hackathon) {
-
-    }*/
-
-    /*public void rispondiTestualmente(RichiestaSupporto richiestaSupporto, String messaggio) {
-
+    public Set<RichiestaSupporto> visualizzaRichieste(@NonNull Hackathon hackathon) {
+        Set<RichiestaSupporto> ret = new HashSet<>();
+        for(Iscrizione iscrizione : hackathon.getIscritti().values()) {
+            ret.add(iscrizione.getRichiestaSupporto());
+        }
+        return ret;
     }
 
-    public void fissaCall(RichiestaSupporto richiestaSupporto) {
+    public void rispondiTestualmente(@NonNull RichiestaSupporto richiestaSupporto, @NonNull String messaggio) {
+        richiestaSupporto.setRisposta(new RispostaTestuale(messaggio));
+    }
 
-    }*/
+    public void fissaCall(@NonNull RichiestaSupporto richiestaSupporto, @NonNull LocalDateTime dateTime) {
+        richiestaSupporto.setRisposta(new RispostaCall(dateTime));
+    }
 
-    private void fissaImpegno(@NonNull User user, @NonNull LocalDateTime dateTime) {
+    private void fissaImpegno(User user, LocalDateTime dateTime) {
         calendarService.fissaImpegno(user, dateTime);
     }
 
     private boolean validaDati(Hackathon hackathon, Team team, String titolo, String descrizione) {
-        return true;
+        return hackathon.getIscritti().containsKey(team)
+                && !titolo.isEmpty()
+                && !descrizione.isEmpty();
     }
 
-    private boolean validaDisponibilita(Utente utente, Disponibilita disponibilita) {
-        return true;
+    private boolean validaDisponibilita(Hackathon hackathon, Utente utente, Disponibilita disponibilita) {
+        Disponibilita real = calendarService.getDisponibilita(utente, hackathon.getDurataHackathon());
+
+        return disponibilita.getDisponibilita().stream().allMatch(p ->
+                real.getDisponibilita().stream().anyMatch(r ->
+                        !p.dataInizio().isBefore(r.dataInizio()) && !p.dataFine().isAfter(r.dataFine())
+                )
+        );
     }
 
 }

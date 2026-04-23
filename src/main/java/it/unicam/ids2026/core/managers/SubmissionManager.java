@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -58,16 +57,6 @@ public class SubmissionManager {
         }
 
         return sottomissione;
-    }
-
-    /**
-     * Restituisce tutte le sottomissioni dell'hackathon.
-     *
-     * @param h l'hackathon di cui ottenere le sottomissioni
-     * @return la mappa team-sottomissione associata all'hackathon
-     */
-    public Map<Team, Sottomissione> ottieniSottomissioni(@NonNull Hackathon h) {
-        return h.getSottomissioni();
     }
 
     /**
