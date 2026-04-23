@@ -2,16 +2,17 @@ package it.unicam.ids2026.core.supportRequest;
 
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.supportRequest.response.RispostaRichiesta;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor()
+
 public class RichiestaSupporto {
+    @NonNull
     private String titolo;
-    private StatoRichiesta stato;
+    private StatoRichiesta stato = StatoRichiesta.IN_ATTESA;
+    @NonNull
     private String descrizione;
     private Mentore incaricato;
     private RispostaRichiesta risposta;

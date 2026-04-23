@@ -3,7 +3,6 @@ package it.unicam.ids2026.core.managers;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
-import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
@@ -15,7 +14,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -148,7 +146,7 @@ public class HackathonManager {
             throw new IllegalArgumentException("Per iscriversi ad un Hackathon l'Utente deve avere un team");
         }
         Team team = utente.getTeam();
-        if (hackathon.getIscritti().contains(team)) {
+        if (hackathon.getIscritti().containsKey(team)) {
             throw new IllegalArgumentException("Team già iscritto");
         }
         if (hackathon.getDatiHackathon().dimensioneMaxTeam() < team.getMembri().size()) {
