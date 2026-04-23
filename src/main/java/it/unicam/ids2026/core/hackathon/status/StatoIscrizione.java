@@ -3,6 +3,7 @@ package it.unicam.ids2026.core.hackathon.status;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.roles.staff.Mentore;
+import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 
@@ -14,7 +15,10 @@ public class StatoIscrizione implements StatoHackathon {
 
     @Override
     public void iscriviTeam(Hackathon hackathon, Team team) {
-        hackathon.getIscritti().add(team);
+        if(hackathon.getIscritti().containsKey(team)) {
+            throw new IllegalArgumentException("Il team è già iscritto");
+        }
+        hackathon.getIscritti().put(team, new Iscrizione());
     }
 
     @Override

@@ -23,13 +23,16 @@ public class StatoInCorso implements StatoHackathon {
     }
 
     @Override
-    public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        hackathon.getSottomissioni().add(sottomissione);
+    public void aggiungiSottomissione(Hackathon hackathon, Team team, Sottomissione sottomissione) {
+        hackathon.getIscritti().get(team).setSottomissione(sottomissione);
     }
 
     @Override
-    public void aggiungiRichiestaSupporto(Hackathon hackathon, RichiestaSupporto richiestaSupporto) {
-        hackathon.getRichiesteSupporto().add(richiestaSupporto);
+    public void aggiungiRichiestaSupporto(Hackathon hackathon, Team team, RichiestaSupporto richiestaSupporto) {
+        if(hackathon.getIscritti().get(team).getRichiestaSupporto() != null) {
+            throw new IllegalArgumentException("Il team ha già una richiesta di supporto aperta");
+        }
+        hackathon.getIscritti().get(team).setRichiestaSupporto(richiestaSupporto);
     }
 
     @Override

@@ -9,14 +9,12 @@ import it.unicam.ids2026.core.hackathon.status.StatoIscrizione;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
+import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -34,9 +32,9 @@ public class Hackathon {
     private final Intervallo durataHackathon;
 
     private final Set<Mentore> mentori;
-    private final Set<Sottomissione> sottomissioni;
-    private final Set<Team> iscritti;
-    private final Set<RichiestaSupporto> richiesteSupporto;
+
+
+    private final Map<Team, Iscrizione> iscritti;
 
     @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state;
@@ -51,9 +49,7 @@ public class Hackathon {
                 periodoIscrizioni,
                 durataHackathon,
                 new HashSet<>(),
-                new LinkedHashSet<>(),
-                new HashSet<>(),
-                new HashSet<>(),
+                new LinkedHashMap<>(),
                 new StatoIscrizione()
         );
     }
@@ -70,8 +66,12 @@ public class Hackathon {
         this.state.aggiungiMentore(this, mentore);
     }
 
-    public void aggiungiSottomissione(Sottomissione sottomissione) {
-        this.state.aggiungiSottomissione(this, sottomissione);
+    public void aggiungiSottomissione(Team team, Sottomissione sottomissione) {
+        this.state.aggiungiSottomissione(this, team, sottomissione);
+    }
+
+    public void aggiungiRichiestaSupporto(Team team, RichiestaSupporto richiestaSupporto) {
+        this.state.aggiungiRichiestaSupporto(this, team, richiestaSupporto);
     }
 
     public RappresentazioneStato getRappresentazioneStato() {
