@@ -4,6 +4,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 
 public class StatoConcluso implements StatoHackathon {
     @Override
@@ -24,6 +25,11 @@ public class StatoConcluso implements StatoHackathon {
     @Override
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         throw new IllegalStateException("Impossibile sottomettere progetti l'Hackathon è concluso");
+    }
+
+    @Override
+    public void aggiungiRichiestaSupporto(Hackathon hackathon, RichiestaSupporto richiestaSupporto) {
+        throw new IllegalStateException("Impossibile avanzare richieste di supporto ad hackathon concluso");
     }
 
     @Override

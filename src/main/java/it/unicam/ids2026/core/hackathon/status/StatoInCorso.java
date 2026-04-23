@@ -4,6 +4,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 
 public class StatoInCorso implements StatoHackathon {
     @Override
@@ -24,6 +25,11 @@ public class StatoInCorso implements StatoHackathon {
     @Override
     public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         hackathon.getSottomissioni().add(sottomissione);
+    }
+
+    @Override
+    public void aggiungiRichiestaSupporto(Hackathon hackathon, RichiestaSupporto richiestaSupporto) {
+        hackathon.getRichiesteSupporto().add(richiestaSupporto);
     }
 
     @Override
