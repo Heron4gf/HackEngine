@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -31,13 +32,15 @@ public class HackathonManager {
      * Recupera un hackathon esistente tramite il suo identificativo univoco.
      *
      * @param id L'UUID dell'hackathon da cercare.
-     * @return L'oggetto Hackathon se trovato, altrimenti null.
+     * @return L'oggetto Hackathon trovato.
+     * @throws NoSuchElementException se nessun hackathon con l'ID specificato esiste nel sistema.
      */
     public Hackathon getHackathon(@NonNull UUID id) {
         return hackathons.stream()
                 .filter(h -> h.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Nessun hackathon trovato con ID: " + id));
     }
 
     /**
@@ -110,11 +113,21 @@ public class HackathonManager {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Chiude le sottomissioni per l'hackathon specificato, facendone avanzare lo stato.
+     *
+     * @param id L'UUID dell'hackathon di cui chiudere le sottomissioni.
+     * @throws NoSuchElementException se nessun hackathon con l'ID specificato esiste.
+     * @throws IllegalStateException  se l'hackathon non è nello stato IN_CORSO.
+     */
     public void chiudiSottomissioni(UUID id) {
         Hackathon hackathon = getHackathon(id);
-        if(hackathon.getRappresentazioneStato() == RappresentazioneStato.IN_CORSO) {
-            avanzaStato(hackathon);
+        if (hackathon.getRappresentazioneStato() != RappresentazioneStato.IN_CORSO) {
+            throw new IllegalStateException(
+                    "Impossibile chiudere le sottomissioni: l'hackathon non è in corso. Stato attuale: "
+                            + hackathon.getRappresentazioneStato());
         }
+        avanzaStato(hackathon);
     }
 
     /**
