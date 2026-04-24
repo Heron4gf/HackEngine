@@ -51,10 +51,8 @@ src/main/java/it/unicam/ids2026/
 ### Tecnologie
 
 - **Java** con **Spring Boot**
-- **Swing** per l'interfaccia grafica
 - **State Pattern** per gestire le fasi dell'hackathon
 - **Observer Pattern** per il sistema eventi
-- **PostgreSQL** per la persistenza
 
 ---
 
