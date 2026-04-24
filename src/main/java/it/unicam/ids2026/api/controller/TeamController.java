@@ -3,6 +3,8 @@ package it.unicam.ids2026.api.controller;
 import it.unicam.ids2026.api.dto.request.CreateTeamRequest;
 import it.unicam.ids2026.api.dto.response.MessageResponse;
 import it.unicam.ids2026.api.dto.response.TeamResponse;
+import it.unicam.ids2026.core.hackathon.Hackathon;
+import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.TeamManager;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.team.Team;
@@ -22,10 +24,12 @@ public class TeamController {
 
     private final TeamManager teamManager;
     private final UserManager userManager;
+    private final HackathonManager hackathonManager;
 
-    public TeamController(TeamManager teamManager, UserManager userManager) {
+    public TeamController(TeamManager teamManager, UserManager userManager, HackathonManager hackathonManager) {
         this.teamManager = teamManager;
         this.userManager = userManager;
+        this.hackathonManager = hackathonManager;
     }
 
     @PostMapping
@@ -56,7 +60,11 @@ public class TeamController {
             @RequestParam UUID utenteId) {
         Team team = teamManager.getTeam(nome);
         Utente utente = (Utente) userManager.getUserById(utenteId);
-        // Note: This would need the HackathonManager, adding to controller
+        if (!team.equals(utente.getTeam())) {
+            throw new IllegalArgumentException("L'utente indicato non appartiene al team " + nome);
+        }
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        hackathonManager.iscriviTeam(hackathon, utente);
         return ResponseEntity.ok(new MessageResponse("Team iscritto all'hackathon"));
     }
 
