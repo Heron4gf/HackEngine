@@ -3,17 +3,21 @@ package it.unicam.ids2026.core.events;
 import it.unicam.ids2026.api.events.DeletionListener;
 import it.unicam.ids2026.api.events.Listener;
 import it.unicam.ids2026.core.roles.team.Team;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Component
 public class EventPublisher {
-    @NonNull private Collection<Listener> listeners = new LinkedList<>();
+
+    private final Collection<Listener> listeners = new LinkedList<>();
+
+    @Autowired
+    public EventPublisher() {
+    }
 
     /**
      * @param listener

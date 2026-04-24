@@ -3,18 +3,22 @@ package it.unicam.ids2026.core.managers;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class StaffManager {
 
-    private UserManager userManager;
+    private final UserManager userManager;
+
+    @Autowired
+    public StaffManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
 
     public Set<Giudice> getGiudici() {
         return userManager.getUsersByRole(Giudice.class);

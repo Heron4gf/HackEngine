@@ -11,41 +11,44 @@ import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import it.unicam.ids2026.core.supportRequest.response.RispostaCall;
 import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class SupportRequestManager {
 
-    private ICalendar calendarService;
+    private final ICalendar calendarService;
+
+    @Autowired
+    public SupportRequestManager(ICalendar calendarService) {
+        this.calendarService = calendarService;
+    }
 
     public void creaRichiestaSupporto(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull String titolo, @NonNull String descrizione) {
-        if(validaDati(hackathon, team, titolo, descrizione)) {
+        if (validaDati(hackathon, team, titolo, descrizione)) {
             RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
             hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
         } else throw new IllegalArgumentException("Dati invalidi");
     }
 
     public void registraDisponibilita(@NonNull Hackathon hackathon, @NonNull Utente utente, @NonNull Disponibilita disponibilita) {
-        if(validaDisponibilita(hackathon, utente, disponibilita)) {
+        if (validaDisponibilita(hackathon, utente, disponibilita)) {
             hackathon.getIscritti().get(utente.getTeam()).setDisponibilita(disponibilita);
         } else throw new IllegalArgumentException("Disponibilità invalida");
     }
 
     public Set<RichiestaSupporto> visualizzaRichieste(@NonNull Hackathon hackathon) {
-        Set<RichiestaSupporto> ret = new HashSet<>();
-        for(Iscrizione iscrizione : hackathon.getIscritti().values()) {
-            ret.add(iscrizione.getRichiestaSupporto());
-        }
-        return ret;
+    return hackathon.getIscritti().values().stream()
+            .map(Iscrizione::getRichiestaSupporto)
+            .collect(Collectors.toSet());
     }
+
 
     public void rispondiTestualmente(@NonNull RichiestaSupporto richiestaSupporto, @NonNull String messaggio) {
         richiestaSupporto.setRisposta(new RispostaTestuale(messaggio));

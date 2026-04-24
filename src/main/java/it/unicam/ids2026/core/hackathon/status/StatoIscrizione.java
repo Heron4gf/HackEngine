@@ -27,12 +27,12 @@ public class StatoIscrizione implements StatoHackathon {
     }
 
     @Override
-    public void aggiungiSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
+    public void aggiungiSottomissione(Hackathon hackathon, Team team, Sottomissione sottomissione) {
         throw new IllegalStateException("Impossibile sottomettere progetti durante la fase di iscrizione");
     }
 
     @Override
-    public void aggiungiRichiestaSupporto(Hackathon hackathon, RichiestaSupporto richiestaSupporto) {
+    public void aggiungiRichiestaSupporto(Hackathon hackathon, Team team, RichiestaSupporto richiestaSupporto) {
         throw new IllegalStateException("Impossibile avanzare richieste di supporto quando l'hackathon è in fase di " +
                 "iscrizione");
     }

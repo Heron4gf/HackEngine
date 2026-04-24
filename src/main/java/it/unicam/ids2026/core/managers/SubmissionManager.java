@@ -5,15 +5,18 @@ import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.roles.team.Team;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.NoSuchElementException;
 
 @Service
-@RequiredArgsConstructor
 public class SubmissionManager {
+
+    @Autowired
+    public SubmissionManager() {
+    }
 
     /**
      * Metodo che crea una nuova sottomissione e la registra nel sistema.

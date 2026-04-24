@@ -5,31 +5,38 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class TeamManager {
 
     @Getter
-    private final Set<Team> teams;
+    private final Set<Team> teams = new HashSet<>();
     private final EventPublisher eventPublisher;
+
+    @Autowired
+    public TeamManager(EventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
 
     /**
      * Recupera un team esistente tramite il suo nome univoco.
      *
      * @param teamName Il nome del team da cercare.
-     * @return L'oggetto Team se trovato, altrimenti null.
+     * @return L'oggetto Team trovato.
+     * @throws NoSuchElementException se nessun team con il nome specificato esiste.
      */
     public Team getTeam(@NonNull String teamName) {
         return teams.stream()
                 .filter(team -> team.getNome().equals(teamName))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + teamName));
     }
 
     /**
@@ -61,11 +68,14 @@ public class TeamManager {
      * @throws IllegalArgumentException Se l'utente ha già un team, il nome esiste o maxMembri non è valido.
      */
     public void creaTeam(@NonNull Utente utente, @NonNull String nome, int maxMembri) {
-        if(utente.haTeam()) {
+        if (utente.haTeam()) {
             throw new IllegalArgumentException("L'utente ha già un team");
         }
-        if(getTeam(nome) != null) {
+        if (teams.stream().anyMatch(t -> t.getNome().equals(nome))) {
             throw new IllegalArgumentException("Esiste già un team con lo stesso nome");
+        }
+        if (maxMembri < 1 || maxMembri > 20) {
+            throw new IllegalArgumentException("Numero massimo di membri non valido (deve essere tra 1 e 20)");
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
         utente.setTeam(team);
@@ -80,13 +90,13 @@ public class TeamManager {
      * @throws IllegalArgumentException Se l'utente non appartiene a nessun team.
      */
     public void esciDalTeam(@NonNull Utente utente) {
-        if(!utente.haTeam()) {
+        if (!utente.haTeam()) {
             throw new IllegalArgumentException("L'Utente non ha team!");
         }
         Team team = utente.getTeam();
         utente.setTeam(null);
         team.getMembri().remove(utente);
-        if(team.getMembri().isEmpty()) {
+        if (team.getMembri().isEmpty()) {
             eventPublisher.publishDeletion(team);
             removeTeam(team);
         }
