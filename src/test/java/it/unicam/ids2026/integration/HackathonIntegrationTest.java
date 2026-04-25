@@ -8,9 +8,13 @@ import it.unicam.ids2026.api.dto.response.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -21,6 +25,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@AutoConfigureTestRestTemplate
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HackathonIntegrationTest {
 
@@ -32,6 +37,12 @@ class HackathonIntegrationTest {
 
     private String baseUrl() {
         return "http://localhost:" + port + "/api";
+    }
+
+    private HttpEntity<String> jsonRequest(String json) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(json, headers);
     }
 
     @Test
@@ -92,7 +103,7 @@ class HackathonIntegrationTest {
 
         ResponseEntity<HackathonResponse> hackathonResponse = restTemplate.postForEntity(
             baseUrl() + "/hackathons",
-            hackathonRequest,
+            jsonRequest(hackathonRequest),
             HackathonResponse.class
         );
         assertEquals(HttpStatus.CREATED, hackathonResponse.getStatusCode());
@@ -137,7 +148,7 @@ class HackathonIntegrationTest {
 
         ResponseEntity<TeamResponse> teamResponse = restTemplate.postForEntity(
             baseUrl() + "/teams",
-            teamRequest,
+            jsonRequest(teamRequest),
             TeamResponse.class
         );
         assertEquals(HttpStatus.CREATED, teamResponse.getStatusCode());
@@ -229,7 +240,7 @@ class HackathonIntegrationTest {
 
         ResponseEntity<HackathonResponse> hackathonResponse = restTemplate.postForEntity(
             baseUrl() + "/hackathons",
-            hackathonRequest,
+            jsonRequest(hackathonRequest),
             HackathonResponse.class
         );
         UUID hackathonId = hackathonResponse.getBody().id();
@@ -259,7 +270,7 @@ class HackathonIntegrationTest {
 
         ResponseEntity<TeamResponse> teamResponse = restTemplate.postForEntity(
             baseUrl() + "/teams",
-            teamRequest,
+            jsonRequest(teamRequest),
             TeamResponse.class
         );
         String teamName = teamResponse.getBody().nome();
@@ -322,7 +333,7 @@ class HackathonIntegrationTest {
 
         ResponseEntity<MessageResponse> response = restTemplate.postForEntity(
             baseUrl() + "/hackathons",
-            hackathonRequest,
+            jsonRequest(hackathonRequest),
             MessageResponse.class
         );
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
