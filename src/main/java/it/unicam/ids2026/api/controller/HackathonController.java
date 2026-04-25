@@ -20,6 +20,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST per la gestione degli hackathon.
+ */
 @RestController
 @RequestMapping("/api/hackathons")
 public class HackathonController {
@@ -34,6 +37,12 @@ public class HackathonController {
         this.userManager = userManager;
     }
 
+    /**
+     * Crea un nuovo hackathon.
+     *
+     * @param request dati per la creazione dell'hackathon
+     * @return l'hackathon creato con stato 201
+     */
     @PostMapping
     public ResponseEntity<HackathonResponse> createHackathon(@Valid @RequestBody CreateHackathonRequest request) {
         Organizzatore organizzatore = (Organizzatore) userManager.getUserById(request.organizzatoreId());
@@ -62,6 +71,11 @@ public class HackathonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(HackathonResponse.from(hackathon));
     }
 
+    /**
+     * Restituisce tutti gli hackathon.
+     *
+     * @return lista di tutti gli hackathon
+     */
     @GetMapping
     public ResponseEntity<Set<HackathonResponse>> getAllHackathons() {
         Set<HackathonResponse> hackathons = hackathonManager.getHackathons()
@@ -71,12 +85,23 @@ public class HackathonController {
         return ResponseEntity.ok(hackathons);
     }
 
+    /**
+     * Restituisce un hackathon specifico.
+     *
+     * @param id identificatore dell'hackathon
+     * @return l'hackathon cercato
+     */
     @GetMapping("/{id}")
     public ResponseEntity<HackathonResponse> getHackathon(@PathVariable UUID id) {
         Hackathon hackathon = hackathonManager.getHackathon(id);
         return ResponseEntity.ok(HackathonResponse.from(hackathon));
     }
 
+    /**
+     * Restituisce gli hackathon a cui è possibile iscriversi.
+     *
+     * @return lista degli hackathon in fase di iscrizione
+     */
     @GetMapping("/joinable")
     public ResponseEntity<Set<HackathonResponse>> getJoinableHackathons() {
         Set<HackathonResponse> hackathons = hackathonManager.getJoinableHackathons().stream()
@@ -85,12 +110,24 @@ public class HackathonController {
         return ResponseEntity.ok(hackathons);
     }
 
+    /**
+     * Chiude le sottomissioni per un hackathon.
+     *
+     * @param id identificatore dell'hackathon
+     * @return messaggio di conferma
+     */
     @PostMapping("/{id}/chiudi-sottomissioni")
     public ResponseEntity<MessageResponse> chiudiSottomissioni(@PathVariable UUID id) {
         hackathonManager.chiudiSottomissioni(id);
         return ResponseEntity.ok(new MessageResponse("Sottomissioni chiuse con successo"));
     }
 
+    /**
+     * Avanza lo stato di un hackathon.
+     *
+     * @param id identificatore dell'hackathon
+     * @return messaggio di conferma
+     */
     @PostMapping("/{id}/avanza-stato")
     public ResponseEntity<MessageResponse> avanzaStato(@PathVariable UUID id) {
         Hackathon hackathon = hackathonManager.getHackathon(id);

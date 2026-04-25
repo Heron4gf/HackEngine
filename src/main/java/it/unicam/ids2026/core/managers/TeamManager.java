@@ -12,6 +12,9 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+/**
+ * Gestisce le operazioni relative ai team.
+ */
 @Service
 public class TeamManager {
 
@@ -24,23 +27,54 @@ public class TeamManager {
         this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Recupera un team tramite il suo nome.
+     *
+     * @param teamName nome del team
+     * @return il team cercato
+     * @throws NoSuchElementException se il team non esiste
+     */
     public Team getTeam(@NonNull String teamName) {
         return teamRepository.findById(teamName)
                 .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + teamName));
     }
 
+    /**
+     * Restituisce tutti i team presenti nel sistema.
+     *
+     * @return insieme di tutti i team
+     */
     public Set<Team> getTeams() {
         return teamRepository.findAll();
     }
 
+    /**
+     * Salva un team nel repository.
+     *
+     * @param team team da salvare
+     */
     public void addTeam(@NonNull Team team) {
         teamRepository.save(team);
     }
 
+    /**
+     * Rimuove un team dal repository.
+     *
+     * @param team team da rimuovere
+     */
     public void removeTeam(@NonNull Team team) {
         teamRepository.delete(team);
     }
 
+    /**
+     * Crea un nuovo team e assegna l'utente come primo membro.
+     * L'utente non deve già appartenere a un team.
+     *
+     * @param utente utente che crea il team (diventa il primo membro)
+     * @param nome nome del team
+     * @param maxMembri numero massimo di membri
+     * @throws IllegalArgumentException se l'utente ha già un team, il nome è duplicato, o maxMembri non è valido
+     */
     public void creaTeam(@NonNull Utente utente, @NonNull String nome, int maxMembri) {
         if (utente.haTeam()) {
             throw new IllegalArgumentException("L'utente ha gia un team");
@@ -56,6 +90,13 @@ public class TeamManager {
         addTeam(team);
     }
 
+    /**
+     * Rimuove un utente dal suo team.
+     * Se il team rimane vuoto, viene eliminato e viene pubblicato un evento di eliminazione.
+     *
+     * @param utente utente che esce dal team
+     * @throws IllegalArgumentException se l'utente non ha un team
+     */
     public void esciDalTeam(@NonNull Utente utente) {
         if (!utente.haTeam()) {
             throw new IllegalArgumentException("L'Utente non ha team!");
@@ -64,6 +105,7 @@ public class TeamManager {
         utente.setTeam(null);
         team.getMembri().remove(utente);
         if (team.getMembri().isEmpty()) {
+            // Pubblica evento e rimuove il team se non ci sono più membri
             eventPublisher.publishDeletion(team);
             removeTeam(team);
         } else {

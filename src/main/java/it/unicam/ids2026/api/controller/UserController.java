@@ -22,6 +22,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST per la gestione degli utenti.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -32,6 +35,12 @@ public class UserController {
         this.userManager = userManager;
     }
 
+    /**
+     * Crea un nuovo utente.
+     *
+     * @param request dati per la creazione dell'utente
+     * @return l'utente creato con stato 201
+     */
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         User user = switch (request.role()) {
@@ -44,6 +53,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user));
     }
 
+    /**
+     * Restituisce tutti gli utenti.
+     *
+     * @return lista di tutti gli utenti
+     */
     @GetMapping
     public ResponseEntity<Set<UserResponse>> getUsers() {
         Set<UserResponse> users = userManager.getUsers().stream()
@@ -52,11 +66,21 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    /**
+     * Restituisce un utente specifico.
+     *
+     * @param id identificatore dell'utente
+     * @return l'utente cercato
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable UUID id) {
         return ResponseEntity.ok(UserResponse.from(userManager.getUserById(id)));
     }
 
+    /**
+     * Verifica e restituisce il cognome per i membri dello staff.
+     * Il cognome è obbligatorio per Organizzatore, Giudice e Mentore.
+     */
     private String requireCognome(CreateUserRequest request) {
         if (request.cognome() == null || request.cognome().isBlank()) {
             throw new IllegalArgumentException("Il cognome e obbligatorio per i membri dello staff");

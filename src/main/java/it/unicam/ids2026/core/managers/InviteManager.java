@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+/**
+ * Gestisce le operazioni relative agli inviti tra team e utenti.
+ */
 @Service
 public class InviteManager implements DeletionListener {
 
@@ -23,15 +26,34 @@ public class InviteManager implements DeletionListener {
         eventPublisher.registerListener(this);
     }
 
+    /**
+     * Invia un invito a un utente per entrare nel team.
+     *
+     * @param mittente team che invia l'invito
+     * @param destinatario utente che riceve l'invito
+     * @throws IllegalArgumentException se l'utente ha già un team
+     */
     public void invitaUtente(@NonNull Team mittente, @NonNull Utente destinatario) {
         verifyTeamAndUtente(mittente, destinatario);
         inviteRepository.save(new Invito(mittente, destinatario));
     }
 
+    /**
+     * Restituisce la casella degli inviti di un utente.
+     *
+     * @param utente utente di cui recuperare gli inviti
+     * @return insieme di inviti ricevuti dall'utente
+     */
     public Set<Invito> getCasellaInviti(@NonNull Utente utente) {
         return inviteRepository.findByDestinatario(utente);
     }
 
+    /**
+     * Accetta un invito: l'utente viene aggiunto al team del mittente.
+     *
+     * @param invito invito da accettare
+     * @throws IllegalArgumentException se l'utente ha già un team
+     */
     public void accettaInvito(@NonNull Invito invito) {
         Team mittente = invito.getMittente();
         Utente destinatario = invito.getDestinatario();
@@ -42,6 +64,13 @@ public class InviteManager implements DeletionListener {
         removeInvito(destinatario, invito);
     }
 
+    /**
+     * Trova un invito specifico tra un team e un utente.
+     *
+     * @param team team mittente dell'invito
+     * @param destinatario utente destinatario dell'invito
+     * @return l'invito se esiste, null altrimenti
+     */
     public Invito findInvito(@NonNull Team team, @NonNull Utente destinatario) {
         return getCasellaInviti(destinatario).stream()
                 .filter(invito -> invito.getMittente().equals(team))
@@ -49,6 +78,11 @@ public class InviteManager implements DeletionListener {
                 .orElse(null);
     }
 
+    /**
+     * Rifiuta un invito.
+     *
+     * @param invito invito da rifiutare
+     */
     public void rifiutaInvito(@NonNull Invito invito) {
         removeInvito(invito.getDestinatario(), invito);
     }
@@ -72,6 +106,11 @@ public class InviteManager implements DeletionListener {
         }
     }
 
+    /**
+     * Gestisce l'eliminazione di un team eliminando tutti gli inviti associati.
+     *
+     * @param team team eliminato
+     */
     @Override
     public void notifyDeletion(Team team) {
         inviteRepository.deleteByMittente(team);

@@ -18,6 +18,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST per la gestione dei team.
+ */
 @RestController
 @RequestMapping("/api/teams")
 public class TeamController {
@@ -32,6 +35,12 @@ public class TeamController {
         this.hackathonManager = hackathonManager;
     }
 
+    /**
+     * Crea un nuovo team.
+     *
+     * @param request dati per la creazione del team
+     * @return il team creato con stato 201
+     */
     @PostMapping
     public ResponseEntity<TeamResponse> createTeam(@Valid @RequestBody CreateTeamRequest request) {
         Utente utente = (Utente) userManager.getUserById(request.utenteId());
@@ -40,12 +49,24 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TeamResponse.from(team));
     }
 
+    /**
+     * Restituisce un team specifico.
+     *
+     * @param nome nome del team
+     * @return il team cercato
+     */
     @GetMapping("/{nome}")
     public ResponseEntity<TeamResponse> getTeam(@PathVariable String nome) {
         Team team = teamManager.getTeam(nome);
         return ResponseEntity.ok(TeamResponse.from(team));
     }
 
+    /**
+     * Permette a un utente di uscire da un team.
+     *
+     * @param utenteId identificatore dell'utente
+     * @return messaggio di conferma
+     */
     @PostMapping("/{nome}/esci")
     public ResponseEntity<MessageResponse> exitTeam(@RequestParam UUID utenteId) {
         Utente utente = (Utente) userManager.getUserById(utenteId);
@@ -53,6 +74,14 @@ public class TeamController {
         return ResponseEntity.ok(new MessageResponse("Uscito dal team con successo"));
     }
 
+    /**
+     * Iscrive un team a un hackathon.
+     *
+     * @param nome nome del team
+     * @param hackathonId identificatore dell'hackathon
+     * @param utenteId identificatore dell'utente che richiede l'iscrizione
+     * @return messaggio di conferma
+     */
     @PostMapping("/{nome}/iscrizione")
     public ResponseEntity<MessageResponse> iscriviTeam(
             @PathVariable String nome,
@@ -60,6 +89,7 @@ public class TeamController {
             @RequestParam UUID utenteId) {
         Team team = teamManager.getTeam(nome);
         Utente utente = (Utente) userManager.getUserById(utenteId);
+        // Verifica che l'utente appartenga al team specificato
         if (!team.equals(utente.getTeam())) {
             throw new IllegalArgumentException("L'utente indicato non appartiene al team " + nome);
         }

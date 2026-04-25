@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Controller REST per la gestione degli inviti.
+ */
 @RestController
 @RequestMapping("/api/invites")
 public class InviteController {
@@ -29,6 +32,12 @@ public class InviteController {
         this.userManager = userManager;
     }
 
+    /**
+     * Invia un invito a un utente.
+     *
+     * @param request dati dell'invito
+     * @return messaggio di conferma
+     */
     @PostMapping
     public ResponseEntity<MessageResponse> inviteUser(@Valid @RequestBody InviteUserRequest request) {
         Team mittente = teamManager.getTeam(request.teamMittenteNome());
@@ -37,12 +46,25 @@ public class InviteController {
         return ResponseEntity.ok(new MessageResponse("Invito inviato con successo"));
     }
 
+    /**
+     * Restituisce la casella degli inviti di un utente.
+     *
+     * @param utenteId identificatore dell'utente
+     * @return insieme di inviti ricevuti
+     */
     @GetMapping("/casella/{utenteId}")
     public ResponseEntity<Set<Invito>> getCasellaInviti(@PathVariable UUID utenteId) {
         Utente utente = (Utente) userManager.getUserById(utenteId);
         return ResponseEntity.ok(inviteManager.getCasellaInviti(utente));
     }
 
+    /**
+     * Accetta un invito.
+     *
+     * @param nomeTeam nome del team mittente
+     * @param utenteId identificatore dell'utente
+     * @return messaggio di conferma
+     */
     @PostMapping("/accetta")
     public ResponseEntity<MessageResponse> accettaInvito(@RequestParam String nomeTeam, @RequestParam UUID utenteId) {
         Team mittente = teamManager.getTeam(nomeTeam);
@@ -53,6 +75,13 @@ public class InviteController {
         return ResponseEntity.ok(new MessageResponse("Invito accettato"));
     }
 
+    /**
+     * Rifiuta un invito.
+     *
+     * @param nomeTeam nome del team mittente
+     * @param utenteId identificatore dell'utente
+     * @return messaggio di conferma
+     */
     @PostMapping("/rifiuta")
     public ResponseEntity<MessageResponse> rifiutaInvito(@RequestParam String nomeTeam, @RequestParam UUID utenteId) {
         Team mittente = teamManager.getTeam(nomeTeam);
