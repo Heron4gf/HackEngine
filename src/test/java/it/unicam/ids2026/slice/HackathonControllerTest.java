@@ -6,6 +6,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
+import it.unicam.ids2026.core.hackathon.status.StatoIscrizione;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
@@ -27,7 +28,9 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import java.util.Collections;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -69,7 +72,7 @@ class HackathonControllerTest {
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
                 java.util.Collections.emptySet(),
                 java.util.Collections.emptyMap(),
-                null
+                new StatoIscrizione()
         );
 
         when(hackathonManager.creaHackathon(any(), any(), any(), any(), any())).thenReturn(hackathon);
@@ -161,8 +164,8 @@ class HackathonControllerTest {
         UUID giudiceId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
 
-        when(userManager.getUserById(any())).thenReturn(new Organizzatore("Mario", "Rossi"));
-        when(userManager.getUserById(any())).thenReturn(new Giudice("Luigi", "Verdi"));
+        when(userManager.getUserById(eq(organizzatoreId))).thenReturn(new Organizzatore("Mario", "Rossi"));
+        when(userManager.getUserById(eq(giudiceId))).thenReturn(new Giudice("Luigi", "Verdi"));
 
         when(hackathonManager.creaHackathon(any(), any(), any(), any(), any()))
             .thenThrow(new IllegalArgumentException("Range date inizio o durata invalide"));
@@ -229,9 +232,9 @@ class HackathonControllerTest {
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
-                java.util.Collections.emptySet(),
-                java.util.Collections.emptyMap(),
-                null
+                Collections.emptySet(),
+                Collections.emptyMap(),
+                new StatoIscrizione()
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
@@ -294,7 +297,7 @@ class HackathonControllerTest {
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
                 java.util.Collections.emptySet(),
                 java.util.Collections.emptyMap(),
-                null
+                new StatoIscrizione()
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);

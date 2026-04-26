@@ -11,6 +11,7 @@ import it.unicam.ids2026.core.roles.team.Utente;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.NoSuchElementException;
 
 import java.util.Set;
 import java.util.UUID;
@@ -71,6 +72,9 @@ public class InviteController {
         Utente destinatario = (Utente) userManager.getUserById(utenteId);
 
         Invito invito = inviteManager.findInvito(mittente, destinatario);
+        if (invito == null) {
+            throw new NoSuchElementException("Invito non trovato");
+        }
         inviteManager.accettaInvito(invito);
         return ResponseEntity.ok(new MessageResponse("Invito accettato"));
     }
