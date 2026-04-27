@@ -1,4 +1,4 @@
-package it.unicam.ids2026.api.external;
+package it.unicam.ids2026.api.external.calendar;
 
 import it.unicam.ids2026.core.hackathon.data.Disponibilita;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;

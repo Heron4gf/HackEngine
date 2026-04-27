@@ -1,7 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
-import it.unicam.ids2026.api.external.DefaultCalendarWrapper;
-import it.unicam.ids2026.api.external.ICalendar;
+import it.unicam.ids2026.api.external.calendar.ICalendar;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Disponibilita;
 import it.unicam.ids2026.core.roles.User;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
