@@ -36,4 +36,9 @@ public class StatoConcluso implements StatoHackathon {
     public RappresentazioneStato getRappresentazioneStato() {
         return RappresentazioneStato.CONCLUSO;
     }
+
+    @Override
+    public void assegnaVincitore(Hackathon hackathon, Team team) {
+        hackathon.setVincitore(team);
+    }
 }

@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.violation.Violazione;
 import lombok.*;
 
 import java.util.*;
@@ -30,12 +31,11 @@ public class Hackathon {
     private final Giudice giudice;
     private final Intervallo periodoIscrizioni;
     private final Intervallo durataHackathon;
-
+    private Team vincitore;
     private final Set<Mentore> mentori;
 
-
     private final Map<Team, Iscrizione> iscritti;
-
+    private final Set<Violazione> violazioni;
     @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state;
 
@@ -48,8 +48,10 @@ public class Hackathon {
                 giudice,
                 periodoIscrizioni,
                 durataHackathon,
+                null,
                 new HashSet<>(),
                 new LinkedHashMap<>(),
+                new HashSet<>(),
                 new StatoIscrizione()
         );
     }
@@ -72,6 +74,10 @@ public class Hackathon {
 
     public void aggiungiRichiestaSupporto(Team team, RichiestaSupporto richiestaSupporto) {
         this.state.aggiungiRichiestaSupporto(this, team, richiestaSupporto);
+    }
+
+    public void assegnaVincitore(Team team) {
+        this.state.assegnaVincitore(this, team);
     }
 
     public RappresentazioneStato getRappresentazioneStato() {

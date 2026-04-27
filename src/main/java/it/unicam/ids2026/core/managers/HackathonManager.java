@@ -14,10 +14,7 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -190,5 +187,22 @@ public class HackathonManager {
         }
         hackathon.iscriviTeam(team);
         hackathonRepository.save(hackathon);
+    }
+
+    /**
+     * Assegna il team vincitore dell'hackathon
+     * @param h hackathon a cui assegnare il vincitore
+     * @param t il team vincitore dell'hackathon
+     * TODO verificare se tutti i team hanno ricevuto una valutazione
+     */
+    public void assegnaVincitore(@NonNull Hackathon h, @NonNull Team t) {
+        Optional<Hackathon> hackathon = hackathonRepository.findById(h.getId());
+        hackathon.ifPresent(value -> {value.assegnaVincitore(t);
+        hackathonRepository.save(h);});
+    }
+
+    private boolean controllaSeSottomissioniValutate(Hackathon hackathon) {
+
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core.violation;
 
+import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Team;
@@ -11,13 +12,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Violation {
+public class Violazione {
+
+    Long id;
     @NonNull
     private Mentore segnalatoDa;
     @NonNull
     private Team colpevole;
-    private Organizzatore gestitoDa;
+    @NonNull
+    private Hackathon hackathon;
     @NonNull
     private String motivazione;
-    private ViolationStatus stato = ViolationStatus.SOLLEVATA;
+    private Organizzatore gestitoDa;
+    private StatoViolazione stato = StatoViolazione.SOLLEVATA;
 }

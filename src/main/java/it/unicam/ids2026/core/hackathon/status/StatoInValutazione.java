@@ -40,4 +40,9 @@ public class StatoInValutazione implements StatoHackathon {
     public RappresentazioneStato getRappresentazioneStato() {
         return RappresentazioneStato.VALUTAZIONE;
     }
+
+    @Override
+    public void assegnaVincitore(Hackathon hackathon, Team team) {
+        throw new IllegalStateException("Impossibile assegnare un vincitore quando l'hackathon è in valutazione");
+    }
 }

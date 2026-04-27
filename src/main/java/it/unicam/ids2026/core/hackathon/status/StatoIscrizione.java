@@ -41,4 +41,9 @@ public class StatoIscrizione implements StatoHackathon {
     public RappresentazioneStato getRappresentazioneStato() {
         return RappresentazioneStato.ISCRIZIONE;
     }
+
+    @Override
+    public void assegnaVincitore(Hackathon hackathon, Team team) {
+        throw new IllegalStateException("Impossibile assegnare un vincitore quando l'hackathon è in iscrizione");
+    }
 }

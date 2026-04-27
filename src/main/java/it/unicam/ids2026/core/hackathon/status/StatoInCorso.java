@@ -39,4 +39,9 @@ public class StatoInCorso implements StatoHackathon {
     public RappresentazioneStato getRappresentazioneStato() {
         return RappresentazioneStato.IN_CORSO;
     }
+
+    @Override
+    public void assegnaVincitore(Hackathon hackathon, Team team) {
+        throw new IllegalStateException("Impossibile assegnare un vincitore quando l'hackathon è in corso");
+    }
 }
