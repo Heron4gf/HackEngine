@@ -3,6 +3,7 @@ package it.unicam.ids2026.core.hackathon.data;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+import it.unicam.ids2026.core.transaction.MoneyAmount;
 import lombok.NonNull;
 
 import jakarta.validation.constraints.*;
@@ -18,11 +19,7 @@ public record DatiHackathon(
         String luogo,
 
         @NonNull
-        @DecimalMin(value = "0.0", inclusive = false, message = "Il premio deve essere maggiore di 0")
-        BigDecimal premioInDenaro,
-
-        @NonNull
-        Currency currency,
+        MoneyAmount premioInDenaro,
 
         @Min(value = 1, message = "Il team deve avere almeno 1 partecipante")
         @Max(value = 20, message = "Il team può avere al massimo 20 partecipanti")

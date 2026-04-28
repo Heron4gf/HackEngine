@@ -8,21 +8,18 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
-@Setter
 @RequiredArgsConstructor
 public class Violazione {
 
-    Long id;
-    @NonNull
-    private Mentore segnalatoDa;
-    @NonNull
-    private Team colpevole;
-    @NonNull
-    private Hackathon hackathon;
-    @NonNull
-    private String motivazione;
-    private Organizzatore gestitoDa;
-    private StatoViolazione stato = StatoViolazione.SOLLEVATA;
+    private final UUID id = UUID.randomUUID();
+    @NonNull private final Mentore segnalatoDa;
+    @NonNull private final Team colpevole;
+    @NonNull private final Hackathon hackathon;
+    @NonNull private final String motivazione;
+
+    @Setter private Organizzatore gestitoDa;
+    @Setter private StatoViolazione stato = StatoViolazione.SOLLEVATA;
 }

@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
+import it.unicam.ids2026.core.transaction.MoneyAmount;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -66,7 +67,7 @@ class HackathonControllerTest {
         Hackathon hackathon = new Hackathon(
                 hackathonId,
                 organizzatore,
-                new DatiHackathon("Hackathon Test", "Roma", new BigDecimal("1000.00"), Currency.getInstance("EUR"), 5, "Regolamento"),
+                new DatiHackathon("Hackathon Test", "Roma", new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")), 5, "Regolamento"),
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
@@ -228,7 +229,7 @@ class HackathonControllerTest {
         Hackathon hackathon = new Hackathon(
                 hackathonId,
                 organizzatore,
-                new DatiHackathon("Test", "Roma", new BigDecimal("1000"), Currency.getInstance("EUR"), 5, "Reg"),
+                new DatiHackathon("Test", "Roma", new MoneyAmount(new BigDecimal("1000"), Currency.getInstance("EUR")), 5, "Reg"),
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
@@ -291,7 +292,7 @@ class HackathonControllerTest {
         Hackathon hackathon = new Hackathon(
                 hackathonId,
                 organizzatore,
-                new DatiHackathon("Test", "Roma", new BigDecimal("1000"), Currency.getInstance("EUR"), 5, "Reg"),
+                new DatiHackathon("Test", "Roma", new MoneyAmount(new BigDecimal("1000"), Currency.getInstance("EUR")), 5, "Reg"),
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),

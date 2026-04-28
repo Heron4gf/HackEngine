@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.violation.Violazione;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class Hackathon {
 
     private final Map<Team, Iscrizione> iscritti;
     private final Set<Violazione> violazioni;
+    private final List<Transaction> transazioniPremio;
     @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state;
 
@@ -52,6 +54,7 @@ public class Hackathon {
                 new HashSet<>(),
                 new LinkedHashMap<>(),
                 new HashSet<>(),
+                new ArrayList<>(),
                 new StatoIscrizione()
         );
     }
@@ -78,6 +81,15 @@ public class Hackathon {
 
     public void assegnaVincitore(Team team) {
         this.state.assegnaVincitore(this, team);
+    }
+
+    /**
+     * Aggiunge una transazione di pagamento del premio a questo hackathon.
+     *
+     * @param transazione la transazione da registrare
+     */
+    public void aggiungiTransazionePremio(@NonNull Transaction transazione) {
+        this.transazioniPremio.add(transazione);
     }
 
     public RappresentazioneStato getRappresentazioneStato() {

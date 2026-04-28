@@ -28,4 +28,8 @@ public class Sottomissione {
     private File allegato;
 
     private Valutazione valutazione;
+
+    public boolean hasValutazione() {
+        return valutazione != null;
+    }
 }

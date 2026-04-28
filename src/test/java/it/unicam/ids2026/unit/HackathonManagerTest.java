@@ -9,6 +9,7 @@ import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
+import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.persistence.HackathonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,8 +48,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -78,8 +77,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -103,8 +101,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -128,8 +125,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -155,8 +151,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -188,8 +183,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 2,
                 "Regolamento test"
         );
@@ -222,8 +216,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
@@ -252,8 +245,7 @@ class HackathonManagerTest {
         DatiHackathon dati = new DatiHackathon(
                 "Hackathon Test",
                 "Roma",
-                new BigDecimal("1000.00"),
-                Currency.getInstance("EUR"),
+                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
                 5,
                 "Regolamento test"
         );
