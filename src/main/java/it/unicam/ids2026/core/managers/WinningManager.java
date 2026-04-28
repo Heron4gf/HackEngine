@@ -33,28 +33,6 @@ public class WinningManager {
         this.transactionFactory = transactionFactory;
     }
 
-    /**
-     * Restituisce la classifica completa dei team ordinati per punteggio (dal più alto al più basso).
-     * Include solo i team che hanno effettuato una sottomissione valutata.
-     *
-     * @param hackathon l'hackathon di cui ottenere la classifica
-     * @return lista di coppie (Team, voto) ordinata per voto decrescente
-     * @throws IllegalStateException se non ci sono sottomissioni valutate
-     */
-    public List<Map.Entry<Team, Integer>> ottieniClassifica(@NonNull Hackathon hackathon) {
-        List<Map.Entry<Team, Sottomissione>> sottomissioni = submissionManager.ottieniSottomissioniConTeam(hackathon);
-
-        if (sottomissioni.isEmpty()) {
-            throw new IllegalStateException("Non ci sono sottomissioni per questo hackathon");
-        }
-
-        return sottomissioni.stream()
-                .filter(entry -> entry.getValue().getValutazione() != null)
-                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getValutazione().voto()))
-                .sorted(Comparator.<Map.Entry<Team, Integer>>comparingInt(e -> -e.getValue())
-                        .thenComparing(e -> e.getKey().getNome()))
-                .toList();
-    }
 
     /**
      * Determina il vincitore (o i vincitori in caso di parità).
