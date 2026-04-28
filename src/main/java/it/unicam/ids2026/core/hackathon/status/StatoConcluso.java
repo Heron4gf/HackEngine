@@ -39,6 +39,6 @@ public class StatoConcluso implements StatoHackathon {
 
     @Override
     public void assegnaVincitore(Hackathon hackathon, Team team) {
-        hackathon.setVincitore(team);
+        throw new IllegalStateException("Il vincitore è stato assegnato");
     }
 }

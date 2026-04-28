@@ -33,7 +33,4 @@ public class ViolationManager {
         return hackathon.getViolazioni();
     }
 
-    public void gestisciViolazione() {
-
-    }
 }

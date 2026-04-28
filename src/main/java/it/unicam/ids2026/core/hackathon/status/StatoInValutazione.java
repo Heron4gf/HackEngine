@@ -6,12 +6,18 @@ import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 
+import java.util.stream.Collectors;
+
 public class StatoInValutazione implements StatoHackathon {
     @Override
     public void next(Hackathon hackathon) {
-
+        if(controllaSeValutate(hackathon)) {
             hackathon.setState(new StatoConcluso());
-
+        }
+        else {
+            throw new UnsupportedOperationException("Impossibile concludere l'hackathon se esiste almeno una sottomissione " +
+                    "non valutata");
+        }
     }
 
     @Override
@@ -43,6 +49,25 @@ public class StatoInValutazione implements StatoHackathon {
 
     @Override
     public void assegnaVincitore(Hackathon hackathon, Team team) {
-        throw new IllegalStateException("Impossibile assegnare un vincitore quando l'hackathon è in valutazione");
+        if (controllaSeValutate(hackathon)) {
+            hackathon.setVincitore(team);
+        }
+        else {
+            throw new UnsupportedOperationException("Impossibile assegnare un vincitore se non tutte le sottomissioni" +
+                    "sono " +
+                    "state valutate");
+        }
+    }
+
+    private boolean controllaSeValutate(Hackathon hackathon) {
+        return
+                hackathon.getIscritti().
+                        entrySet().
+                        stream().
+                        filter(entry -> entry.
+                                getValue().
+                                getSottomissione().
+                                getValutazione() == null)
+                        .collect(Collectors.toSet()).isEmpty();
     }
 }

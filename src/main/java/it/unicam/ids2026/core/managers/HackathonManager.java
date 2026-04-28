@@ -197,16 +197,8 @@ public class HackathonManager {
      * TODO verificare se tutti i team hanno ricevuto una valutazione
      */
     public void assegnaVincitore(@NonNull Hackathon h, @NonNull Team t) {
-        if(controllaSeSottomissioniValutate(h))
-            throw new IllegalStateException("Non tutte le sottomissioni sono state valutate");
-
         Optional<Hackathon> hackathon = hackathonRepository.findById(h.getId());
         hackathon.ifPresent(value -> {value.assegnaVincitore(t);
         hackathonRepository.save(h);});
-    }
-
-    private boolean controllaSeSottomissioniValutate(Hackathon hackathon) {
-        return hackathon.getIscritti().values().stream()
-                .allMatch(iscrizione -> iscrizione.getSottomissione().hasValutazione());
     }
 }
