@@ -1,9 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
 import it.unicam.ids2026.core.hackathon.Hackathon;
-import it.unicam.ids2026.core.hackathon.data.Sottomissione;
-import it.unicam.ids2026.core.hackathon.data.Valutazione;
-import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
@@ -86,10 +83,13 @@ public class WinningManager {
             throw new IllegalArgumentException("Il team specificato non è il vincitore assegnato per questo hackathon");
         }
 
-        User organizzatore = hackathon.getOrganizzatore();
         MoneyAmount premio = hackathon.getDatiHackathon().premioInDenaro();
 
-        Transaction transazione = transactionFactory.makePayment(organizzatore, vincitore, premio);
+        // L'hackathon effettua il pagamento al team vincitore
+        Transaction transazione = transactionFactory.makePayment(hackathon, vincitore, premio);
+        
+        // Notifica il team del pagamento ricevuto
+        vincitore.riceviPagamento(premio);
         
         hackathon.aggiungiTransazionePremio(transazione);
         

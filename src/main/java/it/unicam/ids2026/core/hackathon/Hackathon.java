@@ -12,6 +12,8 @@ import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.transaction.IBankAccount;
+import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.violation.Violazione;
 import lombok.*;
@@ -22,7 +24,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Hackathon {
+public class Hackathon implements IBankAccount {
 
     @EqualsAndHashCode.Include
     private final UUID id;
@@ -94,5 +96,15 @@ public class Hackathon {
 
     public RappresentazioneStato getRappresentazioneStato() {
         return this.state.getRappresentazioneStato();
+    }
+
+    @Override
+    public String dettagliConto() {
+        return this.datiHackathon.nome();
+    }
+
+    @Override
+    public void riceviPagamento(MoneyAmount amount) {
+        datiHackathon.premioInDenaro().add(amount);
     }
 }
