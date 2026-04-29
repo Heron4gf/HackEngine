@@ -97,7 +97,9 @@ public class InviteManager implements DeletionListener {
     }
 
     private void verifyTeamSize(Team team) {
-        // TODO: usare Jakarta validator
+        if(team.getMembri().size() >= team.getMaxMembri()) {
+            throw new IllegalArgumentException("Il team ha raggiunto il numero massimo di membri");
+        }
     }
 
     private void verifyUserTeam(Utente utente) {

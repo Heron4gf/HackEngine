@@ -189,5 +189,5 @@ public class HackathonManager {
         hackathon.iscriviTeam(team);
         hackathonRepository.save(hackathon);
     }
-    
+
 }

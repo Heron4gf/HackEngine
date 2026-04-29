@@ -80,7 +80,7 @@ public class TeamManager {
         if (utente.haTeam()) {
             throw new IllegalArgumentException("L'utente ha gia un team");
         }
-        if (teamRepository.existsById(nome)) {
+        if (getTeam(nome) != null) {
             throw new IllegalArgumentException("Esiste gia un team con lo stesso nome");
         }
         if (maxMembri < 1 || maxMembri > 20) {

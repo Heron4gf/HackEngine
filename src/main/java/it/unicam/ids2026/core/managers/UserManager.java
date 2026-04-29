@@ -1,6 +1,7 @@
 package it.unicam.ids2026.core.managers;
 
 import it.unicam.ids2026.core.roles.User;
+import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.UserRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,17 @@ public class UserManager {
      */
     public Set<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    /**
+     * Restituisce tutti gli utenti di tipo Utente che non appartengono a nessun team.
+     *
+     * @return insieme degli utenti disponibili senza team
+     */
+    public Set<Utente> getFreeUsers() {
+        return getUsersByRole(Utente.class).stream()
+                .filter(utente -> utente.getTeam() == null)
+                .collect(Collectors.toSet());
     }
 
     /**

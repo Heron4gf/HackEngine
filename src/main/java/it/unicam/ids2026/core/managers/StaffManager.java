@@ -48,9 +48,24 @@ public class StaffManager {
      * @param h Hackathon di riferimento per verificare la disponibilità
      * @return una collezione di mentori non presenti nell'Hackathon specificato
      */
-    public Set<Mentore> getMentoriDisponibili(@NonNull Hackathon h) {
+    public Set<Mentore> ottieniMentoriDisponibili(@NonNull Hackathon h) {
         return getMentori().stream()
                 .filter(m -> !h.getMentori().contains(m))
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Aggiunge i mentori selezionati all'hackathon previa verifica della loro disponibilità.
+     *
+     * @param hackathon l'hackathon a cui aggiungere i mentori.
+     * @param mentoriScelti l'insieme dei mentori da aggiungere.
+     * @throws IllegalArgumentException se uno o più mentori selezionati non risultano disponibili.
+     */
+    public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Set<Mentore> mentoriScelti) {
+        if (!ottieniMentoriDisponibili(hackathon).containsAll(mentoriScelti)) {
+            throw new IllegalArgumentException("Mentori invalidi");
+        }
+
+        mentoriScelti.stream().forEach(hackathon::aggiungiMentore);
     }
 }

@@ -42,9 +42,19 @@ public class SupportRequestManager {
     }
 
     public Set<RichiestaSupporto> visualizzaRichieste(@NonNull Hackathon hackathon) {
-    return hackathon.getIscritti().values().stream()
+        return hackathon.getIscritti().values().stream()
             .map(Iscrizione::getRichiestaSupporto)
             .collect(Collectors.toSet());
+    }
+    
+    public Disponibilita ottieniCalendario(User utente, Hackathon hackathon) {
+        return calendarService.getDisponibilita(utente, hackathon.getDurataHackathon());
+    }
+
+    public Disponibilita ottieniDisponibilita(@NonNull Hackathon hackathon, @NonNull Team team) {
+        Iscrizione iscrizione = hackathon.getIscritti().get(team);
+        if(iscrizione == null) throw new IllegalArgumentException("Il team non è iscritto all'hackathon");
+        return iscrizione.getDisponibilita();
     }
 
 
