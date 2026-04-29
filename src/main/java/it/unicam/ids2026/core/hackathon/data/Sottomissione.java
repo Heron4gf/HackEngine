@@ -27,5 +27,5 @@ public class Sottomissione {
     @NotNull(message = "L'allegato non può essere nullo")
     private File allegato;
 
-    private Valutazione valutazione;
+    private Valutazione valutazione ;
 }
