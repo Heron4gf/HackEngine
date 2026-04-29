@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class Transaction {
     private final MoneyAmount importo;
     private final IPaymentMethod metodo;
-    private final IBankAccount ordinante;
-    private final IBankAccount beneficiario;
+    private final IParteDiPagamento ordinante;
+    private final IParteDiPagamento beneficiario;
 
     @Setter
     private TransactionStatus stato = TransactionStatus.PROCESSANDO;

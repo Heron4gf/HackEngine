@@ -1,6 +1,6 @@
 package it.unicam.ids2026.core.transaction.factory;
 
-import it.unicam.ids2026.core.transaction.IBankAccount;
+import it.unicam.ids2026.core.transaction.IParteDiPagamento;
 import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 
@@ -13,5 +13,5 @@ public interface TransactionFactory {
      * @param amount      l'importo da pagare
      * @return la transazione creata con lo stato aggiornato (SUCCESSO o FALLITO)
      */
-    Transaction makePayment(IBankAccount ordinante, IBankAccount beneficiario, MoneyAmount amount);
+    Transaction makePayment(IParteDiPagamento ordinante, IParteDiPagamento beneficiario, MoneyAmount amount);
 }

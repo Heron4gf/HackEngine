@@ -40,6 +40,7 @@ public class WinningManager {
             throw new IllegalArgumentException("Il team specificato non è il vincitore assegnato per questo hackathon");
         }
 
+        // Use the prize from DatiHackathon (configured prize) for the payment
         MoneyAmount premio = hackathon.getDatiHackathon().premioInDenaro();
 
         // L'hackathon effettua il pagamento al team vincitore
@@ -48,7 +49,8 @@ public class WinningManager {
         // Notifica il team del pagamento ricevuto
         vincitore.riceviPagamento(premio);
         
-        hackathon.aggiungiTransazionePremio(transazione);
+        // Register transaction in the hackathon wallet
+        hackathon.getWallet().aggiungiTransazione(transazione);
         
         return transazione;
     }

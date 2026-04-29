@@ -6,14 +6,14 @@ import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
 import it.unicam.ids2026.core.hackathon.status.StatoHackathon;
 import it.unicam.ids2026.core.hackathon.status.StatoIscrizione;
+import it.unicam.ids2026.core.hackathon.wallet.HackathonWallet;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
-import it.unicam.ids2026.core.transaction.IBankAccount;
-import it.unicam.ids2026.core.transaction.MoneyAmount;
+import it.unicam.ids2026.core.transaction.IParteDiPagamento;
 import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.violation.Violazione;
 import lombok.*;
@@ -22,9 +22,8 @@ import java.util.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Hackathon implements IBankAccount {
+public class Hackathon implements IParteDiPagamento {
 
     @EqualsAndHashCode.Include
     private final UUID id;
@@ -39,12 +38,44 @@ public class Hackathon implements IBankAccount {
 
     private final Map<Team, Iscrizione> iscritti;
     private final Set<Violazione> violazioni;
-    private final List<Transaction> transazioniPremio;
+    private final HackathonWallet wallet;
     @Getter(AccessLevel.PRIVATE)
     private StatoHackathon state = new StatoIscrizione();
 
-    public Hackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice,
-                     @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) {
+    /**
+     * Full constructor with all fields including wallet.
+     */
+    @Builder
+    public Hackathon(@NonNull UUID id,
+                     @NonNull Organizzatore organizzatore,
+                     @NonNull DatiHackathon datiHackathon,
+                     @NonNull Giudice giudice,
+                     @NonNull Intervallo periodoIscrizioni,
+                     @NonNull Intervallo durataHackathon,
+                     @NonNull Set<Mentore> mentori,
+                     @NonNull Map<Team, Iscrizione> iscritti,
+                     @NonNull Set<Violazione> violazioni,
+                     @NonNull HackathonWallet wallet) {
+        this.id = id;
+        this.organizzatore = organizzatore;
+        this.datiHackathon = datiHackathon;
+        this.giudice = giudice;
+        this.periodoIscrizioni = periodoIscrizioni;
+        this.durataHackathon = durataHackathon;
+        this.mentori = mentori;
+        this.iscritti = iscritti;
+        this.violazioni = violazioni;
+        this.wallet = wallet;
+    }
+
+    /**
+     * Convenience constructor that creates a new wallet with the currency from the prize amount.
+     */
+    public Hackathon(@NonNull Organizzatore organizzatore,
+                     @NonNull DatiHackathon datiHackathon,
+                     @NonNull Giudice giudice,
+                     @NonNull Intervallo periodoIscrizioni,
+                     @NonNull Intervallo durataHackathon) {
         this(
                 UUID.randomUUID(),
                 organizzatore,
@@ -55,7 +86,7 @@ public class Hackathon implements IBankAccount {
                 new HashSet<>(),
                 new LinkedHashMap<>(),
                 new HashSet<>(),
-                new ArrayList<>()
+                new HackathonWallet(datiHackathon.premioInDenaro().getCurrency())
         );
     }
 
@@ -84,12 +115,12 @@ public class Hackathon implements IBankAccount {
     }
 
     /**
-     * Aggiunge una transazione di pagamento del premio a questo hackathon.
+     * Returns the list of all prize transactions.
      *
-     * @param transazione la transazione da registrare
+     * @return unmodifiable view of transactions from the wallet
      */
-    public void aggiungiTransazionePremio(@NonNull Transaction transazione) {
-        this.transazioniPremio.add(transazione);
+    public List<Transaction> getTransazioniPremio() {
+        return wallet.getTransazioni();
     }
 
     public RappresentazioneStato getRappresentazioneStato() {
@@ -99,10 +130,5 @@ public class Hackathon implements IBankAccount {
     @Override
     public String dettagliConto() {
         return this.datiHackathon.nome();
-    }
-
-    @Override
-    public void riceviPagamento(MoneyAmount amount) {
-        datiHackathon.premioInDenaro().add(amount);
     }
 }

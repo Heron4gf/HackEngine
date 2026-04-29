@@ -1,12 +1,10 @@
 package it.unicam.ids2026.slice;
 
 import it.unicam.ids2026.api.controller.HackathonController;
-import it.unicam.ids2026.api.dto.request.CreateHackathonRequest;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
-import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
-import it.unicam.ids2026.core.hackathon.status.StatoIscrizione;
+import it.unicam.ids2026.core.hackathon.wallet.HackathonWallet;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
@@ -78,7 +76,7 @@ class HackathonControllerTest {
                 Collections.emptySet(),
                 Collections.emptyMap(),
                 new HashSet<>(),
-                new ArrayList<>()
+                new HackathonWallet(Currency.getInstance("EUR"))
         );
 
         when(hackathonManager.creaHackathon(any(), any(), any(), any(), any())).thenReturn(hackathon);
@@ -241,7 +239,7 @@ class HackathonControllerTest {
                 Collections.emptySet(),
                 Collections.emptyMap(),
                 new HashSet<>(),
-                new ArrayList<>()
+                new HackathonWallet(Currency.getInstance("EUR"))
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
@@ -305,7 +303,7 @@ class HackathonControllerTest {
                 Collections.emptySet(),
                 Collections.emptyMap(),
                 new HashSet<>(),
-                new ArrayList<>()
+                new HackathonWallet(Currency.getInstance("EUR"))
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);

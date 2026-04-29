@@ -1,6 +1,6 @@
 package it.unicam.ids2026.core.roles.team;
 
-import it.unicam.ids2026.core.transaction.IBankAccount;
+import it.unicam.ids2026.core.transaction.IParteDiPagamento;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Team implements IBankAccount {
+public class Team implements IParteDiPagamento {
 
     @EqualsAndHashCode.Exclude
     private final UUID id = UUID.randomUUID();
@@ -52,7 +52,11 @@ public class Team implements IBankAccount {
         return this.getNome();
     }
 
-    @Override
+    /**
+     * Registra un pagamento ricevuto da questo team.
+     *
+     * @param amount l'importo ricevuto
+     */
     public void riceviPagamento(MoneyAmount amount) {
         this.pagamentiRicevuti.add(amount);
     }
