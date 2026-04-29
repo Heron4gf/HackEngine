@@ -1,6 +1,5 @@
 package it.unicam.ids2026.slice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unicam.ids2026.api.controller.WinningController;
 import it.unicam.ids2026.api.dto.request.AssegnaVincitoreRequest;
 import it.unicam.ids2026.core.hackathon.Hackathon;
@@ -23,6 +22,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -33,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -47,8 +46,7 @@ class WinningControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper = new JsonMapper();
 
     @MockitoBean
     private WinningManager winningManager;
@@ -164,7 +162,7 @@ class WinningControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/hackathons/{hackathonId}/winner", hackathonId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(jsonMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Vincitore assegnato con successo")));
 
@@ -184,7 +182,7 @@ class WinningControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/hackathons/{hackathonId}/winner", hackathonId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(jsonMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", containsString("non ancora valutate")));
     }
@@ -201,7 +199,7 @@ class WinningControllerTest {
         // Act & Assert
         mockMvc.perform(post("/api/hackathons/{hackathonId}/winner", hackathonId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(jsonMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
     }
 
