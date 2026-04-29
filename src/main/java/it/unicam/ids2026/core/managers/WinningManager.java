@@ -71,7 +71,7 @@ public class WinningManager {
      * Restituisce l'elenco delle iscrizioni che hanno ottenuto il punteggio massimo.
      * Se più team hanno lo stesso punteggio primo in classifica, vengono restituiti tutti.
      */
-    public List<Iscrizione> calculateVincitori(@NonNull Hackathon hackathon) {
+    public List<Iscrizione> ottieniTeamConPunteggioMassimo(@NonNull Hackathon hackathon) {
         if(!controllaSeValutate(hackathon)) {
             throw new IllegalArgumentException("L'hackathon in questione ha sottomissioni non valutate");
         }
