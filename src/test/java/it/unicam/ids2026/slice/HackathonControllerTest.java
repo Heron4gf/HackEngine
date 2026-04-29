@@ -22,16 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import java.util.Collections;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -67,13 +63,22 @@ class HackathonControllerTest {
         Hackathon hackathon = new Hackathon(
                 hackathonId,
                 organizzatore,
-                new DatiHackathon("Hackathon Test", "Roma", new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")), 5, "Regolamento"),
+                new DatiHackathon(
+                        "Hackathon Test",
+                        "Roma",
+                        new MoneyAmount(
+                                new BigDecimal("1000.00"),
+                                Currency.getInstance("EUR")
+                        ),
+                        5,
+                        "Regolamento"),
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
-                java.util.Collections.emptySet(),
-                java.util.Collections.emptyMap(),
-                new StatoIscrizione()
+                Collections.emptySet(),
+                Collections.emptyMap(),
+                new HashSet<>(),
+                new ArrayList<>()
         );
 
         when(hackathonManager.creaHackathon(any(), any(), any(), any(), any())).thenReturn(hackathon);
@@ -235,7 +240,8 @@ class HackathonControllerTest {
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
                 Collections.emptySet(),
                 Collections.emptyMap(),
-                new StatoIscrizione()
+                new HashSet<>(),
+                new ArrayList<>()
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
@@ -296,9 +302,10 @@ class HackathonControllerTest {
                 giudice,
                 new Intervallo(now.plusDays(1), now.plusDays(10)),
                 new Intervallo(now.plusDays(15), now.plusDays(17)),
-                java.util.Collections.emptySet(),
-                java.util.Collections.emptyMap(),
-                new StatoIscrizione()
+                Collections.emptySet(),
+                Collections.emptyMap(),
+                new HashSet<>(),
+                new ArrayList<>()
         );
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);

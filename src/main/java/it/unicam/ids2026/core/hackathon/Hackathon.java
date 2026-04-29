@@ -22,7 +22,7 @@ import java.util.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hackathon implements IBankAccount {
 
@@ -34,14 +34,14 @@ public class Hackathon implements IBankAccount {
     private final Giudice giudice;
     private final Intervallo periodoIscrizioni;
     private final Intervallo durataHackathon;
-    private Team vincitore;
+    private Team vincitore = null;
     private final Set<Mentore> mentori;
 
     private final Map<Team, Iscrizione> iscritti;
     private final Set<Violazione> violazioni;
     private final List<Transaction> transazioniPremio;
     @Getter(AccessLevel.PRIVATE)
-    private StatoHackathon state;
+    private StatoHackathon state = new StatoIscrizione();
 
     public Hackathon(@NonNull Organizzatore organizzatore, @NonNull DatiHackathon datiHackathon, @NonNull Giudice giudice,
                      @NonNull Intervallo periodoIscrizioni, @NonNull Intervallo durataHackathon) {
@@ -52,12 +52,10 @@ public class Hackathon implements IBankAccount {
                 giudice,
                 periodoIscrizioni,
                 durataHackathon,
-                null,
                 new HashSet<>(),
                 new LinkedHashMap<>(),
                 new HashSet<>(),
-                new ArrayList<>(),
-                new StatoIscrizione()
+                new ArrayList<>()
         );
     }
 

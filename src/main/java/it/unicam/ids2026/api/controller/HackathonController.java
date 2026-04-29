@@ -11,6 +11,7 @@ import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
+import it.unicam.ids2026.core.transaction.MoneyAmount;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,10 @@ public class HackathonController {
         DatiHackathon dati = new DatiHackathon(
                 request.nome(),
                 request.luogo(),
-                request.premioInDenaro(),
-                request.currency(),
+                new MoneyAmount(
+                        request.premioInDenaro(),
+                        request.currency()
+                ),
                 request.dimensioneMaxTeam(),
                 request.regolamento()
         );

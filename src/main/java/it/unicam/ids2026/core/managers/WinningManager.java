@@ -61,7 +61,7 @@ public class WinningManager {
                 hackathon.getIscritti().
                         entrySet().
                         stream().
-                        filter(entry -> entry.
+                        filter(entry -> !entry.
                                 getValue().
                                 hasValutazione())
                         .collect(Collectors.toSet()).isEmpty();
@@ -86,6 +86,17 @@ public class WinningManager {
                 .filter(i -> i.hasValutazione() &&
                         Double.compare(i.getSottomissione().getValutazione().voto(), maxPunteggio) == 0)
                 .toList();
+    }
+
+    /**
+     * Assegna il vincitore all'hackathon.
+     * @throws IllegalArgumentException se non tutte le sottomissioni sono valutate
+     */
+    public void assegnaVincitore(@NonNull Hackathon hackathon, @NonNull Team vincitore) {
+        if (!controllaSeValutate(hackathon)) {
+            throw new IllegalArgumentException("Ci sono sottomissioni non ancora valutate");
+        }
+        hackathon.assegnaVincitore(vincitore);
     }
 
     /**
