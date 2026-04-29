@@ -12,4 +12,8 @@ public class Iscrizione {
     private Sottomissione sottomissione = null;
     private RichiestaSupporto richiestaSupporto = null;
     private Disponibilita disponibilita;
+
+    public boolean hasValutazione() {
+        return sottomissione != null && sottomissione.hasValutazione();
+    }
 }

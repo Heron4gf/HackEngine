@@ -19,4 +19,8 @@ public class Transaction {
     private TransactionStatus stato = TransactionStatus.PROCESSANDO;
     private final LocalDateTime dataDiEmissione = LocalDateTime.now();
 
+    public boolean isSuccessful() {
+        return stato.equals(TransactionStatus.SUCCESSO);
+    }
+
 }

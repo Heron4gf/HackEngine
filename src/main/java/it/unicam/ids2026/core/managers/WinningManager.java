@@ -1,6 +1,8 @@
 package it.unicam.ids2026.core.managers;
 
 import it.unicam.ids2026.core.hackathon.Hackathon;
+import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
+import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
@@ -9,7 +11,8 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Gestisce la determinazione del vincitore e l'elaborazione del pagamento del premio.
@@ -17,57 +20,11 @@ import java.util.*;
 @Service
 public class WinningManager {
 
-    private final SubmissionManager submissionManager;
-    private final HackathonManager hackathonManager;
     private final TransactionFactory transactionFactory;
 
     @Autowired
-    public WinningManager(SubmissionManager submissionManager,
-                          HackathonManager hackathonManager,
-                          TransactionFactory transactionFactory) {
-        this.submissionManager = submissionManager;
-        this.hackathonManager = hackathonManager;
+    public WinningManager(TransactionFactory transactionFactory) {
         this.transactionFactory = transactionFactory;
-    }
-
-
-    /**
-     * Determina il vincitore (o i vincitori in caso di parità).
-     * Se più team hanno lo stesso punteggio massimo, restituisce tutti i team parimerito.
-     *
-     * @param hackathon l'hackathon di cui determinare il vincitore
-     * @return lista di team parimerito per il primo posto
-     * @throws IllegalStateException se non ci sono sottomissioni valutate
-     */
-    public List<Team> determinaVincitori(@NonNull Hackathon hackathon) {
-        List<Map.Entry<Team, Integer>> classifica = ottieniClassifica(hackathon);
-
-        if (classifica.isEmpty()) {
-            throw new IllegalStateException("Non ci sono sottomissioni valutate per questo hackathon");
-        }
-
-        int punteggioMassimo = classifica.getFirst().getValue();
-
-        return classifica.stream()
-                .takeWhile(entry -> entry.getValue() == punteggioMassimo)
-                .map(Map.Entry::getKey)
-                .toList();
-    }
-
-    /**
-     * Restituisce il voto di un team per un hackathon specifico.
-     *
-     * @param hackathon l'hackathon
-     * @param team      il team di cui ottenere il voto
-     * @return il voto del team, o null se non ha sottomesso o non è stato valutato
-     */
-    public Integer ottieniVotoTeam(@NonNull Hackathon hackathon, @NonNull Team team) {
-        List<Map.Entry<Team, Integer>> classifica = ottieniClassifica(hackathon);
-        return classifica.stream()
-                .filter(entry -> entry.getKey().equals(team))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(null);
     }
 
     /**
@@ -97,20 +54,55 @@ public class WinningManager {
     }
 
     /**
+     * @return true se tutte le sottomissioni siano state valutate, false altrimenti
+     */
+    public boolean controllaSeValutate(@NonNull Hackathon hackathon) {
+        return
+                hackathon.getIscritti().
+                        entrySet().
+                        stream().
+                        filter(entry -> entry.
+                                getValue().
+                                hasValutazione())
+                        .collect(Collectors.toSet()).isEmpty();
+    }
+
+    /**
+     * Restituisce l'elenco delle iscrizioni che hanno ottenuto il punteggio massimo.
+     * Se più team hanno lo stesso punteggio primo in classifica, vengono restituiti tutti.
+     */
+    public List<Iscrizione> calculateVincitori(@NonNull Hackathon hackathon) {
+        if(!controllaSeValutate(hackathon)) {
+            throw new IllegalArgumentException("L'hackathon in questione ha sottomissioni non valutate");
+        }
+
+        double maxPunteggio = hackathon.getIscritti().values().stream()
+                .filter(Iscrizione::hasValutazione)
+                .mapToDouble(i -> i.getSottomissione().getValutazione().voto())
+                .max()
+                .orElse(Double.NEGATIVE_INFINITY);
+
+        return hackathon.getIscritti().values().stream()
+                .filter(i -> i.hasValutazione() &&
+                        Double.compare(i.getSottomissione().getValutazione().voto(), maxPunteggio) == 0)
+                .toList();
+    }
+
+    /**
      * Verifica se il vincitore ha già ricevuto il pagamento.
      *
      * @param hackathon l'hackathon di riferimento
-     * @param team      il team da verificare
      * @return true se il team ha già ricevuto il pagamento, false altrimenti
      * @throws IllegalArgumentException se il team non è il vincitore assegnato
      */
-    public boolean vincitoreHaGiaRicevutoPremio(@NonNull Hackathon hackathon, @NonNull Team team) {
-        if (hackathon.getVincitore() == null || !hackathon.getVincitore().equals(team)) {
-            throw new IllegalArgumentException("Il team specificato non è il vincitore assegnato per questo hackathon");
+    public boolean vincitoreHaGiaRicevutoPremio(@NonNull Hackathon hackathon) {
+        if(
+                hackathon.getVincitore() == null
+                        || !hackathon.getRappresentazioneStato().equals(RappresentazioneStato.CONCLUSO)
+        ) {
+            throw new IllegalArgumentException("L'Hackathon non ha ancora un vincitore");
         }
-
-        // TODO: Implementare con TransactionRepository quando disponibile
-        // Per ora restituisce false come placeholder
-        return false;
+        return hackathon.getTransazioniPremio().stream()
+                .anyMatch(Transaction::isSuccessful);
     }
 }
