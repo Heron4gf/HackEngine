@@ -14,6 +14,7 @@ public class Transaction {
     private final IPaymentMethod metodo;
     private final IParteDiPagamento ordinante;
     private final IParteDiPagamento beneficiario;
+    private final TransactionType tipo;
 
     @Setter
     private TransactionStatus stato = TransactionStatus.PROCESSANDO;

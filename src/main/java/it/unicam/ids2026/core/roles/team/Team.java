@@ -1,7 +1,6 @@
 package it.unicam.ids2026.core.roles.team;
 
 import it.unicam.ids2026.core.transaction.IParteDiPagamento;
-import it.unicam.ids2026.core.transaction.MoneyAmount;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,9 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,9 +37,6 @@ public class Team implements IParteDiPagamento {
     @EqualsAndHashCode.Exclude
     private final Set<Utente> membri;
 
-    @EqualsAndHashCode.Exclude
-    private final List<MoneyAmount> pagamentiRicevuti = new ArrayList<>();
-
     public Team(String nome, int maxMembri) {
         this(nome, maxMembri, new HashSet<>());
     }
@@ -50,14 +44,5 @@ public class Team implements IParteDiPagamento {
     @Override
     public String dettagliConto() {
         return this.getNome();
-    }
-
-    /**
-     * Registra un pagamento ricevuto da questo team.
-     *
-     * @param amount l'importo ricevuto
-     */
-    public void riceviPagamento(MoneyAmount amount) {
-        this.pagamentiRicevuti.add(amount);
     }
 }

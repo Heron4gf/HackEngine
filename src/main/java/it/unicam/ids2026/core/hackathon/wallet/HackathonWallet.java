@@ -39,10 +39,17 @@ public class HackathonWallet {
             throw new IllegalArgumentException("Currency mismatch");
         }
         
-        saldo = new MoneyAmount(
-            saldo.getAmount().add(importo.getAmount()),
-            saldo.getCurrency()
-        );
+        if (transazione.getTipo() == TransactionType.CREDITO) {
+            saldo = new MoneyAmount(
+                saldo.getAmount().add(importo.getAmount()),
+                saldo.getCurrency()
+            );
+        } else {
+            saldo = new MoneyAmount(
+                saldo.getAmount().subtract(importo.getAmount()),
+                saldo.getCurrency()
+            );
+        }
     }
 
     public List<Transaction> getTransazioni() {

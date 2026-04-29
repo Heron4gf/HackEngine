@@ -14,17 +14,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Gestisce la determinazione del vincitore e l'elaborazione del pagamento del premio.
- */
 @Service
 public class WinningManager {
 
     private final TransactionFactory transactionFactory;
+    private final HackathonManager hackathonManager;
 
     @Autowired
-    public WinningManager(TransactionFactory transactionFactory) {
+    public WinningManager(TransactionFactory transactionFactory, HackathonManager hackathonManager) {
         this.transactionFactory = transactionFactory;
+        this.hackathonManager = hackathonManager;
     }
 
     /**
@@ -45,9 +44,6 @@ public class WinningManager {
 
         // L'hackathon effettua il pagamento al team vincitore
         Transaction transazione = transactionFactory.makePayment(hackathon, vincitore, premio);
-        
-        // Notifica il team del pagamento ricevuto
-        vincitore.riceviPagamento(premio);
         
         // Register transaction in the hackathon wallet
         hackathon.getWallet().aggiungiTransazione(transazione);
@@ -99,6 +95,7 @@ public class WinningManager {
             throw new IllegalArgumentException("Ci sono sottomissioni non ancora valutate");
         }
         hackathon.assegnaVincitore(vincitore);
+        hackathonManager.avanzaStato(hackathon);
     }
 
     /**
