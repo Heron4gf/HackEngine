@@ -5,6 +5,7 @@ import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.violation.Violazione;
 import it.unicam.ids2026.persistence.HackathonRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ViolationManager {
      * @param mentore il mentore che segnala la violazione
      * @param descrizione la descrizione della violazione
      */
-    public void segnalaTeam(Hackathon hackathon, Team team, Mentore mentore, String descrizione) {
+    public void segnalaTeam(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull Mentore mentore, @NonNull String descrizione) {
         hackathonRepository.findById(hackathon.getId()).ifPresent(
                 result -> {
                     result.getViolazioni().add(
@@ -48,7 +49,7 @@ public class ViolationManager {
      * @param hackathon l'hackathon di riferimento
      * @return insieme delle violazioni
      */
-    public Set<Violazione> getViolations(Hackathon hackathon) {
+    public Set<Violazione> getViolations(@NonNull Hackathon hackathon) {
         return hackathon.getViolazioni();
     }
 
