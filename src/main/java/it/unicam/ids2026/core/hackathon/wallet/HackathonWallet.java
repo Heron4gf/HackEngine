@@ -2,7 +2,6 @@ package it.unicam.ids2026.core.hackathon.wallet;
 
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
-import it.unicam.ids2026.core.transaction.TransactionType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -40,17 +39,10 @@ public class HackathonWallet {
             throw new IllegalArgumentException("Currency mismatch");
         }
         
-        if (transazione.getTipo() == TransactionType.CREDITO) {
-            saldo = new MoneyAmount(
-                saldo.getAmount().add(importo.getAmount()),
-                saldo.getCurrency()
-            );
-        } else {
-            saldo = new MoneyAmount(
-                saldo.getAmount().subtract(importo.getAmount()),
-                saldo.getCurrency()
-            );
-        }
+        saldo = new MoneyAmount(
+            saldo.getAmount().subtract(importo.getAmount()),
+            saldo.getCurrency()
+        );
     }
 
     public List<Transaction> getTransazioni() {

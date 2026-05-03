@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -33,15 +32,17 @@ public class ViolationManager {
      * @param mentore il mentore che segnala la violazione
      * @param descrizione la descrizione della violazione
      */
-    public void segnalaTeam(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull Mentore mentore, @NonNull String descrizione) {
+    public Violazione segnalaTeam(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull Mentore mentore, @NonNull String descrizione) {
         if (!validaDescrizione(descrizione)) {
             throw new IllegalArgumentException("La descrizione della violazione non e valida");
         }
         if (!hackathon.getIscritti().containsKey(team)) {
             throw new IllegalArgumentException("Il team non risulta iscritto all'hackathon");
         }
-        hackathon.getViolazioni().add(new Violazione(mentore, team, hackathon, descrizione));
+        Violazione violazione = new Violazione(mentore, team, hackathon, descrizione);
+        hackathon.getViolazioni().add(violazione);
         hackathonRepository.save(hackathon);
+        return violazione;
     }
 
     public Violazione segnalaTeam(@NonNull UUID hackathonId,
@@ -56,18 +57,7 @@ public class ViolationManager {
             throw new IllegalArgumentException("L'utente indicato non e un mentore");
         }
         Team team = teamManager.getTeam(teamId);
-        if (!validaDescrizione(descrizione)) {
-            throw new IllegalArgumentException("La descrizione della violazione non e valida");
-        }
-        if (!hackathon.getIscritti().containsKey(team)) {
-            throw new IllegalArgumentException("Il team non risulta iscritto all'hackathon");
-        }
-
-        Set<Violazione> violazioni = hackathon.getViolazioni();
-        Violazione violazione = new Violazione(mentore, team, hackathon, descrizione);
-        violazioni.add(violazione);
-        hackathonRepository.save(hackathon);
-        return violazione;
+        return segnalaTeam(hackathon, team, mentore, descrizione);
     }
 
     /**

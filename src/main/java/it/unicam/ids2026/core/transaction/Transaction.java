@@ -6,10 +6,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
 public class Transaction {
+    private final UUID id = UUID.randomUUID();
     private final MoneyAmount importo;
     private final IPaymentMethod metodo;
     private final IParteDiPagamento ordinante;

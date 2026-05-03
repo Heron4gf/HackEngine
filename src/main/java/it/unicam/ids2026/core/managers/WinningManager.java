@@ -12,8 +12,8 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class WinningManager {
@@ -29,10 +29,6 @@ public class WinningManager {
         this.transactionFactory = transactionFactory;
         this.hackathonManager = hackathonManager;
         this.hackathonRepository = hackathonRepository;
-    }
-
-    public WinningManager(TransactionFactory transactionFactory) {
-        this(transactionFactory, null, null);
     }
 
     /**
@@ -56,9 +52,7 @@ public class WinningManager {
         
         // Register transaction in the hackathon wallet
         hackathon.getWallet().aggiungiTransazione(transazione);
-        if (hackathonRepository != null) {
-            hackathonRepository.save(hackathon);
-        }
+        hackathonRepository.save(hackathon);
         
         return transazione;
     }
@@ -75,21 +69,17 @@ public class WinningManager {
      * @return true se tutte le sottomissioni siano state valutate, false altrimenti
      */
     public boolean controllaSeValutate(@NonNull Hackathon hackathon) {
-        return
-                hackathon.getIscritti().
-                        entrySet().
-                        stream().
-                        filter(entry -> !entry.
-                                getValue().
-                                hasValutazione())
-                        .collect(Collectors.toSet()).isEmpty();
+        return hackathon.getIscritti()
+                .values()
+                .stream()
+                .allMatch(Iscrizione::hasValutazione);
     }
 
     /**
-     * Restituisce l'elenco delle iscrizioni che hanno ottenuto il punteggio massimo.
+     * Restituisce team e iscrizioni che hanno ottenuto il punteggio massimo.
      * Se più team hanno lo stesso punteggio primo in classifica, vengono restituiti tutti.
      */
-    public List<Iscrizione> ottieniTeamConPunteggioMassimo(@NonNull Hackathon hackathon) {
+    public Map<Team, Iscrizione> ottieniTeamConPunteggioMassimo(@NonNull Hackathon hackathon) {
         if(!controllaSeValutate(hackathon)) {
             throw new IllegalArgumentException("L'hackathon in questione ha sottomissioni non valutate");
         }
@@ -100,10 +90,12 @@ public class WinningManager {
                 .max()
                 .orElse(Double.NEGATIVE_INFINITY);
 
-        return hackathon.getIscritti().values().stream()
-                .filter(i -> i.hasValutazione() &&
-                        Double.compare(i.getSottomissione().getValutazione().voto(), maxPunteggio) == 0)
-                .toList();
+        return hackathon.getIscritti().entrySet().stream()
+                .filter(entry -> entry.getValue().hasValutazione() &&
+                        Double.compare(entry.getValue().getSottomissione().getValutazione().voto(), maxPunteggio) == 0)
+                .collect(LinkedHashMap::new,
+                        (candidates, entry) -> candidates.put(entry.getKey(), entry.getValue()),
+                        Map::putAll);
     }
 
     /**
@@ -115,9 +107,7 @@ public class WinningManager {
             throw new IllegalArgumentException("Ci sono sottomissioni non ancora valutate");
         }
         hackathon.assegnaVincitore(vincitore);
-        if (hackathonManager != null) {
-            hackathonManager.avanzaStato(hackathon);
-        }
+        hackathonManager.avanzaStato(hackathon);
     }
 
     /**

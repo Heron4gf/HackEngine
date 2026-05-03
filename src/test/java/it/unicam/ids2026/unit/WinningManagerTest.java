@@ -6,12 +6,16 @@ import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.hackathon.status.StatoInValutazione;
+import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.WinningManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.transaction.MoneyAmount;
+import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.transaction.factory.TransactionFactory;
+import it.unicam.ids2026.persistence.HackathonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,8 +26,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +41,12 @@ class WinningManagerTest {
 
     @Mock
     private TransactionFactory transactionFactory;
+    @Mock
+    private HackathonManager hackathonManager;
+    @Mock
+    private HackathonRepository hackathonRepository;
+    @Mock
+    private Transaction transaction;
 
     private WinningManager winningManager;
     private Hackathon hackathon;
@@ -46,7 +55,7 @@ class WinningManagerTest {
 
     @BeforeEach
     void setUp() {
-        winningManager = new WinningManager(transactionFactory);
+        winningManager = new WinningManager(transactionFactory, hackathonManager, hackathonRepository);
 
         Organizzatore organizzatore = new Organizzatore("Mario", "Rossi");
         Giudice giudice = new Giudice("Luigi", "Verdi");
@@ -113,11 +122,12 @@ class WinningManagerTest {
         hackathon.getIscritti().put(team2, createIscrizioneValutata(team2, 7));
 
         // Act
-        List<Iscrizione> result = winningManager.ottieniTeamConPunteggioMassimo(hackathon);
+        Map<Team, Iscrizione> result = winningManager.ottieniTeamConPunteggioMassimo(hackathon);
 
         // Assert
         assertEquals(1, result.size());
-        assertEquals(9.0, result.get(0).getSottomissione().getValutazione().voto());
+        assertTrue(result.containsKey(team1));
+        assertEquals(9.0, result.get(team1).getSottomissione().getValutazione().voto());
     }
 
     @Test
@@ -127,10 +137,12 @@ class WinningManagerTest {
         hackathon.getIscritti().put(team2, createIscrizioneValutata(team2, 8));
 
         // Act
-        List<Iscrizione> result = winningManager.ottieniTeamConPunteggioMassimo(hackathon);
+        Map<Team, Iscrizione> result = winningManager.ottieniTeamConPunteggioMassimo(hackathon);
 
         // Assert
         assertEquals(2, result.size());
+        assertTrue(result.containsKey(team1));
+        assertTrue(result.containsKey(team2));
     }
 
     @Test
@@ -157,6 +169,23 @@ class WinningManagerTest {
 
         // Assert
         assertEquals(team1, hackathon.getVincitore());
+        verify(hackathonManager).avanzaStato(hackathon);
+    }
+
+    @Test
+    void elaboraPagamentoPremio_VincitoreValido_SalvaHackathon() {
+        // Arrange
+        hackathon.setVincitore(team1);
+        when(transactionFactory.makePayment(eq(hackathon), eq(team1), any())).thenReturn(transaction);
+        when(transaction.getImporto()).thenReturn(new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")));
+
+        // Act
+        Transaction result = winningManager.elaboraPagamentoPremio(hackathon, team1);
+
+        // Assert
+        assertSame(transaction, result);
+        assertTrue(hackathon.getWallet().getTransazioni().contains(transaction));
+        verify(hackathonRepository).save(hackathon);
     }
 
     @Test

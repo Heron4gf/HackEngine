@@ -28,7 +28,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -94,7 +94,7 @@ class WinningControllerTest {
         // Arrange
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
         when(winningManager.ottieniTeamConPunteggioMassimo(hackathon))
-                .thenReturn(List.of(hackathon.getIscritti().get(team1)));
+                .thenReturn(Map.of(team1, hackathon.getIscritti().get(team1)));
 
         // Act & Assert
         mockMvc.perform(get("/api/hackathons/{hackathonId}/winner-candidates", hackathonId))
@@ -113,9 +113,9 @@ class WinningControllerTest {
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
         when(winningManager.ottieniTeamConPunteggioMassimo(hackathon))
-                .thenReturn(List.of(
-                        hackathon.getIscritti().get(team1),
-                        hackathon.getIscritti().get(team2)
+                .thenReturn(Map.of(
+                        team1, hackathon.getIscritti().get(team1),
+                        team2, hackathon.getIscritti().get(team2)
                 ));
 
         // Act & Assert

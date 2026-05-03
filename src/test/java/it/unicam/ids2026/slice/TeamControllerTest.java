@@ -16,6 +16,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -99,6 +100,26 @@ class TeamControllerTest {
         mockMvc.perform(get("/api/teams/{nome}", teamName))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.nome", is(teamName)));
+    }
+
+    @Test
+    void getTeams_WithHackathonId_ShouldReturnOnlyHackathonTeams() throws Exception {
+        // Arrange
+        UUID hackathonId = UUID.randomUUID();
+        Hackathon hackathon = mock(Hackathon.class);
+        Team team = new Team("Scoped Team", 5);
+
+        when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
+        when(hackathonManager.getTeams(hackathon)).thenReturn(Set.of(team));
+
+        // Act & Assert
+        mockMvc.perform(get("/api/teams")
+                .param("hackathonId", hackathonId.toString()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].nome", is("Scoped Team")));
+
+        verify(teamManager, never()).getTeams();
     }
 
     @Test

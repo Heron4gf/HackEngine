@@ -50,8 +50,11 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<TeamResponse>> getTeams() {
-        Set<TeamResponse> teams = teamManager.getTeams().stream()
+    public ResponseEntity<Set<TeamResponse>> getTeams(@RequestParam(required = false) UUID hackathonId) {
+        Set<Team> source = hackathonId == null
+                ? teamManager.getTeams()
+                : hackathonManager.getTeams(hackathonManager.getHackathon(hackathonId));
+        Set<TeamResponse> teams = source.stream()
                 .map(TeamResponse::from)
                 .collect(Collectors.toSet());
         return ResponseEntity.ok(teams);

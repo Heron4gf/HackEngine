@@ -8,7 +8,6 @@ import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
-import it.unicam.ids2026.core.supportRequest.StatoRichiesta;
 import it.unicam.ids2026.core.supportRequest.response.RispostaCall;
 import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
 import it.unicam.ids2026.persistence.HackathonRepository;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,12 +32,18 @@ public class SupportRequestManager {
         this.hackathonRepository = hackathonRepository;
     }
 
-    public void creaRichiestaSupporto(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull String titolo, @NonNull String descrizione) {
-        if (validaDati(hackathon, team, titolo, descrizione)) {
-            RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
-            hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
-            hackathonRepository.save(hackathon);
-        } else throw new IllegalArgumentException("Dati invalidi");
+    public RichiestaSupporto creaRichiestaSupporto(@NonNull Hackathon hackathon,
+                                                   @NonNull Team team,
+                                                   @NonNull String titolo,
+                                                   @NonNull String descrizione) {
+        if (!validaDati(hackathon, team, titolo, descrizione)) {
+            throw new IllegalArgumentException("Dati invalidi");
+        }
+
+        RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
+        hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
+        hackathonRepository.save(hackathon);
+        return richiestaSupporto;
     }
 
     public RichiestaSupporto creaRichiestaSupporto(@NonNull String titolo,
@@ -49,15 +55,7 @@ public class SupportRequestManager {
         Set<Team> listaTeam = hackathon.getTeams();
         Team team = trovaTeam(listaTeam, teamId);
 
-        if (!validaDati(hackathon, team, titolo, descrizione)) {
-            throw new IllegalArgumentException("Dati invalidi");
-        }
-
-        RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
-        richiestaSupporto.setStato(StatoRichiesta.IN_ATTESA);
-        hackathon.aggiungiRichiestaSupport(richiestaSupporto, team);
-        hackathonRepository.save(hackathon);
-        return richiestaSupporto;
+        return creaRichiestaSupporto(hackathon, team, titolo, descrizione);
     }
 
     public void registraDisponibilita(@NonNull Hackathon hackathon, @NonNull Utente utente, @NonNull Disponibilita disponibilita) {
@@ -69,6 +67,7 @@ public class SupportRequestManager {
     public Set<RichiestaSupporto> visualizzaRichieste(@NonNull Hackathon hackathon) {
         return hackathon.getIscritti().values().stream()
             .map(Iscrizione::getRichiestaSupporto)
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
     }
     

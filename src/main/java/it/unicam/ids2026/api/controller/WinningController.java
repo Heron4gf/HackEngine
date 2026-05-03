@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -50,17 +51,9 @@ public class WinningController {
     public ResponseEntity<List<WinnerCandidateResponse>> getWinnerCandidates(
             @PathVariable UUID hackathonId) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);
-        List<Iscrizione> candidates = winningManager.ottieniTeamConPunteggioMassimo(h);
-        List<WinnerCandidateResponse> response = candidates.stream()
-                .map(iscrizione -> {
-                    // Find the team from the iscritti map
-                    Team team = h.getIscritti().entrySet().stream()
-                            .filter(e -> e.getValue().equals(iscrizione))
-                            .map(java.util.Map.Entry::getKey)
-                            .findFirst()
-                            .orElseThrow();
-                    return WinnerCandidateResponse.from(team, iscrizione);
-                })
+        Map<Team, Iscrizione> candidates = winningManager.ottieniTeamConPunteggioMassimo(h);
+        List<WinnerCandidateResponse> response = candidates.entrySet().stream()
+                .map(entry -> WinnerCandidateResponse.from(entry.getKey(), entry.getValue()))
                 .toList();
         return ResponseEntity.ok(response);
     }

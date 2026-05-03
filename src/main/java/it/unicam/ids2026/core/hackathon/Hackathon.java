@@ -122,10 +122,6 @@ public class Hackathon implements IParteDiPagamento {
         this.state.aggiungiRichiestaSupporto(this, team, richiestaSupporto);
     }
 
-    public void aggiungiRichiestaSupport(RichiestaSupporto richiestaSupporto, Team team) {
-        aggiungiRichiestaSupporto(team, richiestaSupporto);
-    }
-
     public Set<Team> getTeams() {
         return Collections.unmodifiableSet(iscritti.keySet());
     }
