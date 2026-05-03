@@ -10,6 +10,7 @@ import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
+import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import jakarta.validation.Valid;
@@ -111,6 +112,29 @@ public class HackathonController {
                 .map(HackathonResponse::from)
                 .collect(Collectors.toSet());
         return ResponseEntity.ok(hackathons);
+    }
+
+    /**
+     * Resitutuisce gli hackathon creati da un organizzatore
+     * @param organizzatore l'organizzatore degli hackathon
+     * @return gli hackathon creati da tale organizzatore
+     */
+
+    @GetMapping("/by-organizer/{organizzatore}")
+    public ResponseEntity<Set<HackathonResponse>> getHackathonsByOrganizer(@PathVariable Organizzatore organizzatore) {
+        Set<HackathonResponse> hackathons = hackathonManager.getHackathonCreati(organizzatore).stream().map(
+                HackathonResponse::from).collect(Collectors.toSet());
+        return ResponseEntity.ok(hackathons);
+    }
+
+    /**
+     * Aggiunge un mentore agli hackathon creati
+     *
+     */
+    @PostMapping("/{hackathon}/aggiungi-mentore")
+    public ResponseEntity<MessageResponse> aggiungiMentore(@PathVariable Hackathon hackathon,  Set<Mentore> mentori) {
+        hackathonManager.aggiungiMentori(hackathon, mentori);
+        return ResponseEntity.ok(new MessageResponse("Mentore aggiunto all'hackathon"));
     }
 
     /**

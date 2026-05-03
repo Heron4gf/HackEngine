@@ -2,6 +2,7 @@ package it.unicam.ids2026.core.hackathon.wallet;
 
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
+import it.unicam.ids2026.core.transaction.TransactionType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
