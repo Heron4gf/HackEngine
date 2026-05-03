@@ -1,10 +1,7 @@
 package it.unicam.ids2026.core.transaction.factory;
 
 import it.unicam.ids2026.api.external.payments.IPaymentMethod;
-import it.unicam.ids2026.core.transaction.IParteDiPagamento;
-import it.unicam.ids2026.core.transaction.Transaction;
-import it.unicam.ids2026.core.transaction.TransactionStatus;
-import it.unicam.ids2026.core.transaction.MoneyAmount;
+import it.unicam.ids2026.core.transaction.*;
 
 public abstract class AbstractTransactionFactory implements TransactionFactory {
 
