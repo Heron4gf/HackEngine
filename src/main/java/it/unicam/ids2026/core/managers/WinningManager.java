@@ -7,6 +7,7 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.transaction.factory.TransactionFactory;
+import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,19 @@ public class WinningManager {
 
     private final TransactionFactory transactionFactory;
     private final HackathonManager hackathonManager;
+    private final HackathonRepository hackathonRepository;
 
     @Autowired
-    public WinningManager(TransactionFactory transactionFactory, HackathonManager hackathonManager) {
+    public WinningManager(TransactionFactory transactionFactory,
+                          HackathonManager hackathonManager,
+                          HackathonRepository hackathonRepository) {
         this.transactionFactory = transactionFactory;
         this.hackathonManager = hackathonManager;
+        this.hackathonRepository = hackathonRepository;
+    }
+
+    public WinningManager(TransactionFactory transactionFactory) {
+        this(transactionFactory, null, null);
     }
 
     /**
@@ -47,8 +56,19 @@ public class WinningManager {
         
         // Register transaction in the hackathon wallet
         hackathon.getWallet().aggiungiTransazione(transazione);
+        if (hackathonRepository != null) {
+            hackathonRepository.save(hackathon);
+        }
         
         return transazione;
+    }
+
+    public Transaction elaboraPagamentoHackathon(@NonNull Hackathon hackathon) {
+        Team vincitore = hackathon.getVincitore();
+        if (vincitore == null) {
+            throw new IllegalArgumentException("L'Hackathon non ha ancora un vincitore");
+        }
+        return elaboraPagamentoPremio(hackathon, vincitore);
     }
 
     /**
@@ -95,7 +115,9 @@ public class WinningManager {
             throw new IllegalArgumentException("Ci sono sottomissioni non ancora valutate");
         }
         hackathon.assegnaVincitore(vincitore);
-        hackathonManager.avanzaStato(hackathon);
+        if (hackathonManager != null) {
+            hackathonManager.avanzaStato(hackathon);
+        }
     }
 
     /**

@@ -106,8 +106,28 @@ public class Hackathon implements IParteDiPagamento {
         this.state.aggiungiSottomissione(this, team, sottomissione);
     }
 
+    public Sottomissione getSottomissione(Team team) {
+        Iscrizione iscrizione = requireIscrizione(team);
+        if (iscrizione.getSottomissione() == null) {
+            throw new NoSuchElementException("Nessuna sottomissione trovata per il team specificato");
+        }
+        return iscrizione.getSottomissione();
+    }
+
+    public void setSottomissione(Team team, Sottomissione sottomissione) {
+        aggiungiSottomissione(team, sottomissione);
+    }
+
     public void aggiungiRichiestaSupporto(Team team, RichiestaSupporto richiestaSupporto) {
         this.state.aggiungiRichiestaSupporto(this, team, richiestaSupporto);
+    }
+
+    public void aggiungiRichiestaSupport(RichiestaSupporto richiestaSupporto, Team team) {
+        aggiungiRichiestaSupporto(team, richiestaSupporto);
+    }
+
+    public Set<Team> getTeams() {
+        return Collections.unmodifiableSet(iscritti.keySet());
     }
 
     public void assegnaVincitore(Team team) {
@@ -130,5 +150,13 @@ public class Hackathon implements IParteDiPagamento {
     @Override
     public String dettagliConto() {
         return this.datiHackathon.nome();
+    }
+
+    private Iscrizione requireIscrizione(Team team) {
+        Iscrizione iscrizione = iscritti.get(team);
+        if (iscrizione == null) {
+            throw new NoSuchElementException("Il team non risulta iscritto all'hackathon");
+        }
+        return iscrizione;
     }
 }

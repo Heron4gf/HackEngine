@@ -2,12 +2,16 @@ package it.unicam.ids2026.api.controller;
 
 import it.unicam.ids2026.api.dto.request.AssegnaVincitoreRequest;
 import it.unicam.ids2026.api.dto.response.MessageResponse;
+import it.unicam.ids2026.api.dto.response.TransactionResponse;
+import it.unicam.ids2026.api.dto.response.WinnerCandidateResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.TeamManager;
 import it.unicam.ids2026.core.managers.WinningManager;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.transaction.Transaction;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,34 +77,17 @@ public class WinningController {
     @PostMapping("/winner")
     public ResponseEntity<MessageResponse> assegnaVincitore(
             @PathVariable UUID hackathonId,
-            @RequestBody AssegnaVincitoreRequest request) {
+            @Valid @RequestBody AssegnaVincitoreRequest request) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);
         Team t = teamManager.getTeam(request.teamId());
         winningManager.assegnaVincitore(h, t);
         return ResponseEntity.ok(new MessageResponse("Vincitore assegnato con successo"));
     }
 
-    /**
-     * DTO per la risposta contenente le informazioni del team candidato al vincitore.
-     */
-    public record WinnerCandidateResponse(
-            String teamId,
-            String teamName,
-            double punteggio
-    ) {
-        /**
-         * Crea una risposta a partire da un'iscrizione.
-         *
-         * @param team il team iscritto
-         * @param iscrizione l'iscrizione del team
-         * @return la risposta con le informazioni del candidato
-         */
-        public static WinnerCandidateResponse from(Team team, Iscrizione iscrizione) {
-            return new WinnerCandidateResponse(
-                    team.getId().toString(),
-                    team.getNome(),
-                    iscrizione.getSottomissione().getValutazione().voto()
-            );
-        }
+    @PostMapping("/payment")
+    public ResponseEntity<TransactionResponse> elaboraPagamentoHackathon(@PathVariable UUID hackathonId) {
+        Hackathon h = hackathonManager.getHackathon(hackathonId);
+        Transaction transaction = winningManager.elaboraPagamentoHackathon(h);
+        return ResponseEntity.ok(TransactionResponse.from(transaction));
     }
 }

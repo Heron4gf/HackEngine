@@ -54,6 +54,10 @@ public class HackathonManager {
         return hackathonRepository.findAll();
     }
 
+    public Set<Team> getTeams(@NonNull Hackathon hackathon) {
+        return hackathon.getTeams();
+    }
+
     /**
      * Crea un nuovo hackathon con i parametri forniti.
      * Valida che le date di iscrizione precedano la durata dell'hackathon.
@@ -188,6 +192,13 @@ public class HackathonManager {
         }
         hackathon.iscriviTeam(team);
         hackathonRepository.save(hackathon);
+    }
+
+    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull Utente utente) {
+        if (!team.equals(utente.getTeam())) {
+            throw new IllegalArgumentException("L'utente indicato non appartiene al team " + team.getNome());
+        }
+        iscriviTeam(hackathon, utente);
     }
 
 }

@@ -3,6 +3,7 @@ package it.unicam.ids2026.api.controller;
 import it.unicam.ids2026.api.dto.request.CreateHackathonRequest;
 import it.unicam.ids2026.api.dto.response.HackathonResponse;
 import it.unicam.ids2026.api.dto.response.MessageResponse;
+import it.unicam.ids2026.api.dto.response.TeamResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
@@ -99,6 +100,15 @@ public class HackathonController {
     public ResponseEntity<HackathonResponse> getHackathon(@PathVariable UUID id) {
         Hackathon hackathon = hackathonManager.getHackathon(id);
         return ResponseEntity.ok(HackathonResponse.from(hackathon));
+    }
+
+    @GetMapping("/{id}/teams")
+    public ResponseEntity<Set<TeamResponse>> getTeams(@PathVariable UUID id) {
+        Hackathon hackathon = hackathonManager.getHackathon(id);
+        Set<TeamResponse> teams = hackathonManager.getTeams(hackathon).stream()
+                .map(TeamResponse::from)
+                .collect(Collectors.toSet());
+        return ResponseEntity.ok(teams);
     }
 
     /**

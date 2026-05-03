@@ -8,31 +8,56 @@ import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.supportRequest.StatoRichiesta;
 import it.unicam.ids2026.core.supportRequest.response.RispostaCall;
 import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
+import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class SupportRequestManager {
 
     private final ICalendar calendarService;
+    private final HackathonRepository hackathonRepository;
 
-    @Autowired
-    public SupportRequestManager(ICalendar calendarService) {
+    public SupportRequestManager(ICalendar calendarService, HackathonRepository hackathonRepository) {
         this.calendarService = calendarService;
+        this.hackathonRepository = hackathonRepository;
     }
 
     public void creaRichiestaSupporto(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull String titolo, @NonNull String descrizione) {
         if (validaDati(hackathon, team, titolo, descrizione)) {
             RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
             hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
+            hackathonRepository.save(hackathon);
         } else throw new IllegalArgumentException("Dati invalidi");
+    }
+
+    public RichiestaSupporto creaRichiestaSupporto(@NonNull String titolo,
+                                                   @NonNull String descrizione,
+                                                   @NonNull UUID hackathonId,
+                                                   @NonNull UUID teamId) {
+        Hackathon hackathon = hackathonRepository.findById(hackathonId)
+                .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
+        Set<Team> listaTeam = hackathon.getTeams();
+        Team team = trovaTeam(listaTeam, teamId);
+
+        if (!validaDati(hackathon, team, titolo, descrizione)) {
+            throw new IllegalArgumentException("Dati invalidi");
+        }
+
+        RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
+        richiestaSupporto.setStato(StatoRichiesta.IN_ATTESA);
+        hackathon.aggiungiRichiestaSupport(richiestaSupporto, team);
+        hackathonRepository.save(hackathon);
+        return richiestaSupporto;
     }
 
     public void registraDisponibilita(@NonNull Hackathon hackathon, @NonNull Utente utente, @NonNull Disponibilita disponibilita) {
@@ -72,8 +97,15 @@ public class SupportRequestManager {
 
     private boolean validaDati(Hackathon hackathon, Team team, String titolo, String descrizione) {
         return hackathon.getIscritti().containsKey(team)
-                && !titolo.isEmpty()
-                && !descrizione.isEmpty();
+                && !titolo.isBlank()
+                && !descrizione.isBlank();
+    }
+
+    private Team trovaTeam(Set<Team> listaTeam, UUID teamId) {
+        return listaTeam.stream()
+                .filter(team -> team.getId().equals(teamId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con ID: " + teamId));
     }
 
     private boolean validaDisponibilita(Hackathon hackathon, Utente utente, Disponibilita disponibilita) {

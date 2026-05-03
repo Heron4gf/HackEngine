@@ -49,6 +49,14 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TeamResponse.from(team));
     }
 
+    @GetMapping
+    public ResponseEntity<Set<TeamResponse>> getTeams() {
+        Set<TeamResponse> teams = teamManager.getTeams().stream()
+                .map(TeamResponse::from)
+                .collect(Collectors.toSet());
+        return ResponseEntity.ok(teams);
+    }
+
     /**
      * Restituisce un team specifico.
      *
@@ -89,12 +97,8 @@ public class TeamController {
             @RequestParam UUID utenteId) {
         Team team = teamManager.getTeam(nome);
         Utente utente = (Utente) userManager.getUserById(utenteId);
-        // Verifica che l'utente appartenga al team specificato
-        if (!team.equals(utente.getTeam())) {
-            throw new IllegalArgumentException("L'utente indicato non appartiene al team " + nome);
-        }
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        hackathonManager.iscriviTeam(hackathon, utente);
+        hackathonManager.iscriviTeam(hackathon, team, utente);
         return ResponseEntity.ok(new MessageResponse("Team iscritto all'hackathon"));
     }
 

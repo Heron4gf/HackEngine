@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record TeamResponse(
+        UUID id,
         String nome,
         int maxMembri,
         int membriAttuali,
@@ -14,6 +15,7 @@ public record TeamResponse(
 ) {
     public static TeamResponse from(Team team) {
         return new TeamResponse(
+                team.getId(),
                 team.getNome(),
                 team.getMaxMembri(),
                 team.getMembri().size(),

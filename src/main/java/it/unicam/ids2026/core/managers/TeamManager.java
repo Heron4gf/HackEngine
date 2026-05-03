@@ -41,6 +41,20 @@ public class TeamManager {
     }
 
     /**
+     * Recupera un team tramite il suo ID stabile.
+     *
+     * @param teamId identificatore del team
+     * @return il team cercato
+     * @throws NoSuchElementException se il team non esiste
+     */
+    public Team getTeam(@NonNull UUID teamId) {
+        return teamRepository.findAll().stream()
+                .filter(team -> team.getId().equals(teamId))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con ID: " + teamId));
+    }
+
+    /**
      * Restituisce tutti i team presenti nel sistema.
      *
      * @return insieme di tutti i team
@@ -80,7 +94,7 @@ public class TeamManager {
         if (utente.haTeam()) {
             throw new IllegalArgumentException("L'utente ha gia un team");
         }
-        if (getTeam(nome) != null) {
+        if (teamRepository.existsById(nome)) {
             throw new IllegalArgumentException("Esiste gia un team con lo stesso nome");
         }
         if (maxMembri < 1 || maxMembri > 20) {

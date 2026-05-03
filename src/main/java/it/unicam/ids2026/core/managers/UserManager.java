@@ -1,6 +1,9 @@
 package it.unicam.ids2026.core.managers;
 
 import it.unicam.ids2026.core.roles.User;
+import it.unicam.ids2026.core.roles.staff.Giudice;
+import it.unicam.ids2026.core.roles.staff.Mentore;
+import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.UserRepository;
 import lombok.NonNull;
@@ -42,6 +45,10 @@ public class UserManager {
         return found;
     }
 
+    public Set<User> getUserByName(@NonNull String nome) {
+        return getUsers(nome);
+    }
+
     /**
      * Recupera un utente tramite il suo ID.
      *
@@ -68,6 +75,13 @@ public class UserManager {
                 .collect(Collectors.toSet());
     }
 
+    public Set<User> getUsersByRole(@NonNull String role) {
+        Class<? extends User> roleClass = roleClassFor(role);
+        return userRepository.findAll().stream()
+                .filter(roleClass::isInstance)
+                .collect(Collectors.toSet());
+    }
+
     /**
      * Restituisce tutti gli utenti presenti nel sistema.
      *
@@ -75,6 +89,13 @@ public class UserManager {
      */
     public Set<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    public Set<User> getUsers(String nome, String role) {
+        return userRepository.findAll().stream()
+                .filter(user -> nome == null || nome.equals(user.getNome()))
+                .filter(user -> role == null || roleClassFor(role).isInstance(user))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -99,5 +120,34 @@ public class UserManager {
             throw new IllegalArgumentException("Utente gia presente nel sistema");
         }
         userRepository.save(user);
+    }
+
+    public User createUser(@NonNull String role, @NonNull String nome, String cognome) {
+        User user = switch (role.toUpperCase()) {
+            case "UTENTE" -> new Utente(nome);
+            case "ORGANIZZATORE" -> new Organizzatore(nome, requireCognome(cognome));
+            case "GIUDICE" -> new Giudice(nome, requireCognome(cognome));
+            case "MENTORE" -> new Mentore(nome, requireCognome(cognome));
+            default -> throw new IllegalArgumentException("Ruolo non valido: " + role);
+        };
+        addUser(user);
+        return user;
+    }
+
+    private String requireCognome(String cognome) {
+        if (cognome == null || cognome.isBlank()) {
+            throw new IllegalArgumentException("Il cognome e obbligatorio per i membri dello staff");
+        }
+        return cognome;
+    }
+
+    private Class<? extends User> roleClassFor(String role) {
+        return switch (role.toUpperCase()) {
+            case "UTENTE" -> Utente.class;
+            case "ORGANIZZATORE" -> Organizzatore.class;
+            case "GIUDICE" -> Giudice.class;
+            case "MENTORE" -> Mentore.class;
+            default -> throw new IllegalArgumentException("Ruolo non valido: " + role);
+        };
     }
 }

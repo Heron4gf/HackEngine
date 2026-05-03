@@ -4,18 +4,23 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class SubmissionManager {
 
-    @Autowired
-    public SubmissionManager() {
+    private final HackathonRepository hackathonRepository;
+    private final TeamManager teamManager;
+
+    public SubmissionManager(HackathonRepository hackathonRepository, TeamManager teamManager) {
+        this.hackathonRepository = hackathonRepository;
+        this.teamManager = teamManager;
     }
 
     /**
@@ -40,6 +45,36 @@ public class SubmissionManager {
 
         Sottomissione newSubmission = new Sottomissione(nome, descrizione, allegato);
         hackathon.aggiungiSottomissione(team, newSubmission);
+        hackathonRepository.save(hackathon);
+    }
+
+    public Sottomissione getSottomissione(@NonNull UUID hackathonId, @NonNull UUID teamId) {
+        Hackathon hackathon = getHackathon(hackathonId);
+        Team team = teamManager.getTeam(teamId);
+        return getSottomissione(hackathon, team);
+    }
+
+    public Sottomissione getSottomissione(@NonNull Hackathon hackathon, @NonNull Team team) {
+        return hackathon.getSottomissione(team);
+    }
+
+    public Sottomissione aggiornaSottomissione(@NonNull UUID hackathonId,
+                                               @NonNull UUID teamId,
+                                               @NonNull String descrizione,
+                                               @NonNull File allegato) {
+        Hackathon hackathon = getHackathon(hackathonId);
+        Team team = teamManager.getTeam(teamId);
+        Sottomissione sottomissioneCorrente = hackathon.getSottomissione(team);
+        String nome = sottomissioneCorrente.getNome();
+
+        if (!validaSottomissione(nome, descrizione, allegato)) {
+            throw new IllegalArgumentException("I dati della sottomissione non sono validi.");
+        }
+
+        Sottomissione nuovaSottomissione = new Sottomissione(nome, descrizione, allegato);
+        hackathon.setSottomissione(team, nuovaSottomissione);
+        hackathonRepository.save(hackathon);
+        return nuovaSottomissione;
     }
 
     /**
@@ -51,17 +86,7 @@ public class SubmissionManager {
      * @throws NoSuchElementException se il team non è iscritto o non ha una sottomissione
      */
     public Sottomissione ottieniSottomissione(@NonNull Hackathon hackathon, @NonNull Team team) {
-        if (!hackathon.getIscritti().containsKey(team)) {
-            throw new NoSuchElementException("Il team non risulta iscritto all'hackathon.");
-        }
-
-        Sottomissione sottomissione = hackathon.getIscritti().get(team).getSottomissione();
-
-        if (sottomissione == null) {
-            throw new NoSuchElementException("Nessuna sottomissione trovata per il team specificato.");
-        }
-
-        return sottomissione;
+        return getSottomissione(hackathon, team);
     }
 
     /**
@@ -110,5 +135,10 @@ public class SubmissionManager {
                 && !giudizio.isBlank()
                 && giudizio.length() >= 3
                 && giudizio.length() <= 200;
+    }
+
+    private Hackathon getHackathon(UUID hackathonId) {
+        return hackathonRepository.findById(hackathonId)
+                .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
     }
 }

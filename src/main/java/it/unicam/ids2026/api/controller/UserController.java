@@ -4,10 +4,6 @@ import it.unicam.ids2026.api.dto.request.CreateUserRequest;
 import it.unicam.ids2026.api.dto.response.UserResponse;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.User;
-import it.unicam.ids2026.core.roles.staff.Giudice;
-import it.unicam.ids2026.core.roles.staff.Mentore;
-import it.unicam.ids2026.core.roles.staff.Organizzatore;
-import it.unicam.ids2026.core.roles.team.Utente;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -35,56 +32,46 @@ public class UserController {
         this.userManager = userManager;
     }
 
-    /**
-     * Crea un nuovo utente.
-     *
-     * @param request dati per la creazione dell'utente
-     * @return l'utente creato con stato 201
-     */
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        User user = switch (request.role()) {
-            case UTENTE -> new Utente(request.nome());
-            case ORGANIZZATORE -> new Organizzatore(request.nome(), requireCognome(request));
-            case GIUDICE -> new Giudice(request.nome(), requireCognome(request));
-            case MENTORE -> new Mentore(request.nome(), requireCognome(request));
-        };
-        userManager.addUser(user);
+        User user = userManager.createUser(request.role().name(), request.nome(), request.cognome());
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user));
     }
 
-    /**
-     * Restituisce tutti gli utenti.
-     *
-     * @return lista di tutti gli utenti
-     */
     @GetMapping
-    public ResponseEntity<Set<UserResponse>> getUsers() {
-        Set<UserResponse> users = userManager.getUsers().stream()
+    public ResponseEntity<Set<UserResponse>> getUsers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String role) {
+        Set<User> selected = selectUsers(name, role);
+        Set<UserResponse> users = selected.stream()
                 .map(UserResponse::from)
                 .collect(Collectors.toSet());
         return ResponseEntity.ok(users);
     }
 
-    /**
-     * Restituisce un utente specifico.
-     *
-     * @param id identificatore dell'utente
-     * @return l'utente cercato
-     */
+    @GetMapping("/free")
+    public ResponseEntity<Set<UserResponse>> getFreeUsers() {
+        Set<UserResponse> users = userManager.getFreeUsers().stream()
+                .map(UserResponse::from)
+                .collect(Collectors.toSet());
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable UUID id) {
         return ResponseEntity.ok(UserResponse.from(userManager.getUserById(id)));
     }
 
-    /**
-     * Verifica e restituisce il cognome per i membri dello staff.
-     * Il cognome è obbligatorio per Organizzatore, Giudice e Mentore.
-     */
-    private String requireCognome(CreateUserRequest request) {
-        if (request.cognome() == null || request.cognome().isBlank()) {
-            throw new IllegalArgumentException("Il cognome e obbligatorio per i membri dello staff");
+    private Set<User> selectUsers(String name, String role) {
+        if (name != null && role != null) {
+            return userManager.getUsers(name, role);
         }
-        return request.cognome();
+        if (name != null) {
+            return userManager.getUserByName(name);
+        }
+        if (role != null) {
+            return userManager.getUsersByRole(role);
+        }
+        return userManager.getUsers();
     }
 }
