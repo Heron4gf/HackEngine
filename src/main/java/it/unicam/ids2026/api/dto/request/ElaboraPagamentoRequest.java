@@ -9,5 +9,5 @@ import java.util.UUID;
  */
 public record ElaboraPagamentoRequest(
         @NotNull(message = "L'ID del team vincitore è obbligatorio")
-        UUID teamVincitoreId
+        String nomeTeamVincitore
 ) {}

@@ -48,9 +48,9 @@ public class SubmissionManager {
         hackathonRepository.save(hackathon);
     }
 
-    public Sottomissione getSottomissione(@NonNull UUID hackathonId, @NonNull UUID teamId) {
+    public Sottomissione getSottomissione(@NonNull UUID hackathonId, @NonNull String nomeTeam) {
         Hackathon hackathon = getHackathon(hackathonId);
-        Team team = teamManager.getTeam(teamId);
+        Team team = teamManager.getTeam(nomeTeam);
         return getSottomissione(hackathon, team);
     }
 
@@ -59,11 +59,11 @@ public class SubmissionManager {
     }
 
     public Sottomissione aggiornaSottomissione(@NonNull UUID hackathonId,
-                                               @NonNull UUID teamId,
+                                               @NonNull String nomeTeam,
                                                @NonNull String descrizione,
                                                @NonNull File allegato) {
         Hackathon hackathon = getHackathon(hackathonId);
-        Team team = teamManager.getTeam(teamId);
+        Team team = teamManager.getTeam(nomeTeam);
         Sottomissione sottomissioneCorrente = hackathon.getSottomissione(team);
         String nome = sottomissioneCorrente.getNome();
 

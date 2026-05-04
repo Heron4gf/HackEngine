@@ -15,10 +15,25 @@ public class ApiInfoController {
     @GetMapping
     public ResponseEntity<Map<String, List<String>>> getApiIndex() {
         return ResponseEntity.ok(Map.of(
-                "hackathons", List.of("GET /api/hackathons", "POST /api/hackathons", "GET /api/hackathons/{id}"),
-                "teams", List.of("POST /api/teams", "GET /api/teams/{nome}", "POST /api/teams/{nome}/iscrizione"),
-                "users", List.of("GET /api/users", "POST /api/users", "GET /api/users/{id}"),
-                "invites", List.of("POST /api/invites", "GET /api/invites/casella/{utenteId}")
+                "hackathons", List.of(
+                        "GET /api/hackathons",
+                        "POST /api/hackathons",
+                        "GET /api/hackathons/{id}"
+                ),
+                "teams", List.of(
+                        "POST /api/teams",
+                        "GET /api/teams/{nome}",
+                        "POST /api/teams/{nome}/iscrizione"
+                ),
+                "users", List.of(
+                        "GET /api/users",
+                        "POST /api/users",
+                        "GET /api/users/{id}"
+                ),
+                "invites", List.of(
+                        "POST /api/invites",
+                        "GET /api/invites/casella/{utenteId}"
+                )
         ));
     }
 }

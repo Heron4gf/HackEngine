@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.transaction.Transaction;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,19 +25,13 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/hackathons/{hackathonId}")
+@RequiredArgsConstructor
 public class WinningController {
 
     private final WinningManager winningManager;
     private final HackathonManager hackathonManager;
     private final TeamManager teamManager;
 
-    public WinningController(WinningManager winningManager,
-                             HackathonManager hackathonManager,
-                             TeamManager teamManager) {
-        this.winningManager = winningManager;
-        this.hackathonManager = hackathonManager;
-        this.teamManager = teamManager;
-    }
 
     /**
      * GET /api/hackathons/{hackathonId}/winner-candidates
@@ -72,7 +67,7 @@ public class WinningController {
             @PathVariable UUID hackathonId,
             @Valid @RequestBody AssegnaVincitoreRequest request) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);
-        Team t = teamManager.getTeam(request.teamId());
+        Team t = teamManager.getTeam(request.nomeTeam());
         winningManager.assegnaVincitore(h, t);
         return ResponseEntity.ok(new MessageResponse("Vincitore assegnato con successo"));
     }

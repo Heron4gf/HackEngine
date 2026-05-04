@@ -5,6 +5,7 @@ import it.unicam.ids2026.api.dto.response.SubmissionResponse;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.managers.SubmissionManager;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,35 +17,63 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/hackathons/{hackathonId}/teams/{teamId}/submission")
 public class SubmissionController {
 
     private final SubmissionManager submissionManager;
 
-    public SubmissionController(SubmissionManager submissionManager) {
-        this.submissionManager = submissionManager;
-    }
-
+    /**
+     * Restituisce la sottomissione associata al team identificato da {@code nomeTeam}
+     * all'interno dell'hackathon specificato da {@code hackathonId}.
+     *
+     * <p>La sottomissione viene recuperata tramite il {@code submissionManager}
+     * e convertita in {@link SubmissionResponse} prima di essere restituita
+     * al client. Se il team o l'hackathon non esistono, il comportamento dipende
+     * dalla logica interna di {@code submissionManager.getSottomissione}.</p>
+     *
+     * @param hackathonId l'identificatore dell'hackathon di riferimento
+     * @param nomeTeam il nome del team di cui recuperare la sottomissione
+     * @return una risposta HTTP 200 contenente la sottomissione mappata
+     */
     @GetMapping
     public ResponseEntity<SubmissionResponse> getSottomissione(
             @PathVariable UUID hackathonId,
-            @PathVariable UUID teamId) {
-        Sottomissione sottomissione = submissionManager.getSottomissione(hackathonId, teamId);
+            @PathVariable String nomeTeam) {
+        Sottomissione sottomissione = submissionManager.getSottomissione(hackathonId, nomeTeam);
         return ResponseEntity.ok(SubmissionResponse.from(sottomissione));
     }
 
+
+    /**
+     * Aggiorna o invia la sottomissione del team identificato da {@code nomeTeam}
+     * per l'hackathon specificato da {@code hackathonId}.
+     *
+     * <p>I dati aggiornati della sottomissione vengono forniti tramite
+     * {@link UpdateSubmissionRequest} e validati tramite {@link Valid}.
+     * Il file allegato viene convertito in un'istanza di {@link File} e
+     * passato al {@code submissionManager}, che si occupa dell'aggiornamento
+     * della sottomissione. La risposta viene restituita come
+     * {@link SubmissionResponse} con codice di stato HTTP 200.</p>
+     *
+     * @param hackathonId l'identificatore dell'hackathon di riferimento
+     * @param nomeTeam il nome del team che invia o aggiorna la sottomissione
+     * @param request i dati aggiornati della sottomissione, inclusa la descrizione e l'allegato
+     * @return una risposta HTTP 200 contenente la sottomissione aggiornata
+     */
     @PutMapping
     public ResponseEntity<SubmissionResponse> inviaSottomissione(
             @PathVariable UUID hackathonId,
-            @PathVariable UUID teamId,
+            @PathVariable String nomeTeam,
             @Valid @RequestBody UpdateSubmissionRequest request) {
         Sottomissione sottomissione = submissionManager.aggiornaSottomissione(
                 hackathonId,
-                teamId,
+                nomeTeam,
                 request.descrizione(),
                 new File(request.allegato())
         );
         return ResponseEntity.ok(SubmissionResponse.from(sottomissione));
     }
+
 }

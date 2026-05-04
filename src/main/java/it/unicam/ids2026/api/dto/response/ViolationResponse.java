@@ -8,7 +8,7 @@ public record ViolationResponse(
         UUID id,
         UUID hackathonId,
         UUID mentoreId,
-        UUID teamId,
+        String nomeTeam,
         String descrizione,
         String stato
 ) {
@@ -17,7 +17,7 @@ public record ViolationResponse(
                 violazione.getId(),
                 violazione.getHackathon().getId(),
                 violazione.getSegnalatoDa().getId(),
-                violazione.getColpevole().getId(),
+                violazione.getColpevole().getNome(),
                 violazione.getMotivazione(),
                 violazione.getStato().name()
         );

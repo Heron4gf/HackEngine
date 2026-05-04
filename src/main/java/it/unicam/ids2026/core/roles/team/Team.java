@@ -22,9 +22,6 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class Team implements IParteDiPagamento {
 
-    @EqualsAndHashCode.Exclude
-    private final UUID id = UUID.randomUUID();
-
     @NonNull
     @NotBlank
     @Size(min = 3, max = 30, message = "Il nome del team deve avere tra 3 e 30 caratteri")

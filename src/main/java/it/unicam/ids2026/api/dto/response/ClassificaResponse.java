@@ -18,7 +18,6 @@ public record ClassificaResponse(
     public record VoceClassifica(
             int posizione,
             String nomeTeam,
-            UUID teamId,
             int voto
     ) {}
 
@@ -35,7 +34,6 @@ public record ClassificaResponse(
                 .map(entry -> new VoceClassifica(
                         0, // posizione calcolata dopo
                         entry.getKey().getNome(),
-                        entry.getKey().getId(),
                         entry.getValue()
                 ))
                 .toList();
@@ -54,7 +52,6 @@ public record ClassificaResponse(
             vociConPosizione.add(new VoceClassifica(
                     posizionePerVoto,
                     voce.nomeTeam(),
-                    voce.teamId(),
                     voce.voto()
             ));
             posizioneCorrente++;

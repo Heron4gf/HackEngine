@@ -48,7 +48,7 @@ public class ViolationManager {
 
     public Violazione segnalaTeam(@NonNull UUID hackathonId,
                                   @NonNull UUID mentoreId,
-                                  @NonNull UUID teamId,
+                                  @NonNull String nomeTeam,
                                   @NonNull String descrizione) {
         Hackathon hackathon = hackathonRepository.findById(hackathonId)
                 .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
@@ -57,7 +57,7 @@ public class ViolationManager {
         if (!(user instanceof Mentore mentore)) {
             throw new IllegalArgumentException("L'utente indicato non e un mentore");
         }
-        Team team = teamManager.getTeam(teamId);
+        Team team = teamManager.getTeam(nomeTeam);
         return segnalaTeam(hackathon, team, mentore, descrizione);
     }
 

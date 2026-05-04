@@ -10,6 +10,7 @@ import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +24,12 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/teams")
+@RequiredArgsConstructor
 public class TeamController {
 
     private final TeamManager teamManager;
     private final UserManager userManager;
     private final HackathonManager hackathonManager;
-
-    public TeamController(TeamManager teamManager, UserManager userManager, HackathonManager hackathonManager) {
-        this.teamManager = teamManager;
-        this.userManager = userManager;
-        this.hackathonManager = hackathonManager;
-    }
 
     /**
      * Crea un nuovo team.
@@ -49,16 +45,33 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(TeamResponse.from(team));
     }
 
+    /**
+     * Restituisce l'insieme dei team disponibili.
+     *
+     * <p>Se il parametro {@code hackathonId} non è fornito, vengono restituiti
+     * tutti i team presenti nel sistema tramite il {@code teamManager}.
+     * Se invece {@code hackathonId} è specificato, vengono restituiti solo i team
+     * associati all'hackathon corrispondente, recuperato tramite
+     * {@code hackathonManager}.</p>
+     *
+     * <p>I team vengono convertiti in {@link TeamResponse} prima di essere
+     * restituiti al client.</p>
+     *
+     * @param hackathonId l'identificatore dell'hackathon da cui filtrare i team;
+     *                    può essere {@code null} per ottenere tutti i team
+     * @return una risposta HTTP 200 contenente l'insieme dei team mappati
+     */
     @GetMapping
     public ResponseEntity<Set<TeamResponse>> getTeams(@RequestParam(required = false) UUID hackathonId) {
         Set<Team> source = hackathonId == null
                 ? teamManager.getTeams()
-                : hackathonManager.getTeams(hackathonManager.getHackathon(hackathonId));
+                : hackathonManager.getHackathon(hackathonId).getTeams();
         Set<TeamResponse> teams = source.stream()
                 .map(TeamResponse::from)
                 .collect(Collectors.toSet());
         return ResponseEntity.ok(teams);
     }
+
 
     /**
      * Restituisce un team specifico.

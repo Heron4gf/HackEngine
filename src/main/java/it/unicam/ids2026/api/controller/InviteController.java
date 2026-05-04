@@ -9,6 +9,7 @@ import it.unicam.ids2026.core.roles.team.Invito;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
@@ -21,17 +22,12 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/invites")
+@RequiredArgsConstructor
 public class InviteController {
 
     private final InviteManager inviteManager;
     private final TeamManager teamManager;
     private final UserManager userManager;
-
-    public InviteController(InviteManager inviteManager, TeamManager teamManager, UserManager userManager) {
-        this.inviteManager = inviteManager;
-        this.teamManager = teamManager;
-        this.userManager = userManager;
-    }
 
     /**
      * Invia un invito a un utente.

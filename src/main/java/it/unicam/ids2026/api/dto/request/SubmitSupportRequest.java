@@ -10,7 +10,7 @@ public record SubmitSupportRequest(
         UUID hackathonId,
 
         @NotNull(message = "Il team è obbligatorio")
-        UUID teamId,
+        String nomeTeam,
 
         @NotBlank(message = "Il titolo non può essere vuoto")
         @Size(min = 3, max = 100, message = "Il titolo deve essere tra 3 e 100 caratteri")

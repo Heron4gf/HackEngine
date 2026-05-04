@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public record CreateSupportRequest(
         @NotNull(message = "Il team e obbligatorio")
-        UUID teamId,
+        String nomeTeam,
 
         @NotBlank(message = "Il titolo non puo essere vuoto")
         @Size(min = 3, max = 100, message = "Il titolo deve essere tra 3 e 100 caratteri")

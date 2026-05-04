@@ -9,6 +9,6 @@ public record AssegnaVincitoreRequest(
         /**
          * L'ID del team da assegnare come vincitore.
          */
-        @NotBlank(message = "L'ID del team è obbligatorio")
-        String teamId
+        @NotBlank(message = "Il nome del team è obbligatorio")
+        String nomeTeam
 ) {}

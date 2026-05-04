@@ -54,9 +54,26 @@ public class HackathonManager {
         return hackathonRepository.findAll();
     }
 
-    public Set<Team> getTeams(@NonNull Hackathon hackathon) {
-        return hackathon.getTeams();
+    /**
+     * Restituisce il {@link Team} appartenente all'hackathon il cui nome corrisponde
+     * esattamente al valore specificato.
+     *
+     * <p>La ricerca viene effettuata tra i team registrati nell'istanza di
+     * {@link Hackathon}. Se nessun team ha un nome uguale a {@code nomeTeam},
+     * viene sollevata una {@link NoSuchElementException} con un messaggio descrittivo.</p>
+     *
+     * @param hackathon l'hackathon da cui estrarre l'insieme dei team; non deve essere {@code null}
+     * @param nomeTeam il nome del team da cercare; non deve essere {@code null}
+     * @return il team con nome corrispondente
+     * @throws NoSuchElementException se nessun team con il nome specificato è presente
+     */
+    public Team trovaTeam(Hackathon hackathon, String nomeTeam) {
+        return hackathon.getTeams().stream()
+                .filter(team -> team.getNome().equals(nomeTeam))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + nomeTeam));
     }
+
 
     /**
      * Crea un nuovo hackathon con i parametri forniti.

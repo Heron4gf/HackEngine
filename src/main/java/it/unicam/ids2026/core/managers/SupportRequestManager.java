@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.supportRequest.response.RispostaCall;
 import it.unicam.ids2026.core.supportRequest.response.RispostaTestuale;
 import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,15 +23,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SupportRequestManager {
 
     private final ICalendar calendarService;
-    private final HackathonRepository hackathonRepository;
-
-    public SupportRequestManager(ICalendar calendarService, HackathonRepository hackathonRepository) {
-        this.calendarService = calendarService;
-        this.hackathonRepository = hackathonRepository;
-    }
+    private final HackathonManager hackathonManager;
 
     public RichiestaSupporto creaRichiestaSupporto(@NonNull Hackathon hackathon,
                                                    @NonNull Team team,
@@ -42,18 +39,15 @@ public class SupportRequestManager {
 
         RichiestaSupporto richiestaSupporto = new RichiestaSupporto(titolo, descrizione);
         hackathon.aggiungiRichiestaSupporto(team, richiestaSupporto);
-        hackathonRepository.save(hackathon);
         return richiestaSupporto;
     }
 
     public RichiestaSupporto creaRichiestaSupporto(@NonNull String titolo,
                                                    @NonNull String descrizione,
                                                    @NonNull UUID hackathonId,
-                                                   @NonNull UUID teamId) {
-        Hackathon hackathon = hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
-        Set<Team> listaTeam = hackathon.getTeams();
-        Team team = trovaTeam(listaTeam, teamId);
+                                                   @NonNull String nomeTeam) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        Team team = hackathonManager.trovaTeam(hackathon, nomeTeam);
 
         return creaRichiestaSupporto(hackathon, team, titolo, descrizione);
     }
@@ -98,13 +92,6 @@ public class SupportRequestManager {
         return hackathon.getIscritti().containsKey(team)
                 && !titolo.isBlank()
                 && !descrizione.isBlank();
-    }
-
-    private Team trovaTeam(Set<Team> listaTeam, UUID teamId) {
-        return listaTeam.stream()
-                .filter(team -> team.getId().equals(teamId))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con ID: " + teamId));
     }
 
     private boolean validaDisponibilita(Hackathon hackathon, Utente utente, Disponibilita disponibilita) {

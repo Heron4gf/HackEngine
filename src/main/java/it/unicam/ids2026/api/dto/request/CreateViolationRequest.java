@@ -11,7 +11,7 @@ public record CreateViolationRequest(
         UUID mentoreId,
 
         @NotNull(message = "Il team e obbligatorio")
-        UUID teamId,
+        String nomeTeam,
 
         @NotBlank(message = "La descrizione non puo essere vuota")
         @Size(min = 10, max = 1000, message = "La descrizione deve essere tra 10 e 1000 caratteri")

@@ -39,21 +39,6 @@ public class TeamManager {
         return teamRepository.findById(teamName)
                 .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + teamName));
     }
-
-    /**
-     * Recupera un team tramite il suo ID stabile.
-     *
-     * @param teamId identificatore del team
-     * @return il team cercato
-     * @throws NoSuchElementException se il team non esiste
-     */
-    public Team getTeam(@NonNull UUID teamId) {
-        return teamRepository.findAll().stream()
-                .filter(team -> team.getId().equals(teamId))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con ID: " + teamId));
-    }
-
     /**
      * Restituisce tutti i team presenti nel sistema.
      *

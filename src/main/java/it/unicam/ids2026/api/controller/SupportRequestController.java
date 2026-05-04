@@ -7,6 +7,7 @@ import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.SupportRequestManager;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +23,24 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/hackathons/{hackathonId}/support-requests")
+@RequiredArgsConstructor
 public class SupportRequestController {
 
     private final SupportRequestManager supportRequestManager;
     private final HackathonManager hackathonManager;
 
-    public SupportRequestController(SupportRequestManager supportRequestManager, HackathonManager hackathonManager) {
-        this.supportRequestManager = supportRequestManager;
-        this.hackathonManager = hackathonManager;
-    }
-
+    /**
+     * Restituisce l'insieme delle richieste di supporto associate
+     * all'hackathon identificato da {@code hackathonId}.
+     *
+     * <p>L'hackathon viene recuperato tramite {@code hackathonManager},
+     * quindi le richieste vengono ottenute tramite il
+     * {@code supportRequestManager} e convertite in
+     * {@link SupportRequestResponse} prima di essere restituite.</p>
+     *
+     * @param hackathonId l'identificatore dell'hackathon di cui recuperare le richieste
+     * @return una risposta HTTP 200 contenente l'insieme delle richieste di supporto mappate
+     */
     @GetMapping
     public ResponseEntity<Set<SupportRequestResponse>> getRichieste(@PathVariable UUID hackathonId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
@@ -41,6 +50,21 @@ public class SupportRequestController {
         return ResponseEntity.ok(richieste);
     }
 
+
+    /**
+     * Crea una nuova richiesta di supporto per un team partecipante
+     * all'hackathon identificato da {@code hackathonId}.
+     *
+     * <p>I dati necessari alla creazione della richiesta vengono forniti
+     * tramite {@link CreateSupportRequest} e validati tramite {@link Valid}.
+     * La richiesta viene creata dal {@code supportRequestManager} e
+     * restituita come {@link SupportRequestResponse} con codice di stato
+     * HTTP 201 (Created).</p>
+     *
+     * @param hackathonId l'identificatore dell'hackathon a cui appartiene il team
+     * @param request i dati necessari per creare la richiesta di supporto
+     * @return una risposta HTTP 201 contenente la richiesta appena creata
+     */
     @PostMapping
     public ResponseEntity<SupportRequestResponse> creaRichiestaSupport(
             @PathVariable UUID hackathonId,
@@ -49,8 +73,9 @@ public class SupportRequestController {
                 request.titolo(),
                 request.descrizione(),
                 hackathonId,
-                request.teamId()
+                request.nomeTeam()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(SupportRequestResponse.from(richiesta));
     }
+
 }
