@@ -4,7 +4,11 @@ import it.unicam.ids2026.api.dto.request.CreateViolationRequest;
 import it.unicam.ids2026.api.dto.response.ViolationResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
+import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.managers.ViolationManager;
+import it.unicam.ids2026.core.roles.staff.Mentore;
+import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.violation.Violazione;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,8 @@ public class ViolationController {
 
     private final ViolationManager violationManager;
     private final HackathonManager hackathonManager;
+    private final TeamManager teamManager;
+    private final UserManager userManager;
 
     /**
      * Restituisce l'insieme delle violazioni registrate per l'hackathon
@@ -68,10 +74,13 @@ public class ViolationController {
     public ResponseEntity<ViolationResponse> segnalaTeam(
             @PathVariable UUID hackathonId,
             @Valid @RequestBody CreateViolationRequest request) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        Mentore mentore = (Mentore) userManager.getUserById(request.mentoreId());
+        Team team = teamManager.getTeam(request.nomeTeam());
         Violazione violazione = violationManager.segnalaTeam(
-                hackathonId,
-                request.mentoreId(),
-                request.nomeTeam(),
+                hackathon,
+                team,
+                mentore,
                 request.descrizione()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(ViolationResponse.from(violazione));

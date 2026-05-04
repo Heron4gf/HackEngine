@@ -121,12 +121,13 @@ public class HackathonController {
 
     /**
      * Resitutuisce gli hackathon creati da un organizzatore
-     * @param organizzatore l'organizzatore degli hackathon
+     * @param organizzatoreId l'organizzatore degli hackathon
      * @return gli hackathon creati da tale organizzatore
      */
 
     @GetMapping("/by-organizer/{organizzatore}")
-    public ResponseEntity<Set<HackathonResponse>> getHackathonsByOrganizer(@PathVariable Organizzatore organizzatore) {
+    public ResponseEntity<Set<HackathonResponse>> getHackathonsByOrganizer(@PathVariable UUID organizzatoreId) {
+        Organizzatore organizzatore = (Organizzatore) userManager.getUserById(organizzatoreId);
         Set<HackathonResponse> hackathons = hackathonManager.getHackathonCreati(organizzatore).stream().map(
                 HackathonResponse::from).collect(Collectors.toSet());
         return ResponseEntity.ok(hackathons);
@@ -137,7 +138,13 @@ public class HackathonController {
      *
      */
     @PostMapping("/{hackathon}/aggiungi-mentore")
-    public ResponseEntity<MessageResponse> aggiungiMentore(@PathVariable Hackathon hackathon,  Set<Mentore> mentori) {
+    public ResponseEntity<MessageResponse> aggiungiMentore(@PathVariable UUID hackathonId,  Set<UUID> mentoriId) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        Set<Mentore> mentori = mentoriId.stream()
+                .map(userManager::getUserById)
+                .map(Mentore.class::cast)
+                .collect(Collectors.toSet());
+
         hackathonManager.aggiungiMentori(hackathon, mentori);
         return ResponseEntity.ok(new MessageResponse("Mentore aggiunto all'hackathon"));
     }
@@ -150,7 +157,8 @@ public class HackathonController {
      */
     @PostMapping("/{id}/chiudi-sottomissioni")
     public ResponseEntity<MessageResponse> chiudiSottomissioni(@PathVariable UUID hackathonId) {
-        hackathonManager.chiudiSottomissioni(hackathonId);
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        hackathonManager.chiudiSottomissioni(hackathon);
         return ResponseEntity.ok(new MessageResponse("Sottomissioni chiuse con successo"));
     }
 

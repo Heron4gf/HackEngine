@@ -5,6 +5,8 @@ import it.unicam.ids2026.api.dto.response.SupportRequestResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.SupportRequestManager;
+import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class SupportRequestController {
 
     private final SupportRequestManager supportRequestManager;
     private final HackathonManager hackathonManager;
+    private final TeamManager teamManager;
 
     /**
      * Restituisce l'insieme delle richieste di supporto associate
@@ -69,11 +72,13 @@ public class SupportRequestController {
     public ResponseEntity<SupportRequestResponse> creaRichiestaSupport(
             @PathVariable UUID hackathonId,
             @Valid @RequestBody CreateSupportRequest request) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        Team team = teamManager.getTeam(request.nomeTeam());
         RichiestaSupporto richiesta = supportRequestManager.creaRichiestaSupporto(
+                hackathon,
+                team,
                 request.titolo(),
-                request.descrizione(),
-                hackathonId,
-                request.nomeTeam()
+                request.descrizione()
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(SupportRequestResponse.from(richiesta));
     }
