@@ -21,9 +21,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ViolationManager {
+
     private final HackathonRepository hackathonRepository;
-    private final UserRepository userRepository;
-    private final TeamManager teamManager;
 
     /**
      * Segnala un team per una violazione.
@@ -44,21 +43,6 @@ public class ViolationManager {
         hackathon.getViolazioni().add(violazione);
         hackathonRepository.save(hackathon);
         return violazione;
-    }
-
-    public Violazione segnalaTeam(@NonNull UUID hackathonId,
-                                  @NonNull UUID mentoreId,
-                                  @NonNull String nomeTeam,
-                                  @NonNull String descrizione) {
-        Hackathon hackathon = hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
-        User user = userRepository.findById(mentoreId)
-                .orElseThrow(() -> new NoSuchElementException("Nessun utente trovato con ID: " + mentoreId));
-        if (!(user instanceof Mentore mentore)) {
-            throw new IllegalArgumentException("L'utente indicato non e un mentore");
-        }
-        Team team = teamManager.getTeam(nomeTeam);
-        return segnalaTeam(hackathon, team, mentore, descrizione);
     }
 
     /**

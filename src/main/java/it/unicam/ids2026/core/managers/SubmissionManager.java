@@ -4,24 +4,16 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.roles.team.Team;
-import it.unicam.ids2026.persistence.HackathonRepository;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
+@NoArgsConstructor
 public class SubmissionManager {
-
-    private final HackathonRepository hackathonRepository;
-    private final TeamManager teamManager;
-
-    public SubmissionManager(HackathonRepository hackathonRepository, TeamManager teamManager) {
-        this.hackathonRepository = hackathonRepository;
-        this.teamManager = teamManager;
-    }
 
     /**
      * Metodo che crea una nuova sottomissione e la registra nel sistema.
@@ -34,36 +26,45 @@ public class SubmissionManager {
      * @param team        il team che effettua la sottomissione
      * @throws IllegalArgumentException se i dati della sottomissione non sono validi
      */
-    public void inviaSottomissione(@NonNull Hackathon hackathon,
+    public Sottomissione inviaSottomissione(@NonNull Hackathon hackathon,
+                                   @NonNull Team team,
                                    @NonNull String nome,
                                    @NonNull String descrizione,
-                                   @NonNull File allegato,
-                                   @NonNull Team team) {
+                                   @NonNull File allegato
+                                   ) {
         if (!validaSottomissione(nome, descrizione, allegato)) {
             throw new IllegalArgumentException("I dati della sottomissione non sono validi.");
         }
 
         Sottomissione newSubmission = new Sottomissione(nome, descrizione, allegato);
         hackathon.aggiungiSottomissione(team, newSubmission);
-        hackathonRepository.save(hackathon);
+        return newSubmission;
     }
 
-    public Sottomissione getSottomissione(@NonNull UUID hackathonId, @NonNull String nomeTeam) {
-        Hackathon hackathon = getHackathon(hackathonId);
-        Team team = teamManager.getTeam(nomeTeam);
-        return getSottomissione(hackathon, team);
-    }
-
-    public Sottomissione getSottomissione(@NonNull Hackathon hackathon, @NonNull Team team) {
-        return hackathon.getSottomissione(team);
-    }
-
-    public Sottomissione aggiornaSottomissione(@NonNull UUID hackathonId,
-                                               @NonNull String nomeTeam,
+    /**
+     * Aggiorna la sottomissione del {@link Team} specificato all'interno
+     * dell'hackathon indicato.
+     *
+     * <p>La sottomissione corrente viene recuperata dall'hackathon e ne viene
+     * mantenuto il nome originale. I nuovi dati (descrizione e allegato) vengono
+     * validati tramite {@code validaSottomissione}. Se i dati non risultano validi,
+     * viene sollevata una {@link IllegalArgumentException}.</p>
+     *
+     * <p>In caso di validazione positiva, viene creata una nuova istanza di
+     * {@link Sottomissione} che sostituisce quella precedente tramite
+     * {@code hackathon.setSottomissione}.</p>
+     *
+     * @param hackathon   l'hackathon a cui appartiene la sottomissione; non deve essere {@code null}
+     * @param team        il team di cui aggiornare la sottomissione; non deve essere {@code null}
+     * @param descrizione la nuova descrizione della sottomissione; non deve essere {@code null}
+     * @param allegato    il nuovo file allegato alla sottomissione; non deve essere {@code null}
+     * @return la nuova sottomissione aggiornata
+     * @throws IllegalArgumentException se i dati forniti non superano la validazione
+     */
+    public Sottomissione aggiornaSottomissione(@NonNull Hackathon hackathon,
+                                               @NonNull Team team,
                                                @NonNull String descrizione,
                                                @NonNull File allegato) {
-        Hackathon hackathon = getHackathon(hackathonId);
-        Team team = teamManager.getTeam(nomeTeam);
         Sottomissione sottomissioneCorrente = hackathon.getSottomissione(team);
         String nome = sottomissioneCorrente.getNome();
 
@@ -73,9 +74,9 @@ public class SubmissionManager {
 
         Sottomissione nuovaSottomissione = new Sottomissione(nome, descrizione, allegato);
         hackathon.setSottomissione(team, nuovaSottomissione);
-        hackathonRepository.save(hackathon);
         return nuovaSottomissione;
     }
+
 
     /**
      * Restituisce la sottomissione associata al team nell'hackathon indicato.
@@ -86,7 +87,7 @@ public class SubmissionManager {
      * @throws NoSuchElementException se il team non è iscritto o non ha una sottomissione
      */
     public Sottomissione ottieniSottomissione(@NonNull Hackathon hackathon, @NonNull Team team) {
-        return getSottomissione(hackathon, team);
+        return hackathon.getSottomissione(team);
     }
 
     /**
@@ -105,15 +106,7 @@ public class SubmissionManager {
         s.setValutazione(new Valutazione(voto, giudizio));
     }
 
-    /**
-     * Verifica se i parametri per istanziare la sottomissione sono validi.
-     *
-     * @param nome        il nome della sottomissione
-     * @param descrizione la descrizione della sottomissione
-     * @param allegato    il file allegato
-     * @return true se i dati sono validi, false altrimenti
-     */
-    public boolean validaSottomissione(@NonNull String nome,
+    private boolean validaSottomissione(@NonNull String nome,
                                        @NonNull String descrizione,
                                        @NonNull File allegato) {
         return !nome.isBlank()
@@ -122,13 +115,6 @@ public class SubmissionManager {
                 && allegato.isFile();
     }
 
-    /**
-     * Verifica se i parametri della valutazione sono validi.
-     *
-     * @param voto     il voto della valutazione
-     * @param giudizio il giudizio della valutazione
-     * @return true se la valutazione è valida, false altrimenti
-     */
     private boolean validaValutazione(int voto, @NonNull String giudizio) {
         return voto >= 0
                 && voto <= 10
@@ -137,8 +123,4 @@ public class SubmissionManager {
                 && giudizio.length() <= 200;
     }
 
-    private Hackathon getHackathon(UUID hackathonId) {
-        return hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new NoSuchElementException("Nessun hackathon trovato con ID: " + hackathonId));
-    }
 }

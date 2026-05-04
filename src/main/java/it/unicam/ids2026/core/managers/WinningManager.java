@@ -9,27 +9,18 @@ import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.transaction.factory.TransactionFactory;
 import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class WinningManager {
 
     private final TransactionFactory transactionFactory;
-    private final HackathonManager hackathonManager;
     private final HackathonRepository hackathonRepository;
-
-    @Autowired
-    public WinningManager(TransactionFactory transactionFactory,
-                          HackathonManager hackathonManager,
-                          HackathonRepository hackathonRepository) {
-        this.transactionFactory = transactionFactory;
-        this.hackathonManager = hackathonManager;
-        this.hackathonRepository = hackathonRepository;
-    }
 
     /**
      * Elabora il pagamento del premio al team vincitore e lo registra nell'hackathon.
@@ -107,7 +98,6 @@ public class WinningManager {
             throw new IllegalArgumentException("Ci sono sottomissioni non ancora valutate");
         }
         hackathon.assegnaVincitore(vincitore);
-        hackathonManager.avanzaStato(hackathon);
     }
 
     /**

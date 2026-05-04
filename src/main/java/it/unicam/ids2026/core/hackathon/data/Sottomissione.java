@@ -13,19 +13,9 @@ import java.io.File;
 @RequiredArgsConstructor
 public class Sottomissione {
 
-    @NonNull
-    @NotBlank
-    @Size(min = 3, max = 30, message = "Il nome deve avere tra 3 e 30 caratteri")
-    private String nome;
-
-    @NonNull
-    @NotBlank
-    @Size(min = 10, max = 200, message = "La descrizione deve avere tra 10 e 200 caratteri")
-    private String descrizione;
-
-    @NonNull
-    @NotNull(message = "L'allegato non può essere nullo")
-    private File allegato;
+    @NonNull private String nome;
+    @NonNull private String descrizione;
+    @NonNull private File allegato;
 
     private Valutazione valutazione;
 

@@ -12,6 +12,7 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +24,10 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative agli hackathon.
  */
 @Service
+@RequiredArgsConstructor
 public class HackathonManager {
 
     private final HackathonRepository hackathonRepository;
-
-    @Autowired
-    public HackathonManager(HackathonRepository hackathonRepository) {
-        this.hackathonRepository = hackathonRepository;
-    }
 
     /**
      * Recupera un hackathon tramite il suo ID.
@@ -150,31 +147,16 @@ public class HackathonManager {
      * Chiude le sottomissioni per un hackathon.
      * L'hackathon deve essere nello stato IN_CORSO.
      *
-     * @param id identificatore dell'hackathon
+     * @param hackathon
      * @throws IllegalStateException se l'hackathon non è in corso
      */
-    public void chiudiSottomissioni(UUID id) {
-        Hackathon hackathon = getHackathon(id);
+    public void chiudiSottomissioni(Hackathon hackathon) {
         if (hackathon.getRappresentazioneStato() != RappresentazioneStato.IN_CORSO) {
             throw new IllegalStateException(
                     "Impossibile chiudere le sottomissioni: l'hackathon non e in corso. Stato attuale: "
                             + hackathon.getRappresentazioneStato());
         }
         avanzaStato(hackathon);
-    }
-
-    /**
-     * Aggiunge un singolo mentore all'hackathon.
-     *
-     * @param hackathon hackathon a cui aggiungere il mentore
-     * @param mentore mentore da aggiungere
-     * @throws IllegalArgumentException se il mentore è già presente
-     */
-    private void aggiungiMentore(@NonNull Hackathon hackathon, @NonNull Mentore mentore) {
-        if (hackathon.getMentori().contains(mentore)) {
-            throw new IllegalArgumentException("Mentore gia presente");
-        }
-        hackathon.aggiungiMentore(mentore);
         hackathonRepository.save(hackathon);
     }
 
@@ -185,7 +167,8 @@ public class HackathonManager {
      * @param mentori mentori da aggiungere
      */
     public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Collection<Mentore> mentori) {
-        mentori.forEach(m -> this.aggiungiMentore(hackathon, m));
+        mentori.forEach(hackathon::aggiungiMentore);
+        hackathonRepository.save(hackathon);
     }
 
     /**

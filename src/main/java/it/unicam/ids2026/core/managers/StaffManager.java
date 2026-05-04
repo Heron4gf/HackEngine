@@ -4,6 +4,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +15,10 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative allo staff degli hackathon.
  */
 @Service
+@RequiredArgsConstructor
 public class StaffManager {
 
     private final UserManager userManager;
-
-    @Autowired
-    public StaffManager(UserManager userManager) {
-        this.userManager = userManager;
-    }
 
     /**
      * Restituisce tutti i giudici presenti nel sistema.
@@ -52,20 +49,5 @@ public class StaffManager {
         return getMentori().stream()
                 .filter(m -> !h.getMentori().contains(m))
                 .collect(Collectors.toSet());
-    }
-
-    /**
-     * Aggiunge i mentori selezionati all'hackathon previa verifica della loro disponibilità.
-     *
-     * @param hackathon l'hackathon a cui aggiungere i mentori.
-     * @param mentoriScelti l'insieme dei mentori da aggiungere.
-     * @throws IllegalArgumentException se uno o più mentori selezionati non risultano disponibili.
-     */
-    public void aggiungiMentori(@NonNull Hackathon hackathon, @NonNull Set<Mentore> mentoriScelti) {
-        if (!ottieniMentoriDisponibili(hackathon).containsAll(mentoriScelti)) {
-            throw new IllegalArgumentException("Mentori invalidi");
-        }
-
-        mentoriScelti.stream().forEach(hackathon::aggiungiMentore);
     }
 }

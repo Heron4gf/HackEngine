@@ -23,6 +23,9 @@ public class StatoIscrizione implements StatoHackathon {
 
     @Override
     public void aggiungiMentore(Hackathon hackathon, Mentore mentore) {
+        if (hackathon.getMentori().contains(mentore)) {
+            throw new IllegalArgumentException("Mentore gia presente");
+        }
         hackathon.getMentori().add(mentore);
     }
 

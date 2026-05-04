@@ -44,5 +44,6 @@ public class StatoInValutazione implements StatoHackathon {
     @Override
     public void assegnaVincitore(Hackathon hackathon, Team team) {
         hackathon.setVincitore(team);
+        next(hackathon);
     }
 }

@@ -5,6 +5,7 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.TeamRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,11 @@ import java.util.UUID;
  * Gestisce le operazioni relative ai team.
  */
 @Service
+@RequiredArgsConstructor
 public class TeamManager {
 
     private final TeamRepository teamRepository;
     private final EventPublisher eventPublisher;
-
-    @Autowired
-    public TeamManager(TeamRepository teamRepository, EventPublisher eventPublisher) {
-        this.teamRepository = teamRepository;
-        this.eventPublisher = eventPublisher;
-    }
 
     /**
      * Recupera un team tramite il suo nome.

@@ -3,7 +3,6 @@ package it.unicam.ids2026.core.transaction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Currency;
 

@@ -7,6 +7,7 @@ import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.UserRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,10 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative agli utenti.
  */
 @Service
+@RequiredArgsConstructor
 public class UserManager {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserManager(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * Cerca utenti per nome.
