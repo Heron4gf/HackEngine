@@ -40,7 +40,7 @@ public class HackathonLifecycleService {
         // Filtra solo gli hackathon in corso la cui durata è già terminata
         hackathonManager.getHackathons().stream()
                 .filter(h -> h.getRappresentazioneStato() == RappresentazioneStato.IN_CORSO)
-                .filter(h -> oggi.isAfter(h.getDurataHackathon().dataFine()))
+                .filter(h -> oggi.isAfter(h.getDurataHackathon().dataFine().toLocalDate()))
                 .forEach(hackathonManager::avanzaStato);
     }
 }
