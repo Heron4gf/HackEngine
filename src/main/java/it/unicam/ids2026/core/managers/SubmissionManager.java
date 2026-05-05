@@ -73,7 +73,7 @@ public class SubmissionManager {
         }
 
         Sottomissione nuovaSottomissione = new Sottomissione(nome, descrizione, allegato);
-        hackathon.setSottomissione(team, nuovaSottomissione);
+        hackathon.aggiungiSottomissione(team, nuovaSottomissione);
         return nuovaSottomissione;
     }
 

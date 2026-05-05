@@ -114,10 +114,6 @@ public class Hackathon implements IParteDiPagamento {
         return iscrizione.getSottomissione();
     }
 
-    public void setSottomissione(Team team, Sottomissione sottomissione) {
-        aggiungiSottomissione(team, sottomissione);
-    }
-
     public void aggiungiRichiestaSupporto(Team team, RichiestaSupporto richiestaSupporto) {
         this.state.aggiungiRichiestaSupporto(this, team, richiestaSupporto);
     }

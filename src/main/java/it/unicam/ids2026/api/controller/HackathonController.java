@@ -150,19 +150,6 @@ public class HackathonController {
     }
 
     /**
-     * Chiude le sottomissioni per un hackathon.
-     *
-     * @param hackathonId identificatore dell'hackathon
-     * @return messaggio di conferma
-     */
-    @PostMapping("/{id}/chiudi-sottomissioni")
-    public ResponseEntity<MessageResponse> chiudiSottomissioni(@PathVariable UUID hackathonId) {
-        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        hackathonManager.chiudiSottomissioni(hackathon);
-        return ResponseEntity.ok(new MessageResponse("Sottomissioni chiuse con successo"));
-    }
-
-    /**
      * Avanza lo stato di un hackathon.
      *
      * @param hackathonId identificatore dell'hackathon
