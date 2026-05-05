@@ -277,7 +277,9 @@ class HackathonControllerTest {
     void chiudiSottomissioni_ShouldReturn200() throws Exception {
         // Arrange
         UUID hackathonId = UUID.randomUUID();
-        doNothing().when(hackathonManager).chiudiSottomissioni(hackathonId);
+        Hackathon hackathon = mock(Hackathon.class);
+        when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
+        doNothing().when(hackathonManager).chiudiSottomissioni(hackathon);
 
         // Act & Assert
         mockMvc.perform(post("/api/hackathons/{id}/chiudi-sottomissioni", hackathonId))

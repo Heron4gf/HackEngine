@@ -12,7 +12,6 @@ import it.unicam.ids2026.core.roles.team.Iscrizione;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
-import it.unicam.ids2026.persistence.HackathonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,19 +21,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SupportRequestManagerTest {
 
     @Mock
     private ICalendar calendarService;
-    @Mock
-    private HackathonRepository hackathonRepository;
 
     private SupportRequestManager supportRequestManager;
     private Hackathon hackathon;
@@ -42,7 +36,7 @@ class SupportRequestManagerTest {
 
     @BeforeEach
     void setUp() {
-        supportRequestManager = new SupportRequestManager(calendarService, hackathonRepository);
+        supportRequestManager = new SupportRequestManager(calendarService);
         hackathon = createHackathon();
         hackathon.setState(new StatoInCorso());
         team = new Team("Team Test", 5);
@@ -50,18 +44,15 @@ class SupportRequestManagerTest {
     }
 
     @Test
-    void creaRichiestaSupporto_ByIds_ShouldUseCanonicalHackathonMethod() {
-        when(hackathonRepository.findById(hackathon.getId())).thenReturn(Optional.of(hackathon));
-
+    void creaRichiestaSupporto_ShouldUseCanonicalHackathonMethod() {
         RichiestaSupporto richiesta = supportRequestManager.creaRichiestaSupporto(
+                hackathon,
+                team,
                 "Build bloccata",
-                "La pipeline fallisce in test",
-                hackathon.getId(),
-                team.getId()
+                "La pipeline fallisce in test"
         );
 
         assertSame(richiesta, hackathon.getIscritti().get(team).getRichiestaSupporto());
-        verify(hackathonRepository).save(hackathon);
     }
 
     private Hackathon createHackathon() {

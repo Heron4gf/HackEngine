@@ -35,7 +35,7 @@ class UserControllerTest {
         UUID userId = UUID.randomUUID();
         Utente user = new Utente(userId, "Mario Rossi", null);
 
-        doNothing().when(userManager).addUser(any());
+        when(userManager.createUser("UTENTE", "Mario Rossi", null)).thenReturn(user);
 
         String requestBody = """
             {
@@ -84,10 +84,10 @@ class UserControllerTest {
     @Test
     void getAllUsers_ShouldReturn200() throws Exception {
         // Arrange
-        when(userManager.getUsers()).thenReturn(Set.of());
+        when(userManager.getFreeUsers()).thenReturn(Set.of());
 
         // Act & Assert
-        mockMvc.perform(get("/api/users"))
+        mockMvc.perform(get("/api/users/free"))
             .andExpect(status().isOk());
     }
 }

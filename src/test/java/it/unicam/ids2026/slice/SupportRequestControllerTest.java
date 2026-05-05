@@ -4,6 +4,8 @@ import it.unicam.ids2026.api.controller.SupportRequestController;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.SupportRequestManager;
+import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,26 +38,33 @@ class SupportRequestControllerTest {
     @MockitoBean
     private HackathonManager hackathonManager;
 
+    @MockitoBean
+    private TeamManager teamManager;
+
     @Test
     void creaRichiestaSupport_ValidBody_ShouldReturn201() throws Exception {
         UUID hackathonId = UUID.randomUUID();
-        UUID teamId = UUID.randomUUID();
+        String nomeTeam = "Team Test";
+        Hackathon hackathon = mock(Hackathon.class);
+        Team team = new Team(nomeTeam, 5);
         RichiestaSupporto richiesta = new RichiestaSupporto("Build bloccata", "La pipeline fallisce in test");
 
+        when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
+        when(teamManager.getTeam(nomeTeam)).thenReturn(team);
         when(supportRequestManager.creaRichiestaSupporto(
+                hackathon,
+                team,
                 "Build bloccata",
-                "La pipeline fallisce in test",
-                hackathonId,
-                teamId
+                "La pipeline fallisce in test"
         )).thenReturn(richiesta);
 
         String requestBody = String.format("""
             {
-                "teamId": "%s",
+                "nomeTeam": "%s",
                 "titolo": "Build bloccata",
                 "descrizione": "La pipeline fallisce in test"
             }
-            """, teamId);
+            """, nomeTeam);
 
         mockMvc.perform(post("/api/hackathons/{hackathonId}/support-requests", hackathonId)
                 .contentType(MediaType.APPLICATION_JSON)

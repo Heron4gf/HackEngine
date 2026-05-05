@@ -110,7 +110,7 @@ class TeamControllerTest {
         Team team = new Team("Scoped Team", 5);
 
         when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
-        when(hackathonManager.getTeams(hackathon)).thenReturn(Set.of(team));
+        when(hackathon.getTeams()).thenReturn(Set.of(team));
 
         // Act & Assert
         mockMvc.perform(get("/api/teams")
@@ -151,6 +151,9 @@ class TeamControllerTest {
 
         when(teamManager.getTeam(teamName)).thenReturn(team);
         when(userManager.getUserById(utenteId)).thenReturn(utente);
+        when(hackathonManager.getHackathon(hackathonId)).thenReturn(mock(Hackathon.class));
+        doThrow(new IllegalArgumentException("L'utente indicato non appartiene al team " + teamName))
+                .when(hackathonManager).iscriviTeam(any(), eq(team), eq(utente));
 
         // Act & Assert
         mockMvc.perform(post("/api/teams/{nome}/iscrizione", teamName)

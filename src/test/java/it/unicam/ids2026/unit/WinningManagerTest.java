@@ -6,7 +6,6 @@ import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.hackathon.data.Valutazione;
 import it.unicam.ids2026.core.hackathon.status.StatoInValutazione;
-import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.WinningManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
@@ -42,8 +41,6 @@ class WinningManagerTest {
     @Mock
     private TransactionFactory transactionFactory;
     @Mock
-    private HackathonManager hackathonManager;
-    @Mock
     private HackathonRepository hackathonRepository;
     @Mock
     private Transaction transaction;
@@ -55,7 +52,7 @@ class WinningManagerTest {
 
     @BeforeEach
     void setUp() {
-        winningManager = new WinningManager(transactionFactory, hackathonManager, hackathonRepository);
+        winningManager = new WinningManager(transactionFactory, hackathonRepository);
 
         Organizzatore organizzatore = new Organizzatore("Mario", "Rossi");
         Giudice giudice = new Giudice("Luigi", "Verdi");
@@ -169,7 +166,6 @@ class WinningManagerTest {
 
         // Assert
         assertEquals(team1, hackathon.getVincitore());
-        verify(hackathonManager).avanzaStato(hackathon);
     }
 
     @Test

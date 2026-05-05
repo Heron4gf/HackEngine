@@ -3,6 +3,8 @@ package it.unicam.ids2026.slice;
 import it.unicam.ids2026.api.controller.ViolationController;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
+import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.managers.ViolationManager;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
@@ -38,35 +40,43 @@ class ViolationControllerTest {
     @MockitoBean
     private HackathonManager hackathonManager;
 
+    @MockitoBean
+    private TeamManager teamManager;
+
+    @MockitoBean
+    private UserManager userManager;
+
     @Test
     void segnalaTeam_ValidBody_ShouldReturn201() throws Exception {
         UUID hackathonId = UUID.randomUUID();
-        UUID mentoreId = UUID.randomUUID();
-        UUID teamId = UUID.randomUUID();
+        String nomeTeam = "Team Test";
         Hackathon hackathon = mock(Hackathon.class);
-        Mentore mentore = new Mentore(mentoreId, "Mario", "Rossi", Set.of());
-        Team team = mock(Team.class);
+        Mentore mentore = new Mentore("Mario", "Rossi");
+        UUID mentoreId = mentore.getId();
+        Team team = new Team(nomeTeam, 5);
         Violazione violazione = new Violazione(mentore, team, hackathon, "Uso improprio del repository");
 
         when(hackathon.getId()).thenReturn(hackathonId);
-        when(team.getId()).thenReturn(teamId);
-        when(violationManager.segnalaTeam(hackathonId, mentoreId, teamId, "Uso improprio del repository"))
+        when(hackathonManager.getHackathon(hackathonId)).thenReturn(hackathon);
+        when(userManager.getUserById(mentoreId)).thenReturn(mentore);
+        when(teamManager.getTeam(nomeTeam)).thenReturn(team);
+        when(violationManager.segnalaTeam(hackathon, team, mentore, "Uso improprio del repository"))
                 .thenReturn(violazione);
 
         String requestBody = String.format("""
             {
                 "mentoreId": "%s",
-                "teamId": "%s",
+                "nomeTeam": "%s",
                 "descrizione": "Uso improprio del repository"
             }
-            """, mentoreId, teamId);
+            """, mentoreId, nomeTeam);
 
         mockMvc.perform(post("/api/hackathons/{hackathonId}/violations", hackathonId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.hackathonId", is(hackathonId.toString())))
-            .andExpect(jsonPath("$.teamId", is(teamId.toString())))
+            .andExpect(jsonPath("$.nomeTeam", is(nomeTeam)))
             .andExpect(jsonPath("$.stato", is("SOLLEVATA")));
     }
 

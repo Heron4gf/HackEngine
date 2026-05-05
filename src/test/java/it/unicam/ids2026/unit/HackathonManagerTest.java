@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -225,13 +224,9 @@ class HackathonManagerTest {
         Intervallo durata = new Intervallo(now.plusDays(15), now.plusDays(17));
 
         Hackathon hackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
-        UUID hackathonId = hackathon.getId();
-
-        when(hackathonRepository.findById(hackathonId)).thenReturn(Optional.of(hackathon));
-
         // Act & Assert - Hackathon is in ISCRIZIONE state, not IN_CORSO
         IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
-            hackathonManager.chiudiSottomissioni(hackathonId)
+            hackathonManager.chiudiSottomissioni(hackathon)
         );
         assertTrue(exception.getMessage().contains("Impossibile chiudere le sottomissioni"));
         assertTrue(exception.getMessage().contains(RappresentazioneStato.ISCRIZIONE.toString()));
