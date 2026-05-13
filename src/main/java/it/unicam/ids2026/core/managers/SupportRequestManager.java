@@ -78,6 +78,10 @@ public class SupportRequestManager {
                 .collect(Collectors.toSet());
     }
 
+    public RichiestaSupporto ottieniRichiesta(@NonNull Hackathon hackathon, @NonNull Team team) {
+        return hackathon.getIscritti().get(team).getRichiestaSupporto();
+    }
+
 
     /**
      * Restituisce la disponibilità dell'utente per l'hackathon specificato.
