@@ -176,7 +176,7 @@ class WinningManagerTest {
         when(transaction.getImporto()).thenReturn(new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")));
 
         // Act
-        Transaction result = winningManager.elaboraPagamentoPremio(hackathon, team1);
+        Transaction result = winningManager.elaboraPagamentoPremio(hackathon);
 
         // Assert
         assertSame(transaction, result);

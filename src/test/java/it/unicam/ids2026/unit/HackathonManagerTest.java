@@ -116,31 +116,6 @@ class HackathonManagerTest {
         assertEquals("Range date inizio o durata invalide", exception.getMessage());
     }
 
-    @Test
-    void iscriviTeam_UtenteHasNoTeam_ShouldThrowIllegalArgumentException() {
-        // Arrange
-        Organizzatore organizzatore = new Organizzatore("Mario", "Rossi");
-        Giudice giudice = new Giudice("Luigi", "Verdi");
-        DatiHackathon dati = new DatiHackathon(
-                "Hackathon Test",
-                "Roma",
-                new MoneyAmount(new BigDecimal("1000.00"), Currency.getInstance("EUR")),
-                5,
-                "Regolamento test"
-        );
-        LocalDateTime now = LocalDateTime.now();
-        Intervallo iscrizioni = new Intervallo(now.plusDays(1), now.plusDays(10));
-        Intervallo durata = new Intervallo(now.plusDays(15), now.plusDays(17));
-
-        Hackathon hackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
-        Utente utenteSenzaTeam = new Utente("Utente Test");
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            hackathonManager.iscriviTeam(hackathon, utenteSenzaTeam)
-        );
-        assertEquals("Per iscriversi ad un Hackathon l'Utente deve avere un team", exception.getMessage());
-    }
 
     @Test
     void iscriviTeam_TeamAlreadyRegistered_ShouldThrowIllegalArgumentException() {
@@ -168,7 +143,7 @@ class HackathonManagerTest {
 
         // Act & Assert - Try to register again
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            hackathonManager.iscriviTeam(hackathon, utente)
+            hackathonManager.iscriviTeam(hackathon, team)
         );
         assertEquals("Team gia iscritto", exception.getMessage());
     }
@@ -202,7 +177,7 @@ class HackathonManagerTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            hackathonManager.iscriviTeam(hackathon, utente1)
+            hackathonManager.iscriviTeam(hackathon, team)
         );
         assertEquals("Team troppo grande", exception.getMessage());
     }

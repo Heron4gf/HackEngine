@@ -32,33 +32,6 @@ class UserManagerTest {
     }
 
     @Test
-    void addUser_HappyPath_ShouldStoreInRepo() {
-        // Arrange
-        Utente user = new Utente("Mario Rossi");
-        when(userRepository.existsById(user.getId())).thenReturn(false);
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        // Act
-        userManager.addUser(user);
-
-        // Assert
-        verify(userRepository).save(user);
-    }
-
-    @Test
-    void addUser_DuplicateUser_ShouldThrowIllegalArgumentException() {
-        // Arrange
-        Utente user = new Utente("Mario Rossi");
-        when(userRepository.existsById(user.getId())).thenReturn(true);
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userManager.addUser(user)
-        );
-        assertEquals("Utente gia presente nel sistema", exception.getMessage());
-    }
-
-    @Test
     void getUserById_UnknownId_ShouldThrowNoSuchElementException() {
         // Arrange
         UUID unknownId = UUID.randomUUID();

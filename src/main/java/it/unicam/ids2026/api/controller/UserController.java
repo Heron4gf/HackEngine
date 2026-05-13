@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        User user = userManager.createUser(request.role().name(), request.nome(), request.cognome());
+        User user = userManager.createUser(request.role().getRoleClass(), request.nome(), Optional.ofNullable(request.cognome()));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user));
     }
 

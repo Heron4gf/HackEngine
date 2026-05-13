@@ -44,24 +44,6 @@ public class TeamManager {
     }
 
     /**
-     * Salva un team nel repository.
-     *
-     * @param team team da salvare
-     */
-    public void addTeam(@NonNull Team team) {
-        teamRepository.save(team);
-    }
-
-    /**
-     * Rimuove un team dal repository.
-     *
-     * @param team team da rimuovere
-     */
-    public void removeTeam(@NonNull Team team) {
-        teamRepository.delete(team);
-    }
-
-    /**
      * Crea un nuovo team e assegna l'utente come primo membro.
      * L'utente non deve già appartenere a un team.
      *
@@ -82,7 +64,7 @@ public class TeamManager {
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
         utente.setTeam(team);
-        addTeam(team);
+        teamRepository.save(team);
     }
 
     /**
@@ -102,7 +84,7 @@ public class TeamManager {
         if (team.getMembri().isEmpty()) {
             // Pubblica evento e rimuove il team se non ci sono più membri
             eventPublisher.publishDeletion(team);
-            removeTeam(team);
+            teamRepository.delete(team);;
         } else {
             teamRepository.save(team);
         }

@@ -49,26 +49,6 @@ public class HackathonManager {
         return hackathonRepository.findAll();
     }
 
-    /**
-     * Restituisce il {@link Team} appartenente all'hackathon il cui nome corrisponde
-     * esattamente al valore specificato.
-     *
-     * <p>La ricerca viene effettuata tra i team registrati nell'istanza di
-     * {@link Hackathon}. Se nessun team ha un nome uguale a {@code nomeTeam},
-     * viene sollevata una {@link NoSuchElementException} con un messaggio descrittivo.</p>
-     *
-     * @param hackathon l'hackathon da cui estrarre l'insieme dei team; non deve essere {@code null}
-     * @param nomeTeam il nome del team da cercare; non deve essere {@code null}
-     * @return il team con nome corrispondente
-     * @throws NoSuchElementException se nessun team con il nome specificato è presente
-     */
-    public Team trovaTeam(Hackathon hackathon, String nomeTeam) {
-        return hackathon.getTeams().stream()
-                .filter(team -> team.getNome().equals(nomeTeam))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + nomeTeam));
-    }
-
 
     /**
      * Crea un nuovo hackathon con i parametri forniti.
@@ -174,14 +154,10 @@ public class HackathonManager {
      * L'utente deve appartenere a un team e il team non deve essere già iscritto.
      *
      * @param hackathon hackathon a cui iscrivere il team
-     * @param utente utente che richiede l'iscrizione (deve avere un team)
+     * @param team che richiede l'iscrizione (deve avere un team)
      * @throws IllegalArgumentException se l'utente non ha team, è già iscritto, o il team è troppo grande
      */
-    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Utente utente) {
-        if (!utente.haTeam()) {
-            throw new IllegalArgumentException("Per iscriversi ad un Hackathon l'Utente deve avere un team");
-        }
-        Team team = utente.getTeam();
+    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Team team) {
         if (hackathon.getIscritti().containsKey(team)) {
             throw new IllegalArgumentException("Team gia iscritto");
         }
@@ -190,13 +166,6 @@ public class HackathonManager {
         }
         hackathon.iscriviTeam(team);
         hackathonRepository.save(hackathon);
-    }
-
-    public void iscriviTeam(@NonNull Hackathon hackathon, @NonNull Team team, @NonNull Utente utente) {
-        if (!team.equals(utente.getTeam())) {
-            throw new IllegalArgumentException("L'utente indicato non appartiene al team " + team.getNome());
-        }
-        iscriviTeam(hackathon, utente);
     }
 
 }

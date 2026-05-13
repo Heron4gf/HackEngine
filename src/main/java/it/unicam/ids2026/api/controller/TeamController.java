@@ -112,9 +112,8 @@ public class TeamController {
             @RequestParam UUID hackathonId,
             @RequestParam UUID utenteId) {
         Team team = teamManager.getTeam(nome);
-        Utente utente = (Utente) userManager.getUserById(utenteId);
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        hackathonManager.iscriviTeam(hackathon, team, utente);
+        hackathonManager.iscriviTeam(hackathon, team);
         return ResponseEntity.ok(new MessageResponse("Team iscritto all'hackathon"));
     }
 

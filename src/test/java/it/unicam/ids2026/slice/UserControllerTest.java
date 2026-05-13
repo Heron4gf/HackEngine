@@ -11,6 +11,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ class UserControllerTest {
         UUID userId = UUID.randomUUID();
         Utente user = new Utente(userId, "Mario Rossi", null);
 
-        when(userManager.createUser("UTENTE", "Mario Rossi", null)).thenReturn(user);
+        when(userManager.createUser(Utente.class, "Mario Rossi", Optional.empty())).thenReturn(user);
 
         String requestBody = """
             {

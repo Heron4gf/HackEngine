@@ -75,7 +75,7 @@ public class WinningController {
     @PostMapping("/payment")
     public ResponseEntity<TransactionResponse> elaboraPagamentoHackathon(@PathVariable UUID hackathonId) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);
-        Transaction transaction = winningManager.elaboraPagamentoHackathon(h);
+        Transaction transaction = winningManager.elaboraPagamentoPremio(h);
         return ResponseEntity.ok(TransactionResponse.from(transaction));
     }
 }
