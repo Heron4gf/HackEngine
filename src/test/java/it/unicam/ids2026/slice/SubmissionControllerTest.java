@@ -69,19 +69,17 @@ public class SubmissionControllerTest {
                 allegato.getAbsolutePath()
         );
 
-        mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonID, teamName).
-                contentType(APPLICATION_JSON).
-                content(requestBody)).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$.nome", is(nome))).
-                andExpect(jsonPath("$.descrizione", is(descrizione))).
-                andExpect(jsonPath("$.allegato", is(allegato.getAbsolutePath())));
-
+        mockMvc.perform(post("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonID, teamName)
+                .contentType(APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nome", is(nome)))
+                .andExpect(jsonPath("$.descrizione", is(descrizione)))
+                .andExpect(jsonPath("$.allegato", is(allegato.getAbsolutePath())));
     }
 
     @Test
     void submissionValidUpdate() throws Exception {
-        // Setup
         UUID hackathonUUID = UUID.randomUUID();
         String teamName = "MioTeam";
         String nome = "Progetto";
@@ -95,8 +93,6 @@ public class SubmissionControllerTest {
         when(hackathonManager.getHackathon(hackathonUUID)).thenReturn(hackathon);
         when(teamManager.getTeam(teamName)).thenReturn(team);
 
-
-        // Modifying description and project
         String descrizione1 = "Nuova Descrizione";
         File allegato1 = new File("NewPath").getAbsoluteFile();
         Sottomissione nuovaSottomissione = new Sottomissione(nome, descrizione1, allegato1);
@@ -113,26 +109,22 @@ public class SubmissionControllerTest {
                 allegato1.getAbsolutePath()
         );
 
-
-        // Act and assert
-        mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName).
-                contentType(APPLICATION_JSON).
-                content(requestBody)).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$.nome", is(nome))).
-                andExpect(jsonPath("$.descrizione", is (descrizione1))).
-                andExpect(jsonPath("$.allegato", is (allegato1.getAbsolutePath())));
+        mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
+                .contentType(APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome", is(nome)))
+                .andExpect(jsonPath("$.descrizione", is(descrizione1)))
+                .andExpect(jsonPath("$.allegato", is(allegato1.getAbsolutePath())));
     }
 
     @Test
     void submissionInvalidUpdateBlackDescription() throws Exception {
-        // Setup
         UUID hackathonUUID = UUID.randomUUID();
         String teamName = "MioTeam";
         String nome = "Progetto";
         String descrizione = "Descrizione valida";
         File allegato = new File("Path").getAbsoluteFile();
-        Sottomissione sottomissione = new Sottomissione(nome, descrizione, allegato);
 
         Hackathon hackathon = mock(Hackathon.class);
         Team team = mock(Team.class);
@@ -140,12 +132,11 @@ public class SubmissionControllerTest {
         when(hackathonManager.getHackathon(hackathonUUID)).thenReturn(hackathon);
         when(teamManager.getTeam(teamName)).thenReturn(team);
 
-        // Modifying description and project
         String descrizione1 = "";
         File allegato1 = new File("NewPath").getAbsoluteFile();
 
-        when(submissionManager.aggiornaSottomissione(hackathon, team, descrizione1, allegato1)).
-                thenThrow(new IllegalArgumentException("I dati della sottomissione non sono validi"));
+        when(submissionManager.aggiornaSottomissione(hackathon, team, descrizione1, allegato1))
+                .thenThrow(new IllegalArgumentException("I dati della sottomissione non sono validi"));
 
         String requestBody = String.format(
                 """
@@ -158,18 +149,14 @@ public class SubmissionControllerTest {
                 allegato1.getAbsolutePath()
         );
 
-
-        // Act and assert
-        mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName).
-                        contentType(APPLICATION_JSON).
-                        content(requestBody)).
-                andExpect(status().isBadRequest());
+        mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
+                .contentType(APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest());
     }
 
-
     @Test
-    void obtainingSubmission() throws Exception{
-        // Setup
+    void obtainingSubmission() throws Exception {
         UUID hackathonUUID = UUID.randomUUID();
         String teamName = "MioTeam";
         String nome = "Progetto";
@@ -184,18 +171,16 @@ public class SubmissionControllerTest {
         when(teamManager.getTeam(teamName)).thenReturn(team);
         when(submissionManager.ottieniSottomissione(hackathon, team)).thenReturn(sottomissione);
 
-        // Act and assert
-        mockMvc.perform(get("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName).
-                contentType(APPLICATION_JSON)).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$.nome", is(nome))).
-                andExpect(jsonPath("$.descrizione", is(descrizione))).
-                andExpect(jsonPath("$.allegato", is (allegato.getAbsolutePath())));
+        mockMvc.perform(get("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome", is(nome)))
+                .andExpect(jsonPath("$.descrizione", is(descrizione)))
+                .andExpect(jsonPath("$.allegato", is(allegato.getAbsolutePath())));
     }
 
     @Test
-    void obtainingNonExistentSubmission() throws  Exception {
-        // Setup
+    void obtainingNonExistentSubmission() throws Exception {
         UUID hackathonUUID = UUID.randomUUID();
         String teamName = "MioTeam";
 
@@ -204,12 +189,11 @@ public class SubmissionControllerTest {
 
         when(hackathonManager.getHackathon(hackathonUUID)).thenReturn(hackathon);
         when(teamManager.getTeam(teamName)).thenReturn(team);
-        when(submissionManager.ottieniSottomissione(hackathon, team)).thenThrow(new NoSuchElementException("Non " +
-                "esiste una sottomissione associata a questo team"));
+        when(submissionManager.ottieniSottomissione(hackathon, team))
+                .thenThrow(new NoSuchElementException("Non esiste una sottomissione associata a questo team"));
 
-        // Act and assert
-        mockMvc.perform(get("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName).
-                        contentType(APPLICATION_JSON)).
-                andExpect(status().isBadRequest());
+        mockMvc.perform(get("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 }
