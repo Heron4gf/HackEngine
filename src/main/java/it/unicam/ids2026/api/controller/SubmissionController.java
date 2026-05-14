@@ -30,9 +30,9 @@ public class SubmissionController {
     @GetMapping
     public ResponseEntity<SubmissionResponse> getSottomissione(
             @PathVariable UUID hackathonId,
-            @PathVariable String nomeTeam) {
+            @PathVariable String teamId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        Team team = teamManager.getTeam(nomeTeam);
+        Team team = teamManager.getTeam(teamId);
         Sottomissione sottomissione = submissionManager.ottieniSottomissione(hackathon, team);
         return ResponseEntity.ok(SubmissionResponse.from(sottomissione));
     }
@@ -40,10 +40,10 @@ public class SubmissionController {
     @PostMapping
     public ResponseEntity<SubmissionResponse> inviaSottomissione(
             @PathVariable UUID hackathonId,
-            @PathVariable String nomeTeam,
+            @PathVariable String teamId,
             @Valid @RequestBody CreateSubmissionRequest request) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        Team team = teamManager.getTeam(nomeTeam);
+        Team team = teamManager.getTeam(teamId);
         Sottomissione sottomissione = submissionManager.inviaSottomissione(
                 hackathon,
                 team,
@@ -57,10 +57,10 @@ public class SubmissionController {
     @PutMapping
     public ResponseEntity<SubmissionResponse> aggiornaSottomissione(
             @PathVariable UUID hackathonId,
-            @PathVariable String nomeTeam,
+            @PathVariable String teamId,
             @Valid @RequestBody UpdateSubmissionRequest request) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        Team team = teamManager.getTeam(nomeTeam);
+        Team team = teamManager.getTeam(teamId);
         Sottomissione sottomissione = submissionManager.aggiornaSottomissione(
                 hackathon,
                 team,
