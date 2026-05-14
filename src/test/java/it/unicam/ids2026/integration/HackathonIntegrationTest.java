@@ -106,10 +106,10 @@ class HackathonIntegrationTest {
             }
             """,
                 organizzatoreId,
-                now.plusDays(1).toString(),
-                now.plusDays(10).toString(),
-                now.plusDays(15).toString(),
-                now.plusDays(17).toString(),
+                now.plusDays(1),
+                now.plusDays(10),
+                now.plusDays(15),
+                now.plusDays(17),
                 giudiceId
         );
 

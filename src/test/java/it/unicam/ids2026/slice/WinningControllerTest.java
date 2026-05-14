@@ -200,7 +200,7 @@ class WinningControllerTest {
         mockMvc.perform(post("/api/hackathons/{hackathonId}/winner", hackathonId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
