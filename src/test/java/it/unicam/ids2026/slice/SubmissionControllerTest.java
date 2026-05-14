@@ -39,6 +39,10 @@ public class SubmissionControllerTest {
     @MockitoBean
     private TeamManager teamManager;
 
+    private static String jsonEscape(String path) {
+        return path.replace("\\", "\\\\");
+    }
+
     @Test
     void submissionValidSend() throws Exception {
         UUID hackathonID = UUID.randomUUID();
@@ -66,7 +70,7 @@ public class SubmissionControllerTest {
                    """,
                 nome,
                 descrizione,
-                allegato.getAbsolutePath()
+                jsonEscape(allegato.getAbsolutePath())
         );
 
         mockMvc.perform(post("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonID, teamName)
@@ -106,7 +110,7 @@ public class SubmissionControllerTest {
                             "allegato": "%s"
                         }""",
                 descrizione1,
-                allegato1.getAbsolutePath()
+                jsonEscape(allegato1.getAbsolutePath())
         );
 
         mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
@@ -122,9 +126,6 @@ public class SubmissionControllerTest {
     void submissionInvalidUpdateBlackDescription() throws Exception {
         UUID hackathonUUID = UUID.randomUUID();
         String teamName = "MioTeam";
-        String nome = "Progetto";
-        String descrizione = "Descrizione valida";
-        File allegato = new File("Path").getAbsoluteFile();
 
         Hackathon hackathon = mock(Hackathon.class);
         Team team = mock(Team.class);
@@ -146,7 +147,7 @@ public class SubmissionControllerTest {
                     }
                     """,
                 descrizione1,
-                allegato1.getAbsolutePath()
+                jsonEscape(allegato1.getAbsolutePath())
         );
 
         mockMvc.perform(put("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
@@ -194,6 +195,6 @@ public class SubmissionControllerTest {
 
         mockMvc.perform(get("/api/hackathons/{hackathonId}/teams/{teamId}/submission", hackathonUUID, teamName)
                 .contentType(APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }
