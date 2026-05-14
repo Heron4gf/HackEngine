@@ -24,9 +24,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Controller REST per la gestione degli hackathon.
- */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/hackathons")
@@ -35,12 +32,6 @@ public class HackathonController {
     private final HackathonManager hackathonManager;
     private final UserManager userManager;
 
-    /**
-     * Crea un nuovo hackathon.
-     *
-     * @param request dati per la creazione dell'hackathon
-     * @return l'hackathon creato con stato 201
-     */
     @PostMapping
     public ResponseEntity<HackathonResponse> createHackathon(@Valid @RequestBody CreateHackathonRequest request) {
         Organizzatore organizzatore = (Organizzatore) userManager.getUserById(request.organizzatoreId());
@@ -49,10 +40,7 @@ public class HackathonController {
         DatiHackathon dati = new DatiHackathon(
                 request.nome(),
                 request.luogo(),
-                new MoneyAmount(
-                        request.premioInDenaro(),
-                        request.currency()
-                ),
+                new MoneyAmount(request.premioInDenaro(), request.currency()),
                 request.dimensioneMaxTeam(),
                 request.regolamento()
         );
@@ -71,11 +59,6 @@ public class HackathonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(HackathonResponse.from(hackathon));
     }
 
-    /**
-     * Restituisce tutti gli hackathon.
-     *
-     * @return lista di tutti gli hackathon
-     */
     @GetMapping
     public ResponseEntity<Set<HackathonResponse>> getAllHackathons() {
         Set<HackathonResponse> hackathons = hackathonManager.getHackathons()
@@ -85,12 +68,6 @@ public class HackathonController {
         return ResponseEntity.ok(hackathons);
     }
 
-    /**
-     * Restituisce un hackathon specifico.
-     *
-     * @param id identificatore dell'hackathon
-     * @return l'hackathon cercato
-     */
     @GetMapping("/{id}")
     public ResponseEntity<HackathonResponse> getHackathon(@PathVariable UUID id) {
         Hackathon hackathon = hackathonManager.getHackathon(id);
@@ -106,11 +83,6 @@ public class HackathonController {
         return ResponseEntity.ok(teams);
     }
 
-    /**
-     * Restituisce gli hackathon a cui è possibile iscriversi.
-     *
-     * @return lista degli hackathon in fase di iscrizione
-     */
     @GetMapping("/joinable")
     public ResponseEntity<Set<HackathonResponse>> getJoinableHackathons() {
         Set<HackathonResponse> hackathons = hackathonManager.getJoinableHackathons().stream()
@@ -119,47 +91,37 @@ public class HackathonController {
         return ResponseEntity.ok(hackathons);
     }
 
-    /**
-     * Resitutuisce gli hackathon creati da un organizzatore
-     * @param organizzatoreId l'organizzatore degli hackathon
-     * @return gli hackathon creati da tale organizzatore
-     */
-
-    @GetMapping("/by-organizer/{organizzatore}")
+    @GetMapping("/by-organizer/{organizzatoreId}")
     public ResponseEntity<Set<HackathonResponse>> getHackathonsByOrganizer(@PathVariable UUID organizzatoreId) {
         Organizzatore organizzatore = (Organizzatore) userManager.getUserById(organizzatoreId);
-        Set<HackathonResponse> hackathons = hackathonManager.getHackathonCreati(organizzatore).stream().map(
-                HackathonResponse::from).collect(Collectors.toSet());
+        Set<HackathonResponse> hackathons = hackathonManager.getHackathonCreati(organizzatore).stream()
+                .map(HackathonResponse::from)
+                .collect(Collectors.toSet());
         return ResponseEntity.ok(hackathons);
     }
 
-    /**
-     * Aggiunge un mentore agli hackathon creati
-     *
-     */
-    @PostMapping("/{hackathon}/aggiungi-mentore")
-    public ResponseEntity<MessageResponse> aggiungiMentore(@PathVariable UUID hackathonId,  Set<UUID> mentoriId) {
+    @PostMapping("/{hackathonId}/aggiungi-mentore")
+    public ResponseEntity<MessageResponse> aggiungiMentore(@PathVariable UUID hackathonId, Set<UUID> mentoriId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Set<Mentore> mentori = mentoriId.stream()
                 .map(userManager::getUserById)
                 .map(Mentore.class::cast)
                 .collect(Collectors.toSet());
-
         hackathonManager.aggiungiMentori(hackathon, mentori);
         return ResponseEntity.ok(new MessageResponse("Mentore aggiunto all'hackathon"));
     }
 
-    /**
-     * Avanza lo stato di un hackathon.
-     *
-     * @param hackathonId identificatore dell'hackathon
-     * @return messaggio di conferma
-     */
+    @PostMapping("/{id}/chiudi-sottomissioni")
+    public ResponseEntity<MessageResponse> chiudiSottomissioni(@PathVariable UUID id) {
+        Hackathon hackathon = hackathonManager.getHackathon(id);
+        hackathonManager.chiudiSottomissioni(hackathon);
+        return ResponseEntity.ok(new MessageResponse("Sottomissioni chiuse con successo"));
+    }
+
     @PostMapping("/{id}/avanza-stato")
-    public ResponseEntity<MessageResponse> avanzaStato(@PathVariable UUID hackathonId) {
-        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+    public ResponseEntity<MessageResponse> avanzaStato(@PathVariable UUID id) {
+        Hackathon hackathon = hackathonManager.getHackathon(id);
         hackathonManager.avanzaStato(hackathon);
         return ResponseEntity.ok(new MessageResponse("Stato avanzato con successo"));
     }
-
 }
