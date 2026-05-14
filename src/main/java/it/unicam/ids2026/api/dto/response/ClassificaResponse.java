@@ -2,6 +2,7 @@ package it.unicam.ids2026.api.dto.response;
 
 import it.unicam.ids2026.core.roles.team.Team;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public record ClassificaResponse(
                 .toList();
 
         // Calcola le posizioni (gestisce i parimerito)
-        List<VoceClassifica> vociConPosizione = new java.util.ArrayList<>();
+        List<VoceClassifica> vociConPosizione = new ArrayList<>();
         int posizioneCorrente = 1;
         int ultimoVoto = -1;
         int posizionePerVoto = 1;

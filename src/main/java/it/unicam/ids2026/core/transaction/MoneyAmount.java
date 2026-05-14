@@ -14,7 +14,7 @@ public class MoneyAmount {
 
     public void add(@NonNull MoneyAmount other) {
         if (!this.currency.equals(other.currency)) {
-            throw new IllegalArgumentException("Can't add two different currencies");
+            throw new IllegalArgumentException("Non puoi sommare due currency diverse");
         }
         this.amount = this.amount.add(other.amount);
     }

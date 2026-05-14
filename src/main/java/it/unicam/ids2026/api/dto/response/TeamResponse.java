@@ -1,5 +1,6 @@
 package it.unicam.ids2026.api.dto.response;
 
+import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.team.Team;
 
 import java.util.Set;
@@ -18,7 +19,7 @@ public record TeamResponse(
                 team.getMaxMembri(),
                 team.getMembri().size(),
                 team.getMembri().stream()
-                        .map(it.unicam.ids2026.core.roles.User::getId)
+                        .map(User::getId)
                         .collect(Collectors.toSet())
         );
     }
