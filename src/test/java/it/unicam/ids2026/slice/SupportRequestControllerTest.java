@@ -5,6 +5,7 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.SupportRequestManager;
 import it.unicam.ids2026.core.managers.TeamManager;
+import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,9 @@ class SupportRequestControllerTest {
 
     @MockitoBean
     private TeamManager teamManager;
+
+    @MockitoBean
+    private UserManager userManager;
 
     @Test
     void creaRichiestaSupport_ValidBody_ShouldReturn201() throws Exception {

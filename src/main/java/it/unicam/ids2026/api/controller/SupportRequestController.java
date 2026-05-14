@@ -34,18 +34,6 @@ public class SupportRequestController {
     private final TeamManager teamManager;
     private final UserManager userManager;
 
-    /**
-     * Restituisce l'insieme delle richieste di supporto associate
-     * all'hackathon identificato da {@code hackathonId}.
-     *
-     * <p>L'hackathon viene recuperato tramite {@code hackathonManager},
-     * quindi le richieste vengono ottenute tramite il
-     * {@code supportRequestManager} e convertite in
-     * {@link SupportRequestResponse} prima di essere restituite.</p>
-     *
-     * @param hackathonId l'identificatore dell'hackathon di cui recuperare le richieste
-     * @return una risposta HTTP 200 contenente l'insieme delle richieste di supporto mappate
-     */
     @GetMapping
     public ResponseEntity<Set<SupportRequestResponse>> getRichieste(@PathVariable UUID hackathonId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
@@ -55,21 +43,6 @@ public class SupportRequestController {
         return ResponseEntity.ok(richieste);
     }
 
-
-    /**
-     * Crea una nuova richiesta di supporto per un team partecipante
-     * all'hackathon identificato da {@code hackathonId}.
-     *
-     * <p>I dati necessari alla creazione della richiesta vengono forniti
-     * tramite {@link CreateSupportRequest} e validati tramite {@link Valid}.
-     * La richiesta viene creata dal {@code supportRequestManager} e
-     * restituita come {@link SupportRequestResponse} con codice di stato
-     * HTTP 201 (Created).</p>
-     *
-     * @param hackathonId l'identificatore dell'hackathon a cui appartiene il team
-     * @param request i dati necessari per creare la richiesta di supporto
-     * @return una risposta HTTP 201 contenente la richiesta appena creata
-     */
     @PostMapping
     public ResponseEntity<SupportRequestResponse> creaRichiestaSupport(
             @PathVariable UUID hackathonId,
@@ -85,16 +58,16 @@ public class SupportRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SupportRequestResponse.from(richiesta));
     }
 
-    @GetMapping
+    @GetMapping("/calendario")
     public ResponseEntity<Disponibilita> ottieniCalendario(@PathVariable UUID hackathonId,
-                                                            @RequestParam UUID utenteId) {
+                                                           @RequestParam UUID utenteId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Utente utente = (Utente) userManager.getUserById(utenteId);
         Disponibilita disponibilita = supportRequestManager.ottieniCalendario(utente, hackathon);
         return ResponseEntity.ok(disponibilita);
     }
 
-    @GetMapping
+    @GetMapping("/disponibilita")
     public ResponseEntity<Disponibilita> ottieniDisponibilita(@PathVariable UUID hackathonId,
                                                               @RequestParam String teamName) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
@@ -103,17 +76,17 @@ public class SupportRequestController {
         return ResponseEntity.ok(disponibilita);
     }
 
-    @PutMapping
-    public ResponseEntity<MessageResponse> registraDisponibilita (@PathVariable UUID hackathonId,
-                                                                  @RequestParam UUID utenteId,
-                                                                  @RequestParam Disponibilita nuovaDisponibilita) {
+    @PutMapping("/disponibilita")
+    public ResponseEntity<MessageResponse> registraDisponibilita(@PathVariable UUID hackathonId,
+                                                                 @RequestParam UUID utenteId,
+                                                                 @RequestParam Disponibilita nuovaDisponibilita) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Utente utente = (Utente) userManager.getUserById(utenteId);
         supportRequestManager.registraDisponibilita(hackathon, utente, nuovaDisponibilita);
         return ResponseEntity.ok(new MessageResponse("Disponibilità registrata con successo"));
     }
 
-    @PostMapping
+    @PostMapping("/risposta")
     public ResponseEntity<MessageResponse> rispondiTestualmente(@PathVariable UUID hackathonId,
                                                                 @RequestParam String teamName,
                                                                 @RequestParam UUID mentoreId,
@@ -126,7 +99,7 @@ public class SupportRequestController {
         return ResponseEntity.ok(new MessageResponse("Risposta registrata"));
     }
 
-    @PostMapping
+    @PostMapping("/call")
     public ResponseEntity<MessageResponse> fissaCall(@PathVariable UUID hackathonId,
                                                      @RequestParam String teamName,
                                                      @RequestParam UUID mentoreId,
@@ -138,6 +111,4 @@ public class SupportRequestController {
         supportRequestManager.fissaCall(richiestaSupporto, mentore, dateTime);
         return ResponseEntity.ok(new MessageResponse("Call fissata"));
     }
-
-
 }
