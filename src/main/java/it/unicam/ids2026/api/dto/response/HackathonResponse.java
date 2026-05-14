@@ -11,13 +11,13 @@ public record HackathonResponse(
         String nome,
         String luogo,
         MoneyAmount premioInDenaro,
-        int dimensioneMaxTeam,
+        Integer dimensioneMaxTeam,
         String regolamento,
         RappresentazioneStato stato,
         UUID organizzatoreId,
         UUID giudiceId,
         MoneyAmount saldoCorrente,
-        int numeroTransazioni
+        Integer numeroTransazioni
 ) {
     public static HackathonResponse from(Hackathon hackathon) {
         return new HackathonResponse(
