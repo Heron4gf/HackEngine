@@ -8,7 +8,6 @@ import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.managers.HackathonManager;
-import it.unicam.ids2026.core.managers.StaffManager;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
