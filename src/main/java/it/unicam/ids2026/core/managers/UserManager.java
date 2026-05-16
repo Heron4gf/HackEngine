@@ -141,5 +141,6 @@ public class UserManager implements TeamJoinListener {
     @Override
     public void notifyEnterTeam(@NonNull Team team, @NonNull Utente utente) {
         utente.setTeam(team);
+        userRepository.save(utente);
     }
 }
