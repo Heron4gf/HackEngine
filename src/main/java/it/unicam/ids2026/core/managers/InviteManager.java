@@ -19,11 +19,13 @@ import java.util.Set;
 public class InviteManager implements DeletionListener {
 
     private final InviteRepository inviteRepository;
+    private final EventPublisher eventPublisher;
 
     @Autowired
     public InviteManager(InviteRepository inviteRepository, EventPublisher eventPublisher) {
         this.inviteRepository = inviteRepository;
         eventPublisher.registerListener(this);
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -60,7 +62,7 @@ public class InviteManager implements DeletionListener {
         verifyTeamAndUtente(mittente, destinatario);
 
         mittente.getMembri().add(destinatario);
-        destinatario.setTeam(mittente);
+        eventPublisher.publishEnter(mittente, destinatario);
         removeInvito(destinatario, invito);
     }
 

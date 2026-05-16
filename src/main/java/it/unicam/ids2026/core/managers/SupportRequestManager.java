@@ -178,7 +178,7 @@ public class SupportRequestManager {
     }
 
     private boolean validaDati(Hackathon hackathon, Team team, String titolo, String descrizione) {
-        return hackathon.getIscritti().containsKey(team)
+        return hackathon.getTeams().contains(team)
                 && !titolo.isBlank()
                 && !descrizione.isBlank();
     }

@@ -2,7 +2,9 @@ package it.unicam.ids2026.core.events;
 
 import it.unicam.ids2026.api.events.DeletionListener;
 import it.unicam.ids2026.api.events.Listener;
+import it.unicam.ids2026.api.events.TeamJoinListener;
 import it.unicam.ids2026.core.roles.team.Team;
+import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,14 +35,25 @@ public class EventPublisher {
         listeners.remove(listener);
     }
 
+    private <T extends Listener> Collection<T> getListenersOfType(Class<T> type) {
+        return listeners.stream()
+                .filter(type::isInstance)
+                .map(type::cast)
+                .toList();
+    }
+
+
     /**
      * @param team
      */
     public void publishDeletion(@NonNull Team team) {
-        listeners.stream()
-                .filter(DeletionListener.class::isInstance)
-                .map(DeletionListener.class::cast)
+        getListenersOfType(DeletionListener.class)
                 .forEach(listener -> listener.notifyDeletion(team));
+    }
+
+    public void publishEnter(@NonNull Team team, @NonNull Utente utente) {
+        getListenersOfType(TeamJoinListener.class)
+                .forEach(listener -> listener.notifyEnterTeam(team, utente));
     }
 
 }

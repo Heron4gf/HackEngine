@@ -1,6 +1,7 @@
 package it.unicam.ids2026.core.managers;
 
 import it.unicam.ids2026.core.events.EventPublisher;
+import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.TeamRepository;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Gestisce le operazioni relative ai team.
@@ -34,6 +34,25 @@ public class TeamManager {
         return teamRepository.findById(teamName)
                 .orElseThrow(() -> new NoSuchElementException("Nessun team trovato con nome: " + teamName));
     }
+
+    /**
+     * Restituisce il team con il nome specificato all'interno dell'hackathon.
+     *
+     * <p>La ricerca viene effettuata tramite uno stream sulla lista dei team
+     * registrati nell'hackathon. Se nessun team corrisponde al nome fornito,
+     * il metodo restituisce {@code null} senza sollevare eccezioni.</p>
+     *
+     * @param teamName  il nome del team da cercare; non deve essere {@code null}
+     * @param hackathon l'hackathon in cui effettuare la ricerca; non deve essere {@code null}
+     * @return il team corrispondente al nome indicato, oppure {@code null} se non trovato
+     */
+    public Team getTeam(@NonNull String teamName, @NonNull Hackathon hackathon) {
+        return hackathon.getTeams().stream()
+                .filter(team -> team.getNome().equals(teamName))
+                .findFirst()
+                .orElse(null);
+    }
+
     /**
      * Restituisce tutti i team presenti nel sistema.
      *
@@ -63,7 +82,7 @@ public class TeamManager {
             throw new IllegalArgumentException("Numero massimo di membri non valido (deve essere tra 1 e 20)");
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
-        utente.setTeam(team);
+        eventPublisher.publishEnter(team, utente);
         teamRepository.save(team);
     }
 

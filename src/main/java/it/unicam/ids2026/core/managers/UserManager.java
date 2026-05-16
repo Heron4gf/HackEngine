@@ -1,5 +1,7 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.api.events.TeamJoinListener;
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
@@ -19,10 +21,14 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative agli utenti.
  */
 @Service
-@RequiredArgsConstructor
-public class UserManager {
+public class UserManager implements TeamJoinListener {
 
     private final UserRepository userRepository;
+
+    public UserManager(UserRepository userRepository, EventPublisher eventPublisher) {
+        this.userRepository = userRepository;
+        eventPublisher.registerListener(this);
+    }
 
     /**
      * Cerca utenti per nome.
@@ -132,4 +138,8 @@ public class UserManager {
     }
 
 
+    @Override
+    public void notifyEnterTeam(@NonNull Team team, @NonNull Utente utente) {
+        utente.setTeam(team);
+    }
 }

@@ -44,11 +44,11 @@ public class SupportRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<SupportRequestResponse> creaRichiestaSupport(
+    public ResponseEntity<SupportRequestResponse> creaRichiestaSupporto(
             @PathVariable UUID hackathonId,
             @Valid @RequestBody CreateSupportRequest request) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
-        Team team = teamManager.getTeam(request.nomeTeam());
+        Team team = teamManager.getTeam(request.nomeTeam(), hackathon);
         RichiestaSupporto richiesta = supportRequestManager.creaRichiestaSupporto(
                 hackathon,
                 team,
