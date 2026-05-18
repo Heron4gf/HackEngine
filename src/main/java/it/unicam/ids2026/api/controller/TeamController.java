@@ -103,14 +103,12 @@ public class TeamController {
      *
      * @param nome nome del team
      * @param hackathonId identificatore dell'hackathon
-     * @param utenteId identificatore dell'utente che richiede l'iscrizione
      * @return messaggio di conferma
      */
     @PostMapping("/{nome}/iscrizione")
     public ResponseEntity<MessageResponse> iscriviTeam(
             @PathVariable String nome,
-            @RequestParam UUID hackathonId,
-            @RequestParam UUID utenteId) {
+            @RequestParam UUID hackathonId) {
         Team team = teamManager.getTeam(nome);
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         hackathonManager.iscriviTeam(hackathon, team);
