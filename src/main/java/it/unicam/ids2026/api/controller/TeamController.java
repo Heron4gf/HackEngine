@@ -92,7 +92,7 @@ public class TeamController {
      * @return messaggio di conferma
      */
     @PostMapping("/{nome}/esci")
-    public ResponseEntity<MessageResponse> exitTeam(@RequestParam UUID utenteId) {
+    public ResponseEntity<MessageResponse> esciDalTeam(@RequestParam UUID utenteId) {
         Utente utente = (Utente) userManager.getUserById(utenteId);
         teamManager.esciDalTeam(utente);
         return ResponseEntity.ok(new MessageResponse("Uscito dal team con successo"));
