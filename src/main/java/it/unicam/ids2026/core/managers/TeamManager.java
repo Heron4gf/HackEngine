@@ -83,7 +83,7 @@ public class TeamManager {
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
         teamRepository.save(team);
-        eventPublisher.publishEnter(team, utente);
+        eventPublisher.publishUserChange(utente);
     }
 
     /**
@@ -100,10 +100,11 @@ public class TeamManager {
         Team team = utente.getTeam();
         utente.setTeam(null);
         team.getMembri().remove(utente);
+        eventPublisher.publishUserChange(utente);
         if (team.getMembri().isEmpty()) {
             // Pubblica evento e rimuove il team se non ci sono più membri
             eventPublisher.publishDeletion(team);
-            teamRepository.delete(team);;
+            teamRepository.delete(team);
         } else {
             teamRepository.save(team);
         }

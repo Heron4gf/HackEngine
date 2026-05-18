@@ -1,12 +1,11 @@
 package it.unicam.ids2026.core.managers;
 
-import it.unicam.ids2026.api.events.TeamJoinListener;
+import it.unicam.ids2026.api.events.UserChangeListener;
 import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
-import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.UserRepository;
 import lombok.NonNull;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative agli utenti.
  */
 @Service
-public class UserManager implements TeamJoinListener {
+public class UserManager implements UserChangeListener {
 
     private final UserRepository userRepository;
 
@@ -138,8 +137,7 @@ public class UserManager implements TeamJoinListener {
 
 
     @Override
-    public void notifyEnterTeam(@NonNull Team team, @NonNull Utente utente) {
-        utente.setTeam(team);
+    public void notifyUserChange(@NonNull Utente utente) {
         userRepository.save(utente);
     }
 }

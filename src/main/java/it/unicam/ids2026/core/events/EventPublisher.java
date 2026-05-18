@@ -2,11 +2,10 @@ package it.unicam.ids2026.core.events;
 
 import it.unicam.ids2026.api.events.DeletionListener;
 import it.unicam.ids2026.api.events.Listener;
-import it.unicam.ids2026.api.events.TeamJoinListener;
+import it.unicam.ids2026.api.events.UserChangeListener;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -17,7 +16,7 @@ public class EventPublisher {
 
     private final Collection<Listener> listeners = new LinkedList<>();
 
-    @Autowired
+
     public EventPublisher() {
     }
 
@@ -51,9 +50,9 @@ public class EventPublisher {
                 .forEach(listener -> listener.notifyDeletion(team));
     }
 
-    public void publishEnter(@NonNull Team team, @NonNull Utente utente) {
-        getListenersOfType(TeamJoinListener.class)
-                .forEach(listener -> listener.notifyEnterTeam(team, utente));
+    public void publishUserChange(@NonNull Utente utente) {
+        getListenersOfType(UserChangeListener.class)
+                .forEach(listener -> listener.notifyUserChange(utente));
     }
 
 }

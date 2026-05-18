@@ -60,9 +60,9 @@ public class InviteManager implements DeletionListener {
         Team mittente = invito.getMittente();
         Utente destinatario = invito.getDestinatario();
         verifyTeamAndUtente(mittente, destinatario);
-
         mittente.getMembri().add(destinatario);
-        eventPublisher.publishEnter(mittente, destinatario);
+        destinatario.setTeam(mittente);
+        eventPublisher.publishUserChange(destinatario);
         removeInvito(destinatario, invito);
     }
 
