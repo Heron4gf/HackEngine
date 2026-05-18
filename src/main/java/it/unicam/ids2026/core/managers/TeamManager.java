@@ -82,8 +82,8 @@ public class TeamManager {
             throw new IllegalArgumentException("Numero massimo di membri non valido (deve essere tra 1 e 20)");
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
-        eventPublisher.publishEnter(team, utente);
         teamRepository.save(team);
+        eventPublisher.publishEnter(team, utente);
     }
 
     /**
