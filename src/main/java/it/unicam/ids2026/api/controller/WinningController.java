@@ -43,7 +43,7 @@ public class WinningController {
      * @return lista dei team candidati al vincitore
      */
     @GetMapping("/winner-candidates")
-    public ResponseEntity<List<WinnerCandidateResponse>> getWinnerCandidates(
+    public ResponseEntity<List<WinnerCandidateResponse>> ottieniPossibiliVincitori(
             @PathVariable UUID hackathonId) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);
         Map<Team, Iscrizione> candidates = winningManager.ottieniTeamConPunteggioMassimo(h);

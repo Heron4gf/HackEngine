@@ -1,6 +1,7 @@
 package it.unicam.ids2026.api.controller;
 
 import it.unicam.ids2026.api.dto.request.CreateSubmissionRequest;
+import it.unicam.ids2026.api.dto.request.EvaluationRequest;
 import it.unicam.ids2026.api.dto.request.UpdateSubmissionRequest;
 import it.unicam.ids2026.api.dto.response.SubmissionResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -52,6 +55,31 @@ public class SubmissionController {
                 new File(request.allegato())
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(SubmissionResponse.from(sottomissione));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SubmissionResponse>> ottieniSottomissioni(
+            @PathVariable UUID hackathonId
+    ) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        return ResponseEntity.ok(
+                submissionManager.ottieniSottomissioni(hackathon).values().stream()
+                        .map(SubmissionResponse::from)
+                        .toList()
+        );
+    }
+
+    @PostMapping("/evaluate")
+    public ResponseEntity<Void> assegnaValutazione(
+            @PathVariable UUID hackathonId,
+            @PathVariable String teamId,
+            @Valid @RequestBody EvaluationRequest request) {
+        Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
+        Team team = teamManager.getTeam(teamId);
+        Sottomissione sottomissione = submissionManager.ottieniSottomissione(hackathon, team);
+
+        submissionManager.assegnaValutazione(sottomissione, request.voto(), request.giudizio());
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping

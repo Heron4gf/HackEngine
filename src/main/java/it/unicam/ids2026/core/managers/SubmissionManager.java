@@ -77,6 +77,22 @@ public class SubmissionManager {
         return nuovaSottomissione;
     }
 
+    /**
+     * Restituisce una mappa contenente tutte le sottomissioni presenti nell'hackathon specificato,
+     * associando ciascun team alla propria sottomissione, filtrando i team che non hanno ancora consegnato.
+     *
+     * @param hackathon l'hackathon da cui recuperare le sottomissioni; non deve essere {@code null}
+     * @return una mappa che associa ogni {@link Team} alla rispettiva {@link Sottomissione}
+     */
+    public java.util.Map<Team, Sottomissione> ottieniSottomissioni(@NonNull Hackathon hackathon) {
+        return hackathon.getIscritti().entrySet().stream()
+                .filter(entry -> entry.getValue().getSottomissione() != null)
+                .collect(java.util.stream.Collectors.toMap(
+                        java.util.Map.Entry::getKey,
+                        entry -> entry.getValue().getSottomissione()
+                ));
+    }
+
 
     /**
      * Restituisce la sottomissione associata al team nell'hackathon indicato.
