@@ -1,12 +1,12 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.api.events.TeamChangeListener;
 import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.TeamRepository;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,11 +17,16 @@ import java.util.Set;
  * Gestisce le operazioni relative ai team.
  */
 @Service
-@RequiredArgsConstructor
-public class TeamManager {
+public class TeamManager implements TeamChangeListener {
 
     private final TeamRepository teamRepository;
     private final EventPublisher eventPublisher;
+
+    public TeamManager(TeamRepository teamRepository, EventPublisher eventPublisher) {
+        this.teamRepository = teamRepository;
+        this.eventPublisher = eventPublisher;
+        eventPublisher.registerListener(this);
+    }
 
     /**
      * Recupera un team tramite il suo nome.
@@ -108,5 +113,10 @@ public class TeamManager {
         } else {
             teamRepository.save(team);
         }
+    }
+
+    @Override
+    public void notifyTeamChange(@NonNull Team team) {
+        teamRepository.save(team);
     }
 }

@@ -1,9 +1,6 @@
 package it.unicam.ids2026.core.events;
 
-import it.unicam.ids2026.api.events.HackathonChangeListener;
-import it.unicam.ids2026.api.events.Listener;
-import it.unicam.ids2026.api.events.TeamDeletionListener;
-import it.unicam.ids2026.api.events.UserChangeListener;
+import it.unicam.ids2026.api.events.*;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
@@ -60,6 +57,11 @@ public class EventPublisher {
     public void publishHackathonChange(@NonNull Hackathon hackathon) {
         getListenersOfType(HackathonChangeListener.class)
                 .forEach(listener -> listener.notifyHackathonChange(hackathon));
+    }
+
+    public void publishTeamChange(@NonNull Team team) {
+        getListenersOfType(TeamChangeListener.class)
+                .forEach(listener -> listener.notifyTeamChange(team));
     }
 
 }

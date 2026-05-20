@@ -1,5 +1,7 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.api.events.HackathonChangeListener;
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
@@ -8,10 +10,8 @@ import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.staff.Organizzatore;
 import it.unicam.ids2026.core.roles.team.Team;
-import it.unicam.ids2026.core.roles.team.Utente;
 import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,10 +22,14 @@ import java.util.stream.Collectors;
  * Gestisce le operazioni relative agli hackathon.
  */
 @Service
-@RequiredArgsConstructor
-public class HackathonManager {
+public class HackathonManager implements HackathonChangeListener {
 
     private final HackathonRepository hackathonRepository;
+
+    public HackathonManager(HackathonRepository hackathonRepository, EventPublisher eventPublisher) {
+        this.hackathonRepository = hackathonRepository;
+        eventPublisher.registerListener(this);
+    }
 
     /**
      * Recupera un hackathon tramite il suo ID.
@@ -168,4 +172,8 @@ public class HackathonManager {
         hackathonRepository.save(hackathon);
     }
 
+    @Override
+    public void notifyHackathonChange(@NonNull Hackathon hackathon) {
+        hackathonRepository.save(hackathon);
+    }
 }

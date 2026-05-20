@@ -63,6 +63,7 @@ public class InviteManager implements TeamDeletionListener {
         mittente.getMembri().add(destinatario);
         destinatario.setTeam(mittente);
         eventPublisher.publishUserChange(destinatario);
+        eventPublisher.publishTeamChange(mittente);
         removeInvito(destinatario, invito);
     }
 

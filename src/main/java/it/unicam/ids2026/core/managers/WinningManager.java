@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.status.RappresentazioneStato;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
@@ -7,7 +8,6 @@ import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.transaction.MoneyAmount;
 import it.unicam.ids2026.core.transaction.Transaction;
 import it.unicam.ids2026.core.transaction.factory.TransactionFactory;
-import it.unicam.ids2026.persistence.HackathonRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,7 @@ import java.util.Map;
 public class WinningManager {
 
     private final TransactionFactory transactionFactory;
-    private final HackathonRepository hackathonRepository;
-
+    private final EventPublisher eventPublisher;
     /**
      * Elabora il pagamento del premio al team vincitore e lo registra nell'hackathon.
      *
@@ -37,8 +36,7 @@ public class WinningManager {
         MoneyAmount premio = hackathon.getDatiHackathon().premioInDenaro();
         Transaction transazione = transactionFactory.makePayment(hackathon, vincitore, premio);
         hackathon.getWallet().aggiungiTransazione(transazione);
-        hackathonRepository.save(hackathon);
-        
+        eventPublisher.publishHackathonChange(hackathon);
         return transazione;
     }
 
