@@ -1,5 +1,6 @@
 package it.unicam.ids2026.unit;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.managers.UserManager;
 import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.team.Utente;
@@ -24,11 +25,14 @@ class UserManagerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private EventPublisher eventPublisher;
+
     private UserManager userManager;
 
     @BeforeEach
     void setUp() {
-        userManager = new UserManager(userRepository);
+        userManager = new UserManager(userRepository, eventPublisher);
     }
 
     @Test
