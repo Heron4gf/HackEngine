@@ -1,8 +1,10 @@
 package it.unicam.ids2026.core.events;
 
-import it.unicam.ids2026.api.events.DeletionListener;
+import it.unicam.ids2026.api.events.HackathonChangeListener;
 import it.unicam.ids2026.api.events.Listener;
+import it.unicam.ids2026.api.events.TeamDeletionListener;
 import it.unicam.ids2026.api.events.UserChangeListener;
+import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.roles.team.Utente;
 import lombok.NonNull;
@@ -45,14 +47,19 @@ public class EventPublisher {
     /**
      * @param team
      */
-    public void publishDeletion(@NonNull Team team) {
-        getListenersOfType(DeletionListener.class)
-                .forEach(listener -> listener.notifyDeletion(team));
+    public void publishTeamDeletion(@NonNull Team team) {
+        getListenersOfType(TeamDeletionListener.class)
+                .forEach(listener -> listener.notifyTeamDeletion(team));
     }
 
     public void publishUserChange(@NonNull Utente utente) {
         getListenersOfType(UserChangeListener.class)
                 .forEach(listener -> listener.notifyUserChange(utente));
+    }
+
+    public void publishHackathonChange(@NonNull Hackathon hackathon) {
+        getListenersOfType(HackathonChangeListener.class)
+                .forEach(listener -> listener.notifyHackathonChange(hackathon));
     }
 
 }

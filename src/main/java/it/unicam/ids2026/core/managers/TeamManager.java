@@ -103,7 +103,7 @@ public class TeamManager {
         eventPublisher.publishUserChange(utente);
         if (team.getMembri().isEmpty()) {
             // Pubblica evento e rimuove il team se non ci sono più membri
-            eventPublisher.publishDeletion(team);
+            eventPublisher.publishTeamDeletion(team);
             teamRepository.delete(team);
         } else {
             teamRepository.save(team);

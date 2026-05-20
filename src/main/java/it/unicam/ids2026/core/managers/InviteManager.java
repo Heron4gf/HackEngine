@@ -1,6 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
-import it.unicam.ids2026.api.events.DeletionListener;
+import it.unicam.ids2026.api.events.TeamDeletionListener;
 import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.roles.team.Invito;
 import it.unicam.ids2026.core.roles.team.Team;
@@ -16,7 +16,7 @@ import java.util.Set;
  * Gestisce le operazioni relative agli inviti tra team e utenti.
  */
 @Service
-public class InviteManager implements DeletionListener {
+public class InviteManager implements TeamDeletionListener {
 
     private final InviteRepository inviteRepository;
     private final EventPublisher eventPublisher;
@@ -116,7 +116,7 @@ public class InviteManager implements DeletionListener {
      * @param team team eliminato
      */
     @Override
-    public void notifyDeletion(Team team) {
+    public void notifyTeamDeletion(@NonNull Team team) {
         inviteRepository.deleteByMittente(team);
     }
 }

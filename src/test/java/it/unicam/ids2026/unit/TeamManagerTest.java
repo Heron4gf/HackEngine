@@ -94,7 +94,7 @@ class TeamManagerTest {
 
         // Assert
         assertFalse(utente.haTeam());
-        verify(eventPublisher).publishDeletion(team);
+        verify(eventPublisher).publishTeamDeletion(team);
         verify(teamRepository).delete(team);
     }
 
@@ -114,7 +114,7 @@ class TeamManagerTest {
         assertFalse(utente1.haTeam());
         assertTrue(team.getMembri().contains(utente2));
         verify(teamRepository).save(team);
-        verify(eventPublisher, never()).publishDeletion(any());
+        verify(eventPublisher, never()).publishTeamDeletion(any());
         verify(teamRepository, never()).delete(any());
     }
 }
