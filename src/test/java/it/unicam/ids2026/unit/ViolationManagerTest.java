@@ -1,8 +1,10 @@
 package it.unicam.ids2026.unit;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.DatiHackathon;
 import it.unicam.ids2026.core.hackathon.data.Intervallo;
+import it.unicam.ids2026.core.managers.HackathonManager;
 import it.unicam.ids2026.core.managers.ViolationManager;
 import it.unicam.ids2026.core.roles.staff.Giudice;
 import it.unicam.ids2026.core.roles.staff.Mentore;
@@ -31,7 +33,9 @@ class ViolationManagerTest {
 
     @Mock
     private HackathonRepository hackathonRepository;
+    private EventPublisher eventPublisher = new EventPublisher();
 
+    private HackathonManager hackathonManager = new HackathonManager(hackathonRepository, eventPublisher);
     private ViolationManager violationManager;
     private Hackathon hackathon;
     private Mentore mentore;
@@ -39,7 +43,7 @@ class ViolationManagerTest {
 
     @BeforeEach
     void setUp() {
-        violationManager = new ViolationManager(hackathonRepository);
+        violationManager = new ViolationManager(eventPublisher);
         hackathon = createHackathon();
         mentore = new Mentore("Mario", "Rossi");
         team = new Team("Team Test", 5);

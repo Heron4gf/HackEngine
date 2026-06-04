@@ -1,5 +1,6 @@
 package it.unicam.ids2026.core.managers;
 
+import it.unicam.ids2026.core.events.EventPublisher;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
@@ -18,7 +19,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ViolationManager {
 
-    private final HackathonRepository hackathonRepository;
+    private final EventPublisher eventPublisher;
 
     /**
      * Segnala un team per una violazione.
@@ -37,7 +38,7 @@ public class ViolationManager {
         }
         Violazione violazione = new Violazione(mentore, team, hackathon, descrizione);
         hackathon.getViolazioni().add(violazione);
-        hackathonRepository.save(hackathon);
+        eventPublisher.publishHackathonChange(hackathon);
         return violazione;
     }
 

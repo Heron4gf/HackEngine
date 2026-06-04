@@ -33,7 +33,7 @@ public class HackathonLifecycleService {
      * confronta la data di fine della durata con la data corrente. Se la durata
      * è scaduta, delega l'avanzamento di stato a {@link HackathonManager#avanzaStato}.</p>
      */
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 * * * *") // sintassi: [secondo] [minuto] [ora] [giorno-del-mese] [mese giorno-della-settimana]
     public void sincronizzaStatiHackathon() {
         LocalDate oggi = LocalDate.now();
 

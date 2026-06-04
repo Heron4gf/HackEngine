@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -30,6 +29,13 @@ public class SubmissionController {
     private final HackathonManager hackathonManager;
     private final TeamManager teamManager;
 
+    /**
+     * Recupera la sottomissione di uno specifico team per un determinato hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamId l'identificativo del team
+     * @return un {@link ResponseEntity} contenente la {@link SubmissionResponse} con i dettagli della sottomissione
+     */
     @GetMapping
     public ResponseEntity<SubmissionResponse> getSottomissione(
             @PathVariable UUID hackathonId,
@@ -40,6 +46,14 @@ public class SubmissionController {
         return ResponseEntity.ok(SubmissionResponse.from(sottomissione));
     }
 
+    /**
+     * Invia una nuova sottomissione per un team all'interno di un hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamId l'identificativo del team
+     * @param request i dati della sottomissione da creare
+     * @return un {@link ResponseEntity} con stato 21 Created contenente la {@link SubmissionResponse} della sottomissione creata
+     */
     @PostMapping
     public ResponseEntity<SubmissionResponse> inviaSottomissione(
             @PathVariable UUID hackathonId,
@@ -57,6 +71,12 @@ public class SubmissionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SubmissionResponse.from(sottomissione));
     }
 
+    /**
+     * Recupera tutte le sottomissioni associate a un determinato hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @return un {@link ResponseEntity} contenente la lista delle {@link SubmissionResponse}
+     */
     @GetMapping("/all")
     public ResponseEntity<List<SubmissionResponse>> ottieniSottomissioni(
             @PathVariable UUID hackathonId
@@ -69,6 +89,14 @@ public class SubmissionController {
         );
     }
 
+    /**
+     * Assegna una valutazione e un giudizio a una specifica sottomissione.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamId l'identificativo del team
+     * @param request i dati della valutazione (voto e giudizio)
+     * @return un {@link ResponseEntity} vuoto con stato 24 No Content
+     */
     @PostMapping("/evaluate")
     public ResponseEntity<Void> assegnaValutazione(
             @PathVariable UUID hackathonId,
@@ -82,6 +110,14 @@ public class SubmissionController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Aggiorna i dati di una sottomissione esistente per un team in un hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamId l'identificativo del team
+     * @param request i nuovi dati per l'aggiornamento della sottomissione
+     * @return un {@link ResponseEntity} contenente la {@link SubmissionResponse} aggiornata
+     */
     @PutMapping
     public ResponseEntity<SubmissionResponse> aggiornaSottomissione(
             @PathVariable UUID hackathonId,

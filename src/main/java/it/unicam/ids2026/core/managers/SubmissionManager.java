@@ -17,7 +17,7 @@ public class SubmissionManager {
 
     /**
      * Metodo che crea una nuova sottomissione e la registra nel sistema.
-     * Se il team aveva già una sottomissione, questa viene sovrascritta.
+     * Se il team aveva già una sottomissione, viene lanciata un'eccezione
      *
      * @param hackathon   l'hackathon a cui appartiene la sottomissione
      * @param nome        il nome della sottomissione
@@ -32,6 +32,10 @@ public class SubmissionManager {
                                    @NonNull String descrizione,
                                    @NonNull File allegato
                                    ) {
+        if(ottieniSottomissione(hackathon, team) != null) {
+            throw new IllegalArgumentException("La sottomissione esiste già");
+        }
+
         if (!validaSottomissione(nome, descrizione, allegato)) {
             throw new IllegalArgumentException("I dati della sottomissione non sono validi.");
         }

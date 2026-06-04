@@ -72,6 +72,13 @@ public class WinningController {
         return ResponseEntity.ok(new MessageResponse("Vincitore assegnato con successo"));
     }
 
+    /**
+     * Elabora il pagamento del premio per uno specifico hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @return un {@link ResponseEntity} contenente il {@link TransactionResponse}
+     * con i dettagli del pagamento elaborato
+     */
     @PostMapping("/payment")
     public ResponseEntity<TransactionResponse> elaboraPagamentoHackathon(@PathVariable UUID hackathonId) {
         Hackathon h = hackathonManager.getHackathon(hackathonId);

@@ -15,9 +15,7 @@ public record HackathonResponse(
         String regolamento,
         RappresentazioneStato stato,
         UUID organizzatoreId,
-        UUID giudiceId,
-        MoneyAmount saldoCorrente,
-        Integer numeroTransazioni
+        UUID giudiceId
 ) {
     public static HackathonResponse from(Hackathon hackathon) {
         return new HackathonResponse(
@@ -29,9 +27,7 @@ public record HackathonResponse(
                 hackathon.getDatiHackathon().regolamento(),
                 hackathon.getRappresentazioneStato(),
                 hackathon.getOrganizzatore().getId(),
-                hackathon.getGiudice().getId(),
-                hackathon.getWallet().getSaldo(),
-                hackathon.getWallet().getTransazioni().size()
+                hackathon.getGiudice().getId()
         );
     }
 }

@@ -24,6 +24,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST per la gestione delle richieste di supporto e delle disponibilità
+ * di utenti e mentori all'interno di un hackathon.
+ */
 @RestController
 @RequestMapping("/api/hackathons/{hackathonId}/support-requests")
 @RequiredArgsConstructor
@@ -34,6 +38,12 @@ public class SupportRequestController {
     private final TeamManager teamManager;
     private final UserManager userManager;
 
+    /**
+     * Recupera tutte le richieste di supporto associate a un determinato hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @return un {@link ResponseEntity} contenente il set di {@link SupportRequestResponse}
+     */
     @GetMapping
     public ResponseEntity<Set<SupportRequestResponse>> getRichieste(@PathVariable UUID hackathonId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
@@ -43,6 +53,13 @@ public class SupportRequestController {
         return ResponseEntity.ok(richieste);
     }
 
+    /**
+     * Crea una nuova richiesta di supporto per un team all'interno di un hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param request i dati della richiesta di supporto da creare
+     * @return un {@link ResponseEntity} con stato 201 Created contenente la {@link SupportRequestResponse} creata
+     */
     @PostMapping
     public ResponseEntity<SupportRequestResponse> creaRichiestaSupporto(
             @PathVariable UUID hackathonId,
@@ -58,6 +75,14 @@ public class SupportRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(SupportRequestResponse.from(richiesta));
     }
 
+    /**
+     * Ottiene il calendario delle disponibilità di uno specifico utente per un determinato hackathon.
+     * (Il calendario è un servizio esterno, non è possibile modificarlo)
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param utenteId l'identificativo univoco dell'utente
+     * @return un {@link ResponseEntity} contenente la {@link Disponibilita} dell'utente
+     */
     @GetMapping("/calendario")
     public ResponseEntity<Disponibilita> ottieniCalendario(@PathVariable UUID hackathonId,
                                                            @RequestParam UUID utenteId) {
@@ -67,6 +92,14 @@ public class SupportRequestController {
         return ResponseEntity.ok(disponibilita);
     }
 
+    /**
+     * Ottiene la disponibilità oraria per un team all'interno di un hackathon.
+     * (Le disponibilità sono l'unione del calendario dell'utente e le disponibilità inserite manualmente)
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamName il nome del team
+     * @return un {@link ResponseEntity} contenente la {@link Disponibilita} associata
+     */
     @GetMapping("/disponibilita")
     public ResponseEntity<Disponibilita> ottieniDisponibilita(@PathVariable UUID hackathonId,
                                                               @RequestParam String teamName) {
@@ -76,6 +109,14 @@ public class SupportRequestController {
         return ResponseEntity.ok(disponibilita);
     }
 
+    /**
+     * Registra o aggiorna la disponibilità di un utente per un determinato hackathon.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param utenteId l'identificativo univoco dell'utente
+     * @param nuovaDisponibilita l'oggetto contenente i nuovi slot di disponibilità
+     * @return un {@link ResponseEntity} contenente un {@link MessageResponse} di conferma
+     */
     @PutMapping("/disponibilita")
     public ResponseEntity<MessageResponse> registraDisponibilita(@PathVariable UUID hackathonId,
                                                                  @RequestParam UUID utenteId,
@@ -86,6 +127,15 @@ public class SupportRequestController {
         return ResponseEntity.ok(new MessageResponse("Disponibilità registrata con successo"));
     }
 
+    /**
+     * Invia una risposta testuale da parte di un mentore a una richiesta di supporto di un team.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamName il nome del team che ha richiesto supporto
+     * @param mentoreId l'identificativo univoco del mentore che risponde
+     * @param message il testo della risposta
+     * @return un {@link ResponseEntity} contenente un {@link MessageResponse} di conferma
+     */
     @PostMapping("/risposta")
     public ResponseEntity<MessageResponse> rispondiTestualmente(@PathVariable UUID hackathonId,
                                                                 @RequestParam String teamName,
@@ -99,6 +149,15 @@ public class SupportRequestController {
         return ResponseEntity.ok(new MessageResponse("Risposta registrata"));
     }
 
+    /**
+     * Fissa un incontro (call) tra un mentore e un team in una data e ora specifiche.
+     *
+     * @param hackathonId l'identificativo univoco dell'hackathon
+     * @param teamName il nome del team
+     * @param mentoreId l'identificativo univoco del mentore
+     * @param dateTime la data e l'ora pianificate per la call
+     * @return un {@link ResponseEntity} contenente un {@link MessageResponse} di conferma
+     */
     @PostMapping("/call")
     public ResponseEntity<MessageResponse> fissaCall(@PathVariable UUID hackathonId,
                                                      @RequestParam String teamName,
