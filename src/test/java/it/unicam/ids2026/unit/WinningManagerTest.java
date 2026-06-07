@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import it.unicam.ids2026.core.events.EventPublisher;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -45,6 +46,8 @@ class WinningManagerTest {
     @Mock
     private Transaction transaction;
 
+    private EventPublisher eventPublisher = new EventPublisher();
+
     private WinningManager winningManager;
     private Hackathon hackathon;
     private Team team1;
@@ -52,7 +55,7 @@ class WinningManagerTest {
 
     @BeforeEach
     void setUp() {
-        winningManager = new WinningManager(transactionFactory, hackathonRepository);
+        winningManager = new WinningManager(transactionFactory, eventPublisher);
 
         Organizzatore organizzatore = new Organizzatore("Mario", "Rossi");
         Giudice giudice = new Giudice("Luigi", "Verdi");

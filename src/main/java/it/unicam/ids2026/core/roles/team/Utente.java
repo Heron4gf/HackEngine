@@ -3,6 +3,7 @@ package it.unicam.ids2026.core.roles.team;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Utente extends AbstractUser {
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Team team;
 
     public Utente(String nome) {

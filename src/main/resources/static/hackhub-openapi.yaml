@@ -1,0 +1,1913 @@
+openapi: 3.0.0
+info:
+  title: hackhub-openapi
+  version: 1.0.0
+paths:
+  /api/hackathons/:hackathonId/aggiungi-mentore:
+    post:
+      summary: Aggiunge mentori a un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_aggiunge_mentori_a_un_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+      requestBody:
+        $ref: '#/components/requestBodies/aggiunge_mentori_a_un_hackathon'
+  /api/hackathons/:id/avanza-stato:
+    post:
+      summary: Avanza lo stato di un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_avanza_lo_stato_di_un_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/hackathons:
+    post:
+      summary: Crea un nuovo hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_crea_un_nuovo_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  nome:
+                    type: string
+                  luogo:
+                    type: string
+                  premioInDenaro:
+                    type: integer
+                  currency:
+                    type: string
+                  dimensioneMaxTeam:
+                    type: integer
+                  regolamento:
+                    type: string
+                  stato:
+                    type: string
+                  organizzatoreId:
+                    type: string
+                  giudiceId:
+                    type: string
+              example:
+                id: ''
+                nome: ''
+                luogo: ''
+                premioInDenaro: 0
+                currency: ''
+                dimensioneMaxTeam: 0
+                regolamento: ''
+                stato: ISCRIZIONE
+                organizzatoreId: ''
+                giudiceId: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      requestBody:
+        $ref: '#/components/requestBodies/crea_un_nuovo_hackathon'
+    get:
+      summary: Restituisce tutti gli hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_tutti_gli_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    nome:
+                      type: string
+                    luogo:
+                      type: string
+                    premioInDenaro:
+                      type: integer
+                    currency:
+                      type: string
+                    dimensioneMaxTeam:
+                      type: integer
+                    regolamento:
+                      type: string
+                    stato:
+                      type: string
+                    organizzatoreId:
+                      type: string
+                    giudiceId:
+                      type: string
+              example:
+                - id: ''
+                  nome: ''
+                  luogo: ''
+                  premioInDenaro: 0
+                  currency: ''
+                  dimensioneMaxTeam: 0
+                  regolamento: ''
+                  stato: ISCRIZIONE
+                  organizzatoreId: ''
+                  giudiceId: ''
+  /api/hackathons/joinable:
+    get:
+      summary: Restituisce gli hackathon a cui è possibile iscriversi
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_gli_hackathon_a_cui_possibile_iscriversi_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    nome:
+                      type: string
+                    luogo:
+                      type: string
+                    premioInDenaro:
+                      type: integer
+                    currency:
+                      type: string
+                    dimensioneMaxTeam:
+                      type: integer
+                    regolamento:
+                      type: string
+                    stato:
+                      type: string
+                    organizzatoreId:
+                      type: string
+                    giudiceId:
+                      type: string
+              example:
+                - id: ''
+                  nome: ''
+                  luogo: ''
+                  premioInDenaro: 0
+                  currency: ''
+                  dimensioneMaxTeam: 0
+                  regolamento: ''
+                  stato: ISCRIZIONE
+                  organizzatoreId: ''
+                  giudiceId: ''
+  /api/hackathons/by-organizer/:organizzatore:
+    get:
+      summary: Restituisce gli hackathon creati da un organizzatore
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_gli_hackathon_creati_da_un_organizzatore_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    nome:
+                      type: string
+                    luogo:
+                      type: string
+                    premioInDenaro:
+                      type: integer
+                    currency:
+                      type: string
+                    dimensioneMaxTeam:
+                      type: integer
+                    regolamento:
+                      type: string
+                    stato:
+                      type: string
+                    organizzatoreId:
+                      type: string
+                    giudiceId:
+                      type: string
+              example:
+                - id: ''
+                  nome: ''
+                  luogo: ''
+                  premioInDenaro: 0
+                  currency: ''
+                  dimensioneMaxTeam: 0
+                  regolamento: ''
+                  stato: ISCRIZIONE
+                  organizzatoreId: ''
+                  giudiceId: ''
+      parameters:
+        - name: organizzatore
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 1c74b087-d7a4-42d7-b946-d9b6d279ffae
+  /api/hackathons/:hackathon/mentori-disponibili:
+    get:
+      summary: Restituisce i mentori disponibili per un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_i_mentori_disponibili_per_un_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    nome:
+                      type: string
+                    cognome:
+                      type: string
+                    role:
+                      type: string
+              example:
+                - id: ''
+                  nome: ''
+                  cognome: ''
+                  role: ''
+      parameters:
+        - name: hackathon
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/hackathons/:hackathon/teams:
+    get:
+      summary: Restituisce i team iscritti a un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_i_team_iscritti_a_un_hackathon_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nome:
+                      type: string
+                    maxMembri:
+                      type: integer
+                    membri:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          nome:
+                            type: string
+                          cognome:
+                            type: string
+                          role:
+                            type: string
+              example:
+                - nome: ''
+                  maxMembri: 0
+                  membri:
+                    - id: ''
+                      nome: ''
+                      cognome: ''
+                      role: ''
+      parameters:
+        - name: hackathon
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/hackathons/:hackathon:
+    get:
+      summary: Restituisce un hackathon specifico
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_hackathon_restituisce_un_hackathon_specifico_yml
+      description: ''
+      tags:
+        - Hackathon
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  nome:
+                    type: string
+                  luogo:
+                    type: string
+                  premioInDenaro:
+                    type: integer
+                  currency:
+                    type: string
+                  dimensioneMaxTeam:
+                    type: integer
+                  regolamento:
+                    type: string
+                  stato:
+                    type: string
+                  organizzatoreId:
+                    type: string
+                  giudiceId:
+                    type: string
+              example:
+                id: ''
+                nome: ''
+                luogo: ''
+                premioInDenaro: 0
+                currency: ''
+                dimensioneMaxTeam: 0
+                regolamento: ''
+                stato: ISCRIZIONE
+                organizzatoreId: ''
+                giudiceId: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathon
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/invites/accetta?nomeTeam=piedi&utenteId=dadd5008-e361-480e-95b9-89097d364fd5:
+    post:
+      summary: Accetta un invito
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_inviti_accetta_un_invito_yml
+      description: ''
+      tags:
+        - Inviti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: nomeTeam
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: piedi
+        - name: utenteId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: dadd5008-e361-480e-95b9-89097d364fd5
+  /api/invites:
+    post:
+      summary: Invia un invito a un utente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_inviti_invia_un_invito_a_un_utente_yml
+      description: ''
+      tags:
+        - Inviti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      requestBody:
+        $ref: '#/components/requestBodies/invia_un_invito_a_un_utente'
+  /api/invites/casella/:utenteId:
+    get:
+      summary: Restituisce la casella degli inviti di un utente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_inviti_restituisce_la_casella_degli_inviti_di_un_utente_yml
+      description: ''
+      tags:
+        - Inviti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    mittente:
+                      type: object
+                      properties:
+                        nome:
+                          type: string
+                        maxMembri:
+                          type: integer
+                        membri:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              nome:
+                                type: string
+                              cognome:
+                                type: string
+                              role:
+                                type: string
+                    destinatario:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        nome:
+                          type: string
+                        cognome:
+                          type: string
+                        role:
+                          type: string
+              example:
+                - mittente:
+                    nome: ''
+                    maxMembri: 0
+                    membri:
+                      - id: ''
+                        nome: ''
+                        cognome: ''
+                        role: ''
+                  destinatario:
+                    id: ''
+                    nome: ''
+                    cognome: ''
+                    role: ''
+      parameters:
+        - name: utenteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 071910ca-5974-43d0-9095-c766a7eb558b
+  /api/invites/rifiuta?utenteId=81fd65b0-64e3-4b54-ad49-587c5c6386f2&nomeTeam=piedi:
+    post:
+      summary: Rifiuta un invito
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_inviti_rifiuta_un_invito_yml
+      description: ''
+      tags:
+        - Inviti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: utenteId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 81fd65b0-64e3-4b54-ad49-587c5c6386f2
+        - name: nomeTeam
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: piedi
+  /api/hackathons/:hackathonId/teams/:teamId/submission:
+    put:
+      summary: Aggiorna una submission esistente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_submission_aggiorna_una_submission_esistente_yml
+      description: ''
+      tags:
+        - Submission
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  descrizione:
+                    type: string
+                  allegato:
+                    type: string
+                  voto:
+                    type: integer
+                  giudizio:
+                    type: string
+              example:
+                name: ''
+                descrizione: ''
+                allegato: ''
+                voto: 0
+                giudizio: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+        - name: teamId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: team fortissimo
+      requestBody:
+        $ref: '#/components/requestBodies/aggiorna_una_submission_esistente'
+    post:
+      summary: Invia una nuova submission
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_submission_invia_una_nuova_submission_yml
+      description: ''
+      tags:
+        - Submission
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  descrizione:
+                    type: string
+                  allegato:
+                    type: string
+                  voto:
+                    type: integer
+                  giudizio:
+                    type: string
+              example:
+                name: ''
+                descrizione: ''
+                allegato: ''
+                voto: 0
+                giudizio: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+        - name: teamId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: team fortissimo
+      requestBody:
+        $ref: '#/components/requestBodies/invia_una_nuova_submission'
+    get:
+      summary: Restituisce la submission di un team per un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_submission_restituisce_la_submission_di_un_team_per_un_hackathon_yml
+      description: ''
+      tags:
+        - Submission
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  descrizione:
+                    type: string
+                  allegato:
+                    type: string
+                  voto:
+                    type: integer
+                  giudizio:
+                    type: string
+              example:
+                name: ''
+                descrizione: ''
+                allegato: ''
+                voto: 0
+                giudizio: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+        - name: teamId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: team fortissimo
+  /api/hackathons/:hackathonId/teams/:teamId/submission/evaluate:
+    post:
+      summary: Assegna una valutazione a una submission
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_submission_assegna_una_valutazione_a_una_submission_yml
+      description: ''
+      tags:
+        - Submission
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+        - name: teamId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: team fortissimo
+      requestBody:
+        $ref: '#/components/requestBodies/assegna_una_valutazione_a_una_submission'
+  /api/hackathons/:hackathonId/submission/all:
+    get:
+      summary: Restituisce tutte le submission di un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_submission_restituisce_tutte_le_submission_di_un_hackathon_yml
+      description: ''
+      tags:
+        - Submission
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    descrizione:
+                      type: string
+                    allegato:
+                      type: string
+                    voto:
+                      type: integer
+                    giudizio:
+                      type: string
+              example:
+                - name: ''
+                  descrizione: ''
+                  allegato: ''
+                  voto: 0
+                  giudizio: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/users:
+    post:
+      summary: Crea un nuovo utente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_utenti_crea_un_nuovo_utente_yml
+      description: ''
+      tags:
+        - Utenti
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  nome:
+                    type: string
+                  cognome:
+                    type: string
+                  role:
+                    type: string
+              example:
+                id: ''
+                nome: ''
+                cognome: ''
+                role: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      requestBody:
+        $ref: '#/components/requestBodies/crea_un_nuovo_utente'
+  /api/users/free:
+    get:
+      summary: Restituisce gli utenti non assegnati a nessun team
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_utenti_restituisce_gli_utenti_non_assegnati_a_nessun_team_yml
+      description: ''
+      tags:
+        - Utenti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    nome:
+                      type: string
+                    cognome:
+                      type: string
+                    role:
+                      type: string
+              example:
+                - id: ''
+                  nome: ''
+                  cognome: ''
+                  role: ''
+  /api/users/:id:
+    get:
+      summary: Restituisce un utente specifico
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_utenti_restituisce_un_utente_specifico_yml
+      description: ''
+      tags:
+        - Utenti
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  nome:
+                    type: string
+                  cognome:
+                    type: string
+                  role:
+                    type: string
+              example:
+                id: ''
+                nome: ''
+                cognome: ''
+                role: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e88ffa18-34e7-4ff1-b6db-0c24fb8c55c4
+  /api/hackathons/:hackathonId/support-requests:
+    post:
+      summary: Crea una nuova richiesta di supporto
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_crea_una_nuova_richiesta_di_supporto_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  titolo:
+                    type: string
+                  descrizione:
+                    type: string
+              example:
+                id: ''
+                titolo: ''
+                descrizione: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 2df73838-d0ae-4722-ae0f-6cb5663bcf06
+      requestBody:
+        $ref: '#/components/requestBodies/crea_una_nuova_richiesta_di_supporto'
+    get:
+      summary: Restituisce tutte le richieste di supporto di un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_restituisce_tutte_le_richieste_di_supporto_di_un_hackathon_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    titolo:
+                      type: string
+                    descrizione:
+                      type: string
+              example:
+                - id: ''
+                  titolo: ''
+                  descrizione: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: d7e02170-0177-4233-a400-797382d0e17a
+  /api/hackathons/:hackathonId/support-requests/call?teamName=altroteam&mentoreId=b188a13d-bf42-4ea6-9ba0-5cd455fc950f&dateTime=2026-06-25T10:00:00:
+    post:
+      summary: Fissa una call tra mentore e team
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_fissa_una_call_tra_mentore_e_team_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: teamName
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: altroteam
+        - name: mentoreId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: b188a13d-bf42-4ea6-9ba0-5cd455fc950f
+        - name: dateTime
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: '2026-06-25T10:00:00'
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 2df73838-d0ae-4722-ae0f-6cb5663bcf06
+  /api/hackathons/:hackathonId/support-requests/risposta?teamName=piedi&mentoreId=1c27ef8a-8b4b-46c2-aaf6-2ab932d800a0&message=come va?:
+    post:
+      summary: Invia una risposta testuale a una richiesta di supporto
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_invia_una_risposta_testuale_a_una_richiesta_di_supporto_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: teamName
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: piedi
+        - name: mentoreId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 1c27ef8a-8b4b-46c2-aaf6-2ab932d800a0
+        - name: message
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: come va?
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: d7e02170-0177-4233-a400-797382d0e17a
+  /api/hackathons/:hackathonId/support-requests/disponibilita?utenteId=bb45f4f3-48b6-4da0-b76d-c2d99e68e84c:
+    put:
+      summary: Registra la disponibilità di un utente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_registra_la_disponibilit_di_un_utente_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: utenteId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: bb45f4f3-48b6-4da0-b76d-c2d99e68e84c
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 2df73838-d0ae-4722-ae0f-6cb5663bcf06
+      requestBody:
+        $ref: '#/components/requestBodies/registra_la_disponibilit_di_un_utente'
+  /api/hackathons/:hackathonId/support-requests/calendario?utenteId=bb45f4f3-48b6-4da0-b76d-c2d99e68e84c:
+    get:
+      summary: Restituisce il calendario disponibilità di un utente
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_restituisce_il_calendario_disponibilit_di_un_utente_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slots:
+                    type: array
+                    items:
+                      type: string
+              example:
+                slots: []
+      parameters:
+        - name: utenteId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: bb45f4f3-48b6-4da0-b76d-c2d99e68e84c
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 2df73838-d0ae-4722-ae0f-6cb5663bcf06
+  /api/hackathons/:hackathonId/support-requests/disponibilita?teamName=altroteam:
+    get:
+      summary: Restituisce la disponibilità di un team
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_supportrequest_restituisce_la_disponibilit_di_un_team_yml
+      description: ''
+      tags:
+        - SupportRequest
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slots:
+                    type: array
+                    items:
+                      type: string
+              example:
+                slots: []
+      parameters:
+        - name: teamName
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: altroteam
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 2df73838-d0ae-4722-ae0f-6cb5663bcf06
+  /api/teams:
+    post:
+      summary: Crea un nuovo team
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_team_crea_un_nuovo_team_yml
+      description: ''
+      tags:
+        - Team
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                  maxMembri:
+                    type: integer
+                  membri:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        nome:
+                          type: string
+                        cognome:
+                          type: string
+                        role:
+                          type: string
+              example:
+                nome: ''
+                maxMembri: 0
+                membri:
+                  - id: ''
+                    nome: ''
+                    cognome: ''
+                    role: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      requestBody:
+        $ref: '#/components/requestBodies/crea_un_nuovo_team'
+    get:
+      summary: Restituisce tutti i team (opzionalmente filtrati per hackathon)
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_team_restituisce_tutti_i_team_opzionalmente_filtrati_per_hackathon_yml
+      description: ''
+      tags:
+        - Team
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nome:
+                      type: string
+                    maxMembri:
+                      type: integer
+                    membri:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          nome:
+                            type: string
+                          cognome:
+                            type: string
+                          role:
+                            type: string
+              example:
+                - nome: ''
+                  maxMembri: 0
+                  membri:
+                    - id: ''
+                      nome: ''
+                      cognome: ''
+                      role: ''
+      parameters:
+        - name: hackathonId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+  /api/teams/:nome/iscrizione?hackathonId=e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3:
+    post:
+      summary: Iscrive un team a un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_team_iscrive_un_team_a_un_hackathon_yml
+      description: ''
+      tags:
+        - Team
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathonId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+        - name: nome
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: team fortissimo
+  /api/teams/esci?utenteId=94fca499-7f34-4f41-bc0a-82684187a6b3:
+    post:
+      summary: Permette a un utente di uscire dal proprio team
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_team_permette_a_un_utente_di_uscire_dal_proprio_team_yml
+      description: ''
+      tags:
+        - Team
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: utenteId
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: 94fca499-7f34-4f41-bc0a-82684187a6b3
+  /api/teams/:nome:
+    get:
+      summary: Restituisce un team specifico
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_team_restituisce_un_team_specifico_yml
+      description: ''
+      tags:
+        - Team
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                  maxMembri:
+                    type: integer
+                  membri:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        nome:
+                          type: string
+                        cognome:
+                          type: string
+                        role:
+                          type: string
+              example:
+                nome: ''
+                maxMembri: 0
+                membri:
+                  - id: ''
+                    nome: ''
+                    cognome: ''
+                    role: ''
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: nome
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: piedi
+  /api/hackathons/:hackathonId/violations:
+    get:
+      summary: Restituisce le violazioni di un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_violation_restituisce_le_violazioni_di_un_hackathon_yml
+      description: ''
+      tags:
+        - Violation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nomeTeam:
+                      type: string
+                    mentoreId:
+                      type: string
+                    descrizione:
+                      type: string
+              example:
+                - nomeTeam: ''
+                  mentoreId: ''
+                  descrizione: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+    post:
+      summary: Segnala una violazione
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_violation_segnala_una_violazione_yml
+      description: ''
+      tags:
+        - Violation
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nomeTeam:
+                    type: string
+                  mentoreId:
+                    type: string
+                  descrizione:
+                    type: string
+              example:
+                nomeTeam: ''
+                mentoreId: ''
+                descrizione: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+      requestBody:
+        $ref: '#/components/requestBodies/segnala_una_violazione'
+  /api/hackathons/:hackathonId/winner:
+    post:
+      summary: Assegna il vincitore di un hackathon
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_winning_assegna_il_vincitore_di_un_hackathon_yml
+      description: ''
+      tags:
+        - Winning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+      requestBody:
+        $ref: '#/components/requestBodies/assegna_il_vincitore_di_un_hackathon'
+  /api/hackathons/:hackathonId/payment:
+    post:
+      summary: Elabora il pagamento del premio
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_winning_elabora_il_pagamento_del_premio_yml
+      description: ''
+      tags:
+        - Winning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  importo:
+                    type: integer
+                  currency:
+                    type: string
+                  destinatario:
+                    type: string
+              example:
+                importo: 0
+                currency: ''
+                destinatario: ''
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+  /api/hackathons/:hackathonId/winner-candidates:
+    get:
+      summary: Restituisce i team candidati al vincitore
+      operationId: >-
+        c_users_heron_onedrive_documenti_bruno_hackhub_api_-_2_winning_restituisce_i_team_candidati_al_vincitore_yml
+      description: ''
+      tags:
+        - Winning
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nomeTeam:
+                      type: string
+                    punteggio:
+                      type: integer
+              example:
+                - nomeTeam: ''
+                  punteggio: 0
+      parameters:
+        - name: hackathonId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+          example: e8f9b1c2-8f80-4ef1-95df-462f3b4f11f3
+servers:
+  - url: http://localhost:8080
+    description: Server di sviluppo
+components:
+  schemas:
+    aggiunge_mentori_a_un_hackathon:
+      type: array
+      items:
+        type: string
+      example:
+        - 126e0621-1521-4be4-b371-d34b3b347cd1
+    crea_un_nuovo_hackathon:
+      type: object
+      properties:
+        organizzatoreId:
+          type: string
+        nome:
+          type: string
+        luogo:
+          type: string
+        premioInDenaro:
+          type: integer
+        currency:
+          type: string
+        dimensioneMaxTeam:
+          type: integer
+        regolamento:
+          type: string
+        iscrizioni:
+          type: object
+          properties:
+            dataInizio:
+              type: string
+            dataFine:
+              type: string
+        durata:
+          type: object
+          properties:
+            dataInizio:
+              type: string
+            dataFine:
+              type: string
+        giudiceId:
+          type: string
+      example:
+        organizzatoreId: 1c74b087-d7a4-42d7-b946-d9b6d279ffae
+        nome: Hackathon Camerino
+        luogo: Via Madonna delle Carceri, Polo B
+        premioInDenaro: 100
+        currency: EUR
+        dimensioneMaxTeam: 5
+        regolamento: AI consentita, niente limiti!
+        iscrizioni:
+          dataInizio: '2026-06-15T09:00:00Z'
+          dataFine: '2026-06-20T23:59:59Z'
+        durata:
+          dataInizio: '2026-06-25T09:00:00Z'
+          dataFine: '2026-06-27T18:00:00Z'
+        giudiceId: 45187fee-3265-44e1-bb21-5f60ff1f764e
+    invia_un_invito_a_un_utente:
+      type: object
+      properties:
+        teamMittenteNome:
+          type: string
+        destinatarioId:
+          type: string
+      example:
+        teamMittenteNome: piedi
+        destinatarioId: dadd5008-e361-480e-95b9-89097d364fd5
+    aggiorna_una_submission_esistente:
+      type: object
+      properties:
+        descrizione:
+          type: string
+        allegato:
+          type: string
+      example:
+        descrizione: nuova desc
+        allegato: C:\Users\heron\OneDrive\Desktop\IntelliJ\HackHub
+    assegna_una_valutazione_a_una_submission:
+      type: object
+      properties:
+        voto:
+          type: integer
+        giudizio:
+          type: string
+      example:
+        voto: 4
+        giudizio: decente
+    invia_una_nuova_submission:
+      type: object
+      properties:
+        name:
+          type: string
+        descrizione:
+          type: string
+        allegato:
+          type: string
+      example:
+        name: progetto
+        descrizione: progetto vincitore
+        allegato: C:\\Users\\heron\\OneDrive\\Desktop\\IntelliJ\\HackHub.jar
+    crea_un_nuovo_utente:
+      type: object
+      properties:
+        role:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+      example:
+        role: MENTORE
+        nome: Giovanni
+        cognome: Muciaccia
+    crea_una_nuova_richiesta_di_supporto:
+      type: object
+      properties:
+        nomeTeam:
+          type: string
+        titolo:
+          type: string
+        descrizione:
+          type: string
+      example:
+        nomeTeam: altroteam
+        titolo: ciao
+        descrizione: vorrei più spiegazioni
+    registra_la_disponibilit_di_un_utente:
+      type: object
+      properties:
+        intervalli:
+          type: array
+          items:
+            type: object
+            properties:
+              dataInizio:
+                type: string
+              dataFine:
+                type: string
+      example:
+        intervalli:
+          - dataInizio: '2026-06-25T09:00:00'
+            dataFine: '2026-06-25T12:00:00'
+          - dataInizio: '2026-06-26T14:00:00'
+            dataFine: '2026-06-26T17:00:00'
+    crea_un_nuovo_team:
+      type: object
+      properties:
+        utenteId:
+          type: string
+        nome:
+          type: string
+        maxMembri:
+          type: integer
+      example:
+        utenteId: 690f6c12-4331-42f9-ab66-258bc93d1fed
+        nome: team fortissimo
+        maxMembri: 3
+    segnala_una_violazione:
+      type: object
+      properties:
+        nomeTeam:
+          type: string
+        mentoreId:
+          type: string
+        descrizione:
+          type: string
+      example:
+        nomeTeam: team fortissimo
+        mentoreId: 126e0621-1521-4be4-b371-d34b3b347cd1
+        descrizione: non usa abbastanza AI
+    assegna_il_vincitore_di_un_hackathon:
+      type: object
+      properties:
+        nomeTeam:
+          type: string
+      example:
+        nomeTeam: team fortissimo
+  requestBodies:
+    aggiunge_mentori_a_un_hackathon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/aggiunge_mentori_a_un_hackathon'
+      description: ''
+      required: true
+    crea_un_nuovo_hackathon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/crea_un_nuovo_hackathon'
+      description: ''
+      required: true
+    invia_un_invito_a_un_utente:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/invia_un_invito_a_un_utente'
+      description: ''
+      required: true
+    aggiorna_una_submission_esistente:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/aggiorna_una_submission_esistente'
+      description: ''
+      required: true
+    assegna_una_valutazione_a_una_submission:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/assegna_una_valutazione_a_una_submission'
+      description: ''
+      required: true
+    invia_una_nuova_submission:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/invia_una_nuova_submission'
+      description: ''
+      required: true
+    crea_un_nuovo_utente:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/crea_un_nuovo_utente'
+      description: ''
+      required: true
+    crea_una_nuova_richiesta_di_supporto:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/crea_una_nuova_richiesta_di_supporto'
+      description: ''
+      required: true
+    registra_la_disponibilit_di_un_utente:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/registra_la_disponibilit_di_un_utente'
+      description: ''
+      required: true
+    crea_un_nuovo_team:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/crea_un_nuovo_team'
+      description: ''
+      required: true
+    segnala_una_violazione:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/segnala_una_violazione'
+      description: ''
+      required: true
+    assegna_il_vincitore_di_un_hackathon:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/assegna_il_vincitore_di_un_hackathon'
+      description: ''
+      required: true
+  securitySchemes: {}

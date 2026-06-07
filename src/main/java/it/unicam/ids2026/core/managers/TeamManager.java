@@ -87,6 +87,7 @@ public class TeamManager implements TeamChangeListener {
             throw new IllegalArgumentException("Numero massimo di membri non valido (deve essere tra 1 e 20)");
         }
         Team team = new Team(nome, maxMembri, new HashSet<>(Set.of(utente)));
+        utente.setTeam(team);
         teamRepository.save(team);
         eventPublisher.publishUserChange(utente);
     }

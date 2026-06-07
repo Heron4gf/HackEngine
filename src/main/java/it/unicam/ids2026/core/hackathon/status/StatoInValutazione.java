@@ -10,7 +10,7 @@ public class StatoInValutazione implements StatoHackathon {
     @Override
     public void next(Hackathon hackathon) {
         if(hackathon.getVincitore() == null)
-            throw new UnsupportedOperationException("Bisogna avere un vincitore per concludere l'Hackathon");
+            throw new IllegalStateException("Bisogna avere un vincitore per concludere l'Hackathon");
         hackathon.setState(new StatoConcluso());
     }
 

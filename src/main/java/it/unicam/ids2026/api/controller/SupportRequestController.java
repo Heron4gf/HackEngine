@@ -1,6 +1,8 @@
 package it.unicam.ids2026.api.controller;
 
+import it.unicam.ids2026.api.dto.DisponibilitaResponse;
 import it.unicam.ids2026.api.dto.request.CreateSupportRequest;
+import it.unicam.ids2026.api.dto.request.UpdateDisponibilitaRequest;
 import it.unicam.ids2026.api.dto.response.MessageResponse;
 import it.unicam.ids2026.api.dto.response.SupportRequestResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
@@ -84,12 +86,13 @@ public class SupportRequestController {
      * @return un {@link ResponseEntity} contenente la {@link Disponibilita} dell'utente
      */
     @GetMapping("/calendario")
-    public ResponseEntity<Disponibilita> ottieniCalendario(@PathVariable UUID hackathonId,
-                                                           @RequestParam UUID utenteId) {
+    public ResponseEntity<DisponibilitaResponse> ottieniCalendario(
+            @PathVariable UUID hackathonId,
+            @RequestParam UUID utenteId) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Utente utente = (Utente) userManager.getUserById(utenteId);
         Disponibilita disponibilita = supportRequestManager.ottieniCalendario(utente, hackathon);
-        return ResponseEntity.ok(disponibilita);
+        return ResponseEntity.ok(DisponibilitaResponse.from(disponibilita));
     }
 
     /**
@@ -101,12 +104,13 @@ public class SupportRequestController {
      * @return un {@link ResponseEntity} contenente la {@link Disponibilita} associata
      */
     @GetMapping("/disponibilita")
-    public ResponseEntity<Disponibilita> ottieniDisponibilita(@PathVariable UUID hackathonId,
-                                                              @RequestParam String teamName) {
+    public ResponseEntity<DisponibilitaResponse> ottieniDisponibilita(
+            @PathVariable UUID hackathonId,
+            @RequestParam String teamName) {
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Team team = teamManager.getTeam(teamName);
         Disponibilita disponibilita = supportRequestManager.ottieniDisponibilita(hackathon, team);
-        return ResponseEntity.ok(disponibilita);
+        return ResponseEntity.ok(DisponibilitaResponse.from(disponibilita));
     }
 
     /**
@@ -114,16 +118,17 @@ public class SupportRequestController {
      *
      * @param hackathonId l'identificativo univoco dell'hackathon
      * @param utenteId l'identificativo univoco dell'utente
-     * @param nuovaDisponibilita l'oggetto contenente i nuovi slot di disponibilità
+     * @param request l'oggetto contenente i nuovi slot di disponibilità
      * @return un {@link ResponseEntity} contenente un {@link MessageResponse} di conferma
      */
     @PutMapping("/disponibilita")
-    public ResponseEntity<MessageResponse> registraDisponibilita(@PathVariable UUID hackathonId,
-                                                                 @RequestParam UUID utenteId,
-                                                                 @RequestParam Disponibilita nuovaDisponibilita) {
+    public ResponseEntity<MessageResponse> registraDisponibilita(
+            @PathVariable UUID hackathonId,
+            @RequestParam UUID utenteId,
+            @Valid @RequestBody UpdateDisponibilitaRequest request) {  // ← @RequestBody, non @RequestParam
         Hackathon hackathon = hackathonManager.getHackathon(hackathonId);
         Utente utente = (Utente) userManager.getUserById(utenteId);
-        supportRequestManager.registraDisponibilita(hackathon, utente, nuovaDisponibilita);
+        supportRequestManager.registraDisponibilita(hackathon, utente, request.toDisponibilita());
         return ResponseEntity.ok(new MessageResponse("Disponibilità registrata con successo"));
     }
 

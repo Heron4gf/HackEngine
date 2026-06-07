@@ -3,6 +3,7 @@ package it.unicam.ids2026.core.managers;
 import it.unicam.ids2026.api.external.calendar.ICalendar;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Disponibilita;
+import it.unicam.ids2026.core.hackathon.data.Intervallo;
 import it.unicam.ids2026.core.roles.User;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Iscrizione;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -136,7 +138,19 @@ public class SupportRequestManager {
     public Disponibilita ottieniDisponibilita(@NonNull Hackathon hackathon, @NonNull Team team) {
         Iscrizione iscrizione = hackathon.getIscritti().get(team);
         if (iscrizione == null) throw new IllegalArgumentException("Il team non è iscritto all'hackathon");
-        return iscrizione.getDisponibilita();
+
+        Disponibilita manuale = iscrizione.getDisponibilita();
+        if (manuale != null) return manuale;
+
+        // Fallback: unione dei calendari di tutti i membri del team
+        Set<Intervallo> tuttiGliSlot = team.getMembri().stream()
+                .filter(m -> m instanceof Utente)
+                .map(m -> calendarService.getDisponibilita((Utente) m, hackathon.getDurataHackathon()))
+                .filter(Objects::nonNull)
+                .flatMap(d -> d.getDisponibilita().stream())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return new Disponibilita(tuttiGliSlot);
     }
 
 

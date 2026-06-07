@@ -3,6 +3,7 @@ package it.unicam.ids2026.api.controller;
 import it.unicam.ids2026.api.dto.request.CreateSubmissionRequest;
 import it.unicam.ids2026.api.dto.request.EvaluationRequest;
 import it.unicam.ids2026.api.dto.request.UpdateSubmissionRequest;
+import it.unicam.ids2026.api.dto.response.MessageResponse;
 import it.unicam.ids2026.api.dto.response.SubmissionResponse;
 import it.unicam.ids2026.core.hackathon.Hackathon;
 import it.unicam.ids2026.core.hackathon.data.Sottomissione;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/hackathons/{hackathonId}/teams/{teamId}/submission")
+@RequestMapping("/api/hackathons/{hackathonId}")
 public class SubmissionController {
 
     private final SubmissionManager submissionManager;
@@ -36,7 +37,7 @@ public class SubmissionController {
      * @param teamId l'identificativo del team
      * @return un {@link ResponseEntity} contenente la {@link SubmissionResponse} con i dettagli della sottomissione
      */
-    @GetMapping
+    @GetMapping("/teams/{teamId}/submission")
     public ResponseEntity<SubmissionResponse> getSottomissione(
             @PathVariable UUID hackathonId,
             @PathVariable String teamId) {
@@ -54,7 +55,7 @@ public class SubmissionController {
      * @param request i dati della sottomissione da creare
      * @return un {@link ResponseEntity} con stato 21 Created contenente la {@link SubmissionResponse} della sottomissione creata
      */
-    @PostMapping
+    @PostMapping("/teams/{teamId}/submission")
     public ResponseEntity<SubmissionResponse> inviaSottomissione(
             @PathVariable UUID hackathonId,
             @PathVariable String teamId,
@@ -77,7 +78,7 @@ public class SubmissionController {
      * @param hackathonId l'identificativo univoco dell'hackathon
      * @return un {@link ResponseEntity} contenente la lista delle {@link SubmissionResponse}
      */
-    @GetMapping("/all")
+    @GetMapping("/submission/all")
     public ResponseEntity<List<SubmissionResponse>> ottieniSottomissioni(
             @PathVariable UUID hackathonId
     ) {
@@ -97,8 +98,8 @@ public class SubmissionController {
      * @param request i dati della valutazione (voto e giudizio)
      * @return un {@link ResponseEntity} vuoto con stato 24 No Content
      */
-    @PostMapping("/evaluate")
-    public ResponseEntity<Void> assegnaValutazione(
+    @PostMapping("/teams/{teamId}/submission/evaluate")
+    public ResponseEntity<MessageResponse> assegnaValutazione(
             @PathVariable UUID hackathonId,
             @PathVariable String teamId,
             @Valid @RequestBody EvaluationRequest request) {
@@ -107,7 +108,7 @@ public class SubmissionController {
         Sottomissione sottomissione = submissionManager.ottieniSottomissione(hackathon, team);
 
         submissionManager.assegnaValutazione(sottomissione, request.voto(), request.giudizio());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new MessageResponse("Sottomissione valutata"));
     }
 
     /**
@@ -118,7 +119,7 @@ public class SubmissionController {
      * @param request i nuovi dati per l'aggiornamento della sottomissione
      * @return un {@link ResponseEntity} contenente la {@link SubmissionResponse} aggiornata
      */
-    @PutMapping
+    @PutMapping("/teams/{teamId}/submission")
     public ResponseEntity<SubmissionResponse> aggiornaSottomissione(
             @PathVariable UUID hackathonId,
             @PathVariable String teamId,

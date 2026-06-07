@@ -5,6 +5,7 @@ import it.unicam.ids2026.core.hackathon.data.Sottomissione;
 import it.unicam.ids2026.core.roles.staff.Mentore;
 import it.unicam.ids2026.core.roles.team.Team;
 import it.unicam.ids2026.core.supportRequest.RichiestaSupporto;
+import it.unicam.ids2026.core.supportRequest.StatoRichiesta;
 
 public class StatoInCorso implements StatoHackathon {
     @Override
@@ -29,7 +30,8 @@ public class StatoInCorso implements StatoHackathon {
 
     @Override
     public void aggiungiRichiestaSupporto(Hackathon hackathon, Team team, RichiestaSupporto richiestaSupporto) {
-        if(hackathon.getIscritti().get(team).getRichiestaSupporto() != null) {
+        RichiestaSupporto originalRequest = hackathon.getIscritti().get(team).getRichiestaSupporto();
+        if(originalRequest != null && originalRequest.getStato() != StatoRichiesta.CHIUSA) {
             throw new IllegalArgumentException("Il team ha già una richiesta di supporto aperta");
         }
         hackathon.getIscritti().get(team).setRichiestaSupporto(richiestaSupporto);

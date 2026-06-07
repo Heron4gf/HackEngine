@@ -9,6 +9,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 @Service
@@ -129,10 +130,13 @@ public class SubmissionManager {
     private boolean validaSottomissione(@NonNull String nome,
                                        @NonNull String descrizione,
                                        @NonNull File allegato) {
+        try {
+            Paths.get(allegato.toURI());
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
         return !nome.isBlank()
-                && !descrizione.isBlank()
-                && allegato.exists()
-                && allegato.isFile();
+                && !descrizione.isBlank();
     }
 
     private boolean validaValutazione(int voto, @NonNull String giudizio) {

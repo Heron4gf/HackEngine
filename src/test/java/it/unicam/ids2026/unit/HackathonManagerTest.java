@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import it.unicam.ids2026.core.events.EventPublisher;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,9 +35,11 @@ class HackathonManagerTest {
 
     private HackathonManager hackathonManager;
 
+    private EventPublisher eventPublisher = new EventPublisher();
+
     @BeforeEach
     void setUp() {
-        hackathonManager = new HackathonManager(hackathonRepository);
+        hackathonManager = new HackathonManager(hackathonRepository, eventPublisher);
     }
 
     @Test

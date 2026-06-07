@@ -91,7 +91,7 @@ public class TeamController {
      * @param utenteId identificatore dell'utente
      * @return messaggio di conferma
      */
-    @PostMapping("/{nome}/esci")
+    @PostMapping("/esci")
     public ResponseEntity<MessageResponse> esciDalTeam(@RequestParam UUID utenteId) {
         Utente utente = (Utente) userManager.getUserById(utenteId);
         teamManager.esciDalTeam(utente);
@@ -105,7 +105,7 @@ public class TeamController {
      * @param hackathonId identificatore dell'hackathon
      * @return messaggio di conferma
      */
-    @PostMapping("/{nome}/iscrizione")
+    @PostMapping("/{nomeTeam}/iscrizione")
     public ResponseEntity<MessageResponse> iscriviTeam(
             @PathVariable String nomeTeam,
             @RequestParam UUID hackathonId) {
