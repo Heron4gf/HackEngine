@@ -80,8 +80,15 @@ public class HackathonManager implements HackathonChangeListener {
         }
 
         Hackathon newHackathon = new Hackathon(organizzatore, dati, giudice, iscrizioni, durata);
+        String newHackathonName = newHackathon.getDatiHackathon().nome();
+        /*
         if (hackathonRepository.existsById(newHackathon.getId())) {
             throw new IllegalArgumentException("Hackathon gia presente nel sistema");
+        }
+        */
+        if (hackathonRepository.findAll().stream().map(Hackathon::getDatiHackathon).
+                map(DatiHackathon::nome).anyMatch(n -> n.equals(newHackathonName))) {
+            throw new IllegalArgumentException("Hackathon già presente nel sistema");
         }
         return hackathonRepository.save(newHackathon);
     }
