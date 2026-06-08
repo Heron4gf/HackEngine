@@ -186,4 +186,6 @@ L'applicazione è accessibile su: `http://localhost:8080`
   [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione3) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione3/VisualParadigm/progetto_ids_2025_2026_iterazione3.vpp)
 
 - **Iterazione 4**                                                                                               
-  [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione3) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione4/VisualParadigm/progetto_ids_2025_2026_iterazione4.vpp)
+  [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione4) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione4/VisualParadigm/progetto_ids_2025_2026_iterazione4.vpp)
+- **Iterazione 5**                                                                                                   
+  [Codice](https://github.com/Heron4gf/HackEngine/tree/iterazione5) | [Visual Paradigm](https://github.com/Heron4gf/HackEngine/blob/iterazione5/VisualParadigm/progetto_ids_2025_2026_iterazione5.vpp)
